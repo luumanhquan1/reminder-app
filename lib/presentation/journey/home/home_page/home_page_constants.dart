@@ -31,4 +31,5 @@ class HomePageConstants {
   static double screenUtileSp18 = ScreenUtil().setSp(18);
   static double screenUtileSp20 = ScreenUtil().setSp(20);
   static double screenUntilHeight60 = ScreenUtil().setHeight(60);
+ static Duration durationEdit=Duration(milliseconds: 250);
 }

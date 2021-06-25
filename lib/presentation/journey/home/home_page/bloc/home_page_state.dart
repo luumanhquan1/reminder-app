@@ -7,11 +7,12 @@ class HomePageState extends Equatable {
   List<GroupEntity> keyMyList = [];
   bool updateOrder;
   int reminderToday, reminderScheduled, reminderAll;
-  bool isEdit;
+  bool isEdit,isOpen;
   List<String> reminderSystem = [];
   Map<String, List<ReminderEntity>> remindertoGroup;
   HomePageState(
       {this.keyMyList,
+        this.isOpen,
       this.reminderScheduled,
       this.reminderToday,
       this.reminderAll,
@@ -24,11 +25,13 @@ class HomePageState extends Equatable {
           List<String> reminderSystem,
           bool updateOrder,
           int reminderToday,
+
           reminderScheduled,
           reminderAll,
-          bool isEdit,
+          bool isEdit,isOpen,
           Map<String, List<ReminderEntity>> remindertoGroup}) =>
       HomePageState(
+        isOpen: isOpen??this.isOpen,
           reminderAll: reminderAll ?? this.reminderAll,
           reminderScheduled: reminderScheduled ?? this.reminderScheduled,
           reminderToday: reminderToday ?? this.reminderToday,
@@ -40,6 +43,7 @@ class HomePageState extends Equatable {
   @override
   // TODO: implement props
   List<Object> get props => [
+    this.isOpen,
         this.isEdit,
         this.keyMyList,
         this.updateOrder,

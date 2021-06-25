@@ -17,6 +17,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   @override
   // TODO: implement initialState
   HomePageState get initialState => HomePageState(
+      isOpen: true,
       reminderScheduled: 0,
       reminderToday: 0,
       reminderAll: 0,
@@ -43,6 +44,9 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     }
     if (event is EditEvent) {
       yield* _mapEditToState(event);
+    }
+    if (event is SlideIsOpenEvent) {
+      yield state.update(isOpen: event.isOpen);
     }
   }
 
@@ -78,7 +82,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         reminderAll = reminderAll + value.length;
       });
       yield currentState.update(
-        remindertoGroup: listReminderToGroup,
+          remindertoGroup: listReminderToGroup,
           reminderAll: reminderAll,
           reminderToday: reminderToDay,
           reminderScheduled: reminderScheduled);
@@ -96,8 +100,16 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   }
 
   Stream<HomePageState> _mapEditToState(EditEvent event) async* {
-    bool isEdit = !event.isEdit;
-    yield state.update(isEdit: isEdit);
+    bool isOpen, isEdit;
+    if (state.isOpen == false) {
+      isOpen = true;
+      if (state.isEdit == false) {
+        isEdit = !state.isEdit;
+      }
+    } else {
+      isEdit = !state.isEdit;
+    }
+    yield state.update(isEdit: isEdit, isOpen: isOpen);
   }
 
   Stream<HomePageState> _mapOrderGroup(OrderGroupEvent orderGroup) async* {

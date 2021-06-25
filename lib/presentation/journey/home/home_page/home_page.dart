@@ -1,7 +1,9 @@
+import 'dart:developer';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_event.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_state.dart';
 import 'package:ghichu/presentation/journey/home/home_page/home_page_constants.dart';
@@ -20,6 +22,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _State extends State<HomePage> {
+  SlidableController slidableController;
+  @override
+  void initState() {
+    // TODO: implement initState
+    slidableController = SlidableController(
+      onSlideAnimationChanged: handleSlideAnimationChanged,
+      onSlideIsOpenChanged: handleSlideIsOpenChanged,
+    );
+
+    super.initState();
+  }
+
+  void handleSlideAnimationChanged(Animation<double> slideAnimation) {}
+
+  void handleSlideIsOpenChanged(bool isOpen) {
+    BlocProvider.of<HomePageBloc>(context)
+        .add(SlideIsOpenEvent(isOpen: !isOpen));
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomePageBloc, HomePageState>(
@@ -29,13 +50,13 @@ class _State extends State<HomePage> {
             appBar: AppBarWidget(
               textLeft: '',
               title: '',
-              textRight: state.isEdit
+              textRight: state.isEdit && state.isOpen
                   ? HomePageConstants.editTxt
                   : HomePageConstants.doneTxt,
               color: Colors.blue,
               actions: () {
                 BlocProvider.of<HomePageBloc>(context)
-                    .add(EditEvent(isEdit: state.isEdit));
+                        .add(EditEvent(isEdit: state.isEdit));
               },
             ),
             bottomNavigationBar: BottomNavigationBarWidget(state: state),
@@ -81,6 +102,7 @@ class _State extends State<HomePage> {
                   ),
                 ),
                 ReorderableSliverWidget(
+                  slidableController: slidableController,
                   state: state,
                 )
               ],
