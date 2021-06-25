@@ -38,27 +38,29 @@ class _ListReminderpageState extends State<ListGroupScreen> {
           title: ListGroupConstants.titleTxt,
           textRight: Text(''),
         ),
-        body: BlocBuilder<ListGroupBloc, ListGroupState>(
-            builder: (context, state) {
-          return Column(
-            children: List.generate(widget.settingListGroup.listGroup.length,
-                (index) {
-              return ListGroupWidget(
-                onTap: () {
-                  BlocProvider.of<ListGroupBloc>(context)
-                      .add(SelectGroupEvent(index));
-                  Navigator.pop(
-                      context, widget.settingListGroup.listGroup[index]);
-                },
-                isIcon: true,
-                listGroupState: state,
-                title: widget.settingListGroup.listGroup[index].name,
-                color: widget.settingListGroup.listGroup[index].color,
-                index: index,
-              );
-            }),
-          );
-        }));
+        body: SingleChildScrollView(
+          child: BlocBuilder<ListGroupBloc, ListGroupState>(
+              builder: (context, state) {
+            return Column(
+              children: List.generate(widget.settingListGroup.listGroup.length,
+                  (index) {
+                return ListGroupWidget(
+                  onTap: () {
+                    BlocProvider.of<ListGroupBloc>(context)
+                        .add(SelectGroupEvent(index));
+                    Navigator.pop(
+                        context, widget.settingListGroup.listGroup[index]);
+                  },
+                  isIcon: true,
+                  listGroupState: state,
+                  title: widget.settingListGroup.listGroup[index].name,
+                  color: widget.settingListGroup.listGroup[index].color,
+                  index: index,
+                );
+              }),
+            );
+          }),
+        ));
   }
 
   @override

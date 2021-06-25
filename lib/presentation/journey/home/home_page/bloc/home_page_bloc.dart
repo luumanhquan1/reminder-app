@@ -78,6 +78,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         reminderAll = reminderAll + value.length;
       });
       yield currentState.update(
+        remindertoGroup: listReminderToGroup,
           reminderAll: reminderAll,
           reminderToday: reminderToDay,
           reminderScheduled: reminderScheduled);

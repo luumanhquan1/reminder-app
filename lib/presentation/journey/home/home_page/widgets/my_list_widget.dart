@@ -1,11 +1,13 @@
+import 'dart:developer';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghichu/common/constants/route_constants.dart';
-import 'package:ghichu/common/constants/string_constants.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_state.dart';
 import 'package:ghichu/presentation/journey/home/home_page/home_page_constants.dart';
 import 'package:ghichu/presentation/journey/widgets/icon_widget.dart';
-
 
 class MyListWidget extends StatelessWidget {
   int index;
@@ -26,9 +28,9 @@ class MyListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-      },
+      onTap: () {},
       child: Container(
+        height: 100,
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
@@ -45,6 +47,54 @@ class MyListWidget extends StatelessWidget {
                     ? HomePageConstants.radiusCircle15
                     : Radius.circular(0),
               )),
+          child: Slidable(
+            actionExtentRatio: 0.25,
+            child: getList(),
+            secondaryActions: <Widget>[
+              Container(
+                height: 800,
+                color: Colors.green,
+                child: Text('a'),
+              ),
+              IconSlideAction(
+                caption: 'More',
+                color: Colors.grey.shade200,
+                icon: Icons.more_horiz,
+
+                closeOnTap: false,
+              ),
+              IconSlideAction(
+                caption: 'Delete',
+                color: Colors.red,
+                icon: Icons.delete,
+
+              ),
+            ],
+          )
+      ),
+    );
+  }
+  Widget getList(){
+    return Stack(
+      children: [
+        AnimatedPositioned(
+          duration: Duration(seconds: 1),
+          top: 0,
+          bottom: 0,
+          left: state.isEdit ? -25 : 15,
+          child: GestureDetector(
+            onTap: () {
+              log('234');
+            },
+            child: Icon(
+              Icons.do_not_disturb_on,
+              color: Colors.red,
+            ),
+          ),
+        ),
+        AnimatedContainer(
+          margin: EdgeInsets.only(left: state.isEdit ? 0 : 30),
+          duration: Duration(seconds: 1),
           child: Row(
             children: [
               SizedBox(
@@ -109,7 +159,9 @@ class MyListWidget extends StatelessWidget {
                 ),
               ),
             ],
-          )),
+          ),
+        )
+      ],
     );
   }
 }
