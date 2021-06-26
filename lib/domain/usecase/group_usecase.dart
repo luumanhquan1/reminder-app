@@ -26,4 +26,7 @@ class GroupUseCase {
   Future<void> orderGroupLocal(List<GroupEntity> list) async {
     await groupRepository.addAllGroupLocal(list);
   }
+  Future<void> deleteGroupLocal(int index) async {
+    await groupRepository.deleteGroupLocal(index);
+  }
 }

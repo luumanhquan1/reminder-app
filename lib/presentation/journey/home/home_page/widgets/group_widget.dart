@@ -14,12 +14,13 @@ class GroupWidget extends StatelessWidget {
   final int index;
   final String keyGroup;
   final String title;
-  final int leght = 0;
+  final int leght;
   final String color;
 
   const GroupWidget(
       {Key key,
       @required this.state,
+        @required this.leght,
       @required this.index,
       @required this.keyGroup,
       @required this.title,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -12,8 +14,12 @@ import 'my_list_widget.dart';
 class ReorderableSliverWidget extends StatelessWidget {
   final HomePageState state;
   SlidableController slidableController;
+  ScrollController scrollController;
   ReorderableSliverWidget(
-      {Key key, @required this.state, this.slidableController})
+      {Key key,
+      @required this.state,
+      this.slidableController,
+      this.scrollController})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -21,6 +27,7 @@ class ReorderableSliverWidget extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(HomePageConstants.paddingWidth20, 0,
             HomePageConstants.paddingWidth20, 0),
         sliver: ReorderableSliverList(
+            enabled: state.isOpen,
             delegate: ReorderableSliverChildListDelegate(
                 List.generate(state.keyMyList.length, (index) {
               return MyListWidget(
@@ -28,8 +35,7 @@ class ReorderableSliverWidget extends StatelessWidget {
                 title: state.keyMyList[index].name,
                 index: index,
                 state: state,
-                leght:
-                    state.remindertoGroup[state.keyMyList[index].name].length,
+                leght: state.remindertoGroup[state.keyMyList[index].name].length,
                 color: state.keyMyList[index].color,
               );
             })),

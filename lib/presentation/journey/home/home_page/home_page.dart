@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_event.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_state.dart';
 import 'package:ghichu/presentation/journey/home/home_page/home_page_constants.dart';
@@ -13,6 +14,8 @@ import 'package:ghichu/presentation/journey/home/home_page/widgets/reorderable_s
 import 'package:ghichu/presentation/journey/home/home_page/widgets/search.dart';
 import 'package:ghichu/presentation/journey/home/home_page/widgets/wrap_widget.dart';
 import 'package:ghichu/presentation/journey/widgets/app_bar.dart';
+import 'package:ghichu/presentation/journey/widgets/dia_log_widget.dart';
+import 'package:ghichu/presentation/view_state.dart';
 
 import 'bloc/home_page_bloc.dart';
 
@@ -23,6 +26,7 @@ class HomePage extends StatefulWidget {
 
 class _State extends State<HomePage> {
   SlidableController slidableController;
+  ScrollController reorderController;
   @override
   void initState() {
     // TODO: implement initState
@@ -30,7 +34,6 @@ class _State extends State<HomePage> {
       onSlideAnimationChanged: handleSlideAnimationChanged,
       onSlideIsOpenChanged: handleSlideIsOpenChanged,
     );
-
     super.initState();
   }
 
@@ -43,7 +46,26 @@ class _State extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomePageBloc, HomePageState>(
+    return BlocConsumer<HomePageBloc, HomePageState>(
+      listener: (context,state){
+        if(state.viewState==ViewState.showDiglog){
+          showDialog(
+              context: context,
+              builder:(_)=>DiaLogWidget(name: state.keyMyList[state.index].name,)
+          ).then((value) {
+            if(value!=null){
+                BlocProvider.of<HomePageBloc>(context).add(DeleteGroupEvent(isDialog: true,index: state.index));
+            }
+          });
+        }
+        if(state.viewState==ViewState.error){
+          Fluttertoast.showToast(
+              msg: "This is Toast messaget",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+          );
+        }
+      },
       builder: (context, state) {
         return Scaffold(
             backgroundColor: Colors.white.withOpacity(0.95),
@@ -102,6 +124,7 @@ class _State extends State<HomePage> {
                   ),
                 ),
                 ReorderableSliverWidget(
+                  scrollController: reorderController,
                   slidableController: slidableController,
                   state: state,
                 )

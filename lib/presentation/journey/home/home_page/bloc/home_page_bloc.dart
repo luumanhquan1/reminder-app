@@ -9,6 +9,7 @@ import 'package:ghichu/domain/usecase/reminder_usecase.dart';
 
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_event.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_state.dart';
+import 'package:ghichu/presentation/view_state.dart';
 
 class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   final GroupUseCase groupUs;
@@ -48,6 +49,29 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     if (event is SlideIsOpenEvent) {
       yield state.update(isOpen: event.isOpen);
     }
+    if (event is DeleteGroupEvent) {
+      yield* _mapDeleteGroupToState(event);
+    }
+  }
+
+  Stream<HomePageState> _mapDeleteGroupToState(DeleteGroupEvent event) async* {
+    if (event.isDialog == false) {
+      if (state.remindertoGroup[state.keyMyList[event.index].name].length > 0) {//kiểm tra trong group có reminder không?
+        yield state.update(viewState: ViewState.showDiglog, index: event.index);
+      } else {
+        await groupUs.deleteGroupLocal(event.index);
+        state.keyMyList.removeAt(event.index);
+        yield state.update(
+            keyMyList: state.keyMyList, updateOrder: !state.updateOrder);
+      }
+    } else {
+      await groupUs.deleteGroupLocal(event.index);
+      state.keyMyList.removeAt(event.index);
+      yield state.update(
+          keyMyList: state.keyMyList, updateOrder: !state.updateOrder);
+    }
+
+    yield state.update(viewState: ViewState.initial, isOpen: true);
   }
 
   Stream<HomePageState> _mapUpDateGroupToState(UpDateGroupEvent event) async* {

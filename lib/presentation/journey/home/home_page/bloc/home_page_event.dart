@@ -27,8 +27,15 @@ class EditEvent extends HomePageEvent {
 
   EditEvent({this.isEdit});
 }
-class SlideIsOpenEvent extends HomePageEvent{
+
+class SlideIsOpenEvent extends HomePageEvent {
   final bool isOpen;
 
   SlideIsOpenEvent({this.isOpen});
+}
+
+class DeleteGroupEvent extends HomePageEvent {
+  final int index;
+ final bool isDialog;
+  DeleteGroupEvent({this.index,this.isDialog});
 }
