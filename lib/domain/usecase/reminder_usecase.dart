@@ -15,7 +15,6 @@ class ReminderUseCase {
   Future<Map<String, List<ReminderEntity>>> getReminderScheduled() async {
     List<ReminderEntity> listReminder =
         await reminderRepository.getReminderLocal();
-
     String toDay = DateTime.now().dateTimeFormat();
     Map<String, List<ReminderEntity>> reminderScheduled = {};
     reminderScheduled.addAll({toDay: <ReminderEntity>[].toList()});
@@ -53,5 +52,9 @@ class ReminderUseCase {
       }
     });
     return reminderGroup;
+  }
+  Future<void> deleteReminderToGroup(String group) async {
+    log('message');
+    await reminderRepository.deleteReminderToGroupLocal(group);
   }
 }

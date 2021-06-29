@@ -16,4 +16,9 @@ class ReminderRepositoryImpl extends ReminderRepository {
   Future<List<ReminderEntity>> getReminderLocal() async {
       return await reminderLDs.getReminderLocal();
   }
+
+  @override
+  Future<void> deleteReminderToGroupLocal(String group) async {
+    await  reminderLDs.deleteReminderToGroupLocal(group);
+  }
 }
