@@ -60,16 +60,19 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       if (state.remindertoGroup[state.keyMyList[event.index].name].length > 0) {
         //kiểm tra trong group có reminder không? nếu có hiện dialog
         yield state.update(viewState: ViewState.showDiglog, index: event.index);
-      } else {//trong group không có reminder
+      } else {
+        //trong group không có reminder
         await groupUs.deleteGroupLocal(event.index);
         state.keyMyList.removeAt(event.index);
         yield* isEmptyGroup(state, groupUs);
       }
-    } else {//ấn xóa ở dialog khi có reminder mới hiện dialog
+    } else {
+      //ấn xóa ở dialog khi có reminder mới hiện dialog
       await groupUs.deleteGroupLocal(event.index);
       await reminderUs.deleteReminderToGroup(state.keyMyList[event.index].name);
       state.keyMyList.removeAt(event.index);
       yield* isEmptyGroup(state, groupUs);
+      yield* _mapUpDateReminderToState(UpDateReminderEvent());
     }
     yield state.update(viewState: ViewState.initial, isOpen: true);
   }
@@ -169,17 +172,17 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         remindertoGroup: listReminderToGroup,
         reminderAll: reminderAll);
   }
-}
 
-Stream<HomePageState> isEmptyGroup(
-    HomePageState state, GroupUseCase groupUs) async* {
-  if (state.keyMyList.isEmpty) {
-    yield state.update(keyMyList: [], updateOrder: !state.updateOrder);
-    List<GroupEntity> listGroup = await groupUs.getUnitList();
-    await Future.delayed(Duration(seconds: 1));
-    yield state.update(keyMyList: listGroup, updateOrder: !state.updateOrder);
-  } else {
-    yield state.update(
-        keyMyList: state.keyMyList, updateOrder: !state.updateOrder);
+  Stream<HomePageState> isEmptyGroup(
+      HomePageState state, GroupUseCase groupUs) async* {
+    if (state.keyMyList.isEmpty) {
+      yield state.update(keyMyList: [], updateOrder: !state.updateOrder);
+      List<GroupEntity> listGroup = await groupUs.getUnitList();
+      await Future.delayed(Duration(seconds: 1));
+      yield state.update(keyMyList: listGroup, updateOrder: !state.updateOrder);
+    } else {
+      yield state.update(
+          keyMyList: state.keyMyList, updateOrder: !state.updateOrder);
+    }
   }
 }
