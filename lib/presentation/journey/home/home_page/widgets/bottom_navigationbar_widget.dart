@@ -12,7 +12,7 @@ import 'package:ghichu/presentation/journey/widgets/bottom_new_reminder.dart';
 import '../home_page_constants.dart';
 
 class BottomNavigationBarWidget extends StatelessWidget {
-  final HomePageState state;
+  final InitHomePageState state;
 
   const BottomNavigationBarWidget({Key key, @required this.state})
       : super(key: key);
@@ -42,7 +42,6 @@ class BottomNavigationBarWidget extends StatelessWidget {
             onTap: () {
               Navigator.pushNamed(context, RouteList.addGroup).then((value) {
                 if (value != null) {
-                  log('updateEdit');
                   BlocProvider.of<HomePageBloc>(context)
                       .add(UpDateGroupEvent());
                 }

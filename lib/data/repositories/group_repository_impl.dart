@@ -41,8 +41,8 @@ class GroupRepositoryImpl extends GroupRepository {
   }
 
   @override
-  Future<void> updateGroupLocal( GroupEntity groupEntity) async {
-         await groupLds.updateGroupLocal( groupEntity);
+  Future<void> updateGroupLocal( GroupEntity groupEntity,String oldNameGroup) async {
+         await groupLds.updateGroupLocal( groupEntity,oldNameGroup);
   }
 
 }

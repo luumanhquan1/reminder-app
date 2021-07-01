@@ -49,11 +49,14 @@ class AddListBloc extends Bloc<AddListEvent, AddListState> {
     final currentState=state;
     if(currentState is InitialAddListState){
      yield currentState.update(viewState: ViewState.loading);
-      GroupEntity groupEntity=event.groupEntity;
-      groupEntity.color=event.color;
-      groupEntity.name=event.name;
-      groupEntity.lastUpdate=event.lastUpdate;
-      await groupUseCase.updateGroupLocal(groupEntity);
+      String oldNameGroup=event.groupEntity.name;//lấy name cũ của group
+     GroupEntity groupEntity=GroupEntity(
+       name: event.name,
+       color: event.color,
+       lastUpdate: event.lastUpdate,
+       createAt: event.groupEntity.createAt
+     );
+      await groupUseCase.updateGroupLocal(groupEntity,oldNameGroup);
     yield  currentState.update(viewState: ViewState.success);
     }
   }

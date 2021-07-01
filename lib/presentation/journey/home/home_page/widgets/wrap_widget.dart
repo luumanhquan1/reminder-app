@@ -7,7 +7,7 @@ import 'package:ghichu/presentation/journey/home/home_page/home_page_constants.d
 import 'package:ghichu/presentation/journey/home/home_page/widgets/sight_widget.dart';
 
 class WrapWidget extends StatelessWidget {
-  HomePageState state;
+  InitHomePageState state;
   WrapWidget({Key key, this.state}) : super(key: key);
   @override
   Widget build(BuildContext context) {

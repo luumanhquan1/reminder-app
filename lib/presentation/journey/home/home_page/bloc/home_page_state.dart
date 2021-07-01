@@ -1,12 +1,15 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
 import 'package:ghichu/domain/entities/reminder_entity.dart';
 import 'package:ghichu/presentation/view_state.dart';
 
 // ignore: must_be_immutable
-class HomePageState extends Equatable {
+abstract class HomePageState extends Equatable {}
+
+class InitHomePageState extends HomePageState {
   ViewState viewState;
-  Feature feature;
+
   List<GroupEntity> keyMyList = [];
   bool updateOrder;
   int reminderToday, reminderScheduled, reminderAll;
@@ -14,10 +17,9 @@ class HomePageState extends Equatable {
   int index;
   List<String> reminderSystem = [];
   Map<String, List<ReminderEntity>> remindertoGroup;
-  HomePageState(
+  InitHomePageState(
       {this.keyMyList,
       this.index,
-      this.feature,
       this.viewState,
       this.isOpen,
       this.reminderScheduled,
@@ -27,10 +29,9 @@ class HomePageState extends Equatable {
       this.remindertoGroup,
       this.isEdit,
       this.reminderSystem});
-  HomePageState update(
+  InitHomePageState update(
           {List<GroupEntity> keyMyList,
           int index,
-          Feature feature,
           List<String> reminderSystem,
           bool updateOrder,
           int reminderToday,
@@ -40,8 +41,7 @@ class HomePageState extends Equatable {
           bool isEdit,
           isOpen,
           Map<String, List<ReminderEntity>> remindertoGroup}) =>
-      HomePageState(
-          feature: feature ?? this.feature,
+      InitHomePageState(
           index: index ?? this.index,
           viewState: viewState ?? this.viewState,
           isOpen: isOpen ?? this.isOpen,
@@ -56,7 +56,6 @@ class HomePageState extends Equatable {
   @override
   // TODO: implement props
   List<Object> get props => [
-        this.feature,
         this.index,
         this.viewState,
         this.isOpen,
@@ -69,4 +68,12 @@ class HomePageState extends Equatable {
         this.reminderToday,
         this.reminderAll
       ];
+}
+
+class EditGroupState extends HomePageState {
+  final GroupEntity groupEntity;
+
+  EditGroupState({@required this.groupEntity});
+  @override
+  List<Object> get props => [this.groupEntity];
 }

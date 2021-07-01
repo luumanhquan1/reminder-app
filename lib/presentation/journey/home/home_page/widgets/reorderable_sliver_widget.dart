@@ -13,7 +13,7 @@ import 'my_list_widget.dart';
 
 // ignore: must_be_immutable
 class ReorderableSliverWidget extends StatelessWidget {
-  final HomePageState state;
+  final InitHomePageState state;
   SlidableController slidableController;
   ScrollController scrollController;
   ReorderableSliverWidget(

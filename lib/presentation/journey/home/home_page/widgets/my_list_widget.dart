@@ -17,7 +17,7 @@ class MyListWidget extends StatelessWidget {
   int index;
   String keyGroup;
   String title;
-  HomePageState state;
+  InitHomePageState state;
   int leght = 0;
   SlidableController slidableController;
   String color;

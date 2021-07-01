@@ -10,7 +10,7 @@ import 'package:ghichu/presentation/journey/widgets/icon_widget.dart';
 import '../home_page_constants.dart';
 
 class GroupWidget extends StatelessWidget {
-  final HomePageState state;
+  final InitHomePageState state;
   final int index;
   final String keyGroup;
   final String title;
@@ -54,7 +54,7 @@ class GroupWidget extends StatelessWidget {
         children: [
           editGroupWidget(context),
           AnimatedContainer(
-            margin: EdgeInsets.only(left: state.isEdit ? 0 : 40),
+            margin: EdgeInsets.only(left: state.isEdit ? 0 : ScreenUtil().setWidth(40)),
             duration: HomePageConstants.durationEdit,
             child: Row(
               children: [

@@ -10,7 +10,7 @@ import 'package:ghichu/presentation/journey/home/home_page/home_page_constants.d
 import 'package:ghichu/presentation/journey/widgets/icon_widget.dart';
 
 class EditWidget extends StatelessWidget {
-  HomePageState state;
+  InitHomePageState state;
   EditWidget({Key key, this.state}) : super(key: key);
 
   @override
