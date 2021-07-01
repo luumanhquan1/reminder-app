@@ -6,5 +6,5 @@ abstract class GroupRepository {
   Future<void> setDefaultGroup();
   Future<void> deleteGroupLocal(int index);
   Future<void> addAllGroupLocal(List<GroupEntity> list);
-  Future<void> updateGroupLocal(int index, GroupEntity groups);
+  Future<void> updateGroupLocal(GroupEntity groups);
 }

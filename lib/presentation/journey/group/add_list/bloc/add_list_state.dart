@@ -6,19 +6,26 @@ abstract class AddListState extends Equatable {}
 
 // ignore: must_be_immutable
 class InitialAddListState extends AddListState {
+  final String name;
   final Color color;
   final bool activeAddBtn;
   final int index;
   ViewState viewState;
   InitialAddListState(
-      {@required this.color, this.activeAddBtn, this.index, this.viewState});
+      {this.name,
+      @required this.color,
+      this.activeAddBtn,
+      this.index,
+      this.viewState});
 
   InitialAddListState update(
           {Color selectColor,
+          String name,
           bool activeAddBtn,
           int index,
           ViewState viewState}) =>
       InitialAddListState(
+          name: name ?? this.name,
           viewState: viewState ?? this.viewState,
           color: selectColor ?? this.color,
           activeAddBtn: activeAddBtn ?? this.activeAddBtn,
@@ -27,6 +34,7 @@ class InitialAddListState extends AddListState {
   @override
   List<Object> get props => [
         this.viewState,
+        this.name,
         this.color,
         this.index,
         this.activeAddBtn,

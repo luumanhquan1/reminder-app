@@ -6,6 +6,7 @@ import 'package:ghichu/presentation/view_state.dart';
 // ignore: must_be_immutable
 class HomePageState extends Equatable {
   ViewState viewState;
+  Feature feature;
   List<GroupEntity> keyMyList = [];
   bool updateOrder;
   int reminderToday, reminderScheduled, reminderAll;
@@ -15,7 +16,8 @@ class HomePageState extends Equatable {
   Map<String, List<ReminderEntity>> remindertoGroup;
   HomePageState(
       {this.keyMyList,
-        this.index,
+      this.index,
+      this.feature,
       this.viewState,
       this.isOpen,
       this.reminderScheduled,
@@ -27,7 +29,8 @@ class HomePageState extends Equatable {
       this.reminderSystem});
   HomePageState update(
           {List<GroupEntity> keyMyList,
-            int index,
+          int index,
+          Feature feature,
           List<String> reminderSystem,
           bool updateOrder,
           int reminderToday,
@@ -38,7 +41,8 @@ class HomePageState extends Equatable {
           isOpen,
           Map<String, List<ReminderEntity>> remindertoGroup}) =>
       HomePageState(
-        index: index??this.index,
+          feature: feature ?? this.feature,
+          index: index ?? this.index,
           viewState: viewState ?? this.viewState,
           isOpen: isOpen ?? this.isOpen,
           reminderAll: reminderAll ?? this.reminderAll,
@@ -52,8 +56,9 @@ class HomePageState extends Equatable {
   @override
   // TODO: implement props
   List<Object> get props => [
-    this.index,
-    this.viewState,
+        this.feature,
+        this.index,
+        this.viewState,
         this.isOpen,
         this.isEdit,
         this.keyMyList,

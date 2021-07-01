@@ -1,3 +1,6 @@
+
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
@@ -13,7 +16,10 @@ class AddListBloc extends Bloc<AddListEvent, AddListState> {
   AddListBloc({this.groupUseCase});
   @override
   AddListState get initialState => InitialAddListState(
-      color: AddListConstants.listColors[4], index: 4, activeAddBtn: false);
+      name: '',
+      color: AddListConstants.listColors[4],
+      index: 4,
+      activeAddBtn: false);
 
   @override
   Stream<AddListState> mapEventToState(AddListEvent event) async* {
@@ -30,6 +36,43 @@ class AddListBloc extends Bloc<AddListEvent, AddListState> {
     }
     if (event is CreateListEvent) {
       yield* _mapCreateListEventToState(event);
+    }
+    if (event is UpDateEditGroupEvent) {
+      yield* _mapUpDateEditGroupToState(event);
+    }
+    if (event is EditGroupEvent) {
+      yield* _mapEditGroupToState(event);
+    }
+  }
+
+  Stream<AddListState> _mapEditGroupToState(EditGroupEvent event) async* {
+    final currentState=state;
+    if(currentState is InitialAddListState){
+     yield currentState.update(viewState: ViewState.loading);
+      GroupEntity groupEntity=event.groupEntity;
+      groupEntity.color=event.color;
+      groupEntity.name=event.name;
+      groupEntity.lastUpdate=event.lastUpdate;
+      await groupUseCase.updateGroupLocal(groupEntity);
+    yield  currentState.update(viewState: ViewState.success);
+    }
+  }
+  Stream<AddListState> _mapUpDateEditGroupToState(
+      UpDateEditGroupEvent event) async* {
+    final currentState = state;
+    if (currentState is InitialAddListState) {
+      int index;
+      for (int i = 0; i < AddListConstants.listColors.length; i++) {
+        if (AddListConstants.listColors[i].value.toString() ==
+            event.groupEntity.color) {
+          index = i;
+          break;
+        }
+      }
+      yield currentState.update(
+          activeAddBtn: true,
+          index: index,
+          selectColor: Color(int.parse(event.groupEntity.color)));
     }
   }
 
@@ -57,6 +100,8 @@ class AddListBloc extends Bloc<AddListEvent, AddListState> {
       int a = await groupUseCase.setGroup(group);
       if (a != null) {
         yield currentState.update(viewState: ViewState.success);
+      } else {
+        yield currentState.update(viewState: ViewState.error);
       }
     }
   }

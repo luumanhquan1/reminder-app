@@ -21,6 +21,7 @@ class LocalDbSetup {
 
   void dispose() {
     groupBox.compact();
+    reminderBox.compact();
     Hive.close();
   }
 }

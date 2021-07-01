@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
-
+import 'package:ghichu/domain/entities/group_entity.dart';
 
 abstract class AddListEvent {}
 
@@ -16,6 +16,21 @@ class ActiveAddBtn extends AddListEvent {
   final String text;
 
   ActiveAddBtn({this.text});
+}
+
+class UpDateEditGroupEvent extends AddListEvent {
+  final GroupEntity groupEntity;
+
+  UpDateEditGroupEvent(this.groupEntity);
+}
+
+class EditGroupEvent extends AddListEvent {
+  final String name;
+  final String color;
+  final String lastUpdate;
+ final GroupEntity groupEntity;
+  EditGroupEvent(
+      {@required this.name, @required this.color, @required this.lastUpdate,@required this.groupEntity});
 }
 
 class CreateListEvent extends AddListEvent {

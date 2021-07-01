@@ -53,36 +53,41 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     if (event is DeleteGroupEvent) {
       yield* _mapDeleteGroupToState(event);
     }
+    if(event is EditGroupEvent){
+      yield state.update(feature: Feature.edit,index: event.index,isOpen: true);
+      yield state.update(feature: Feature.initial);
+    }
   }
 
   Stream<HomePageState> _mapDeleteGroupToState(DeleteGroupEvent event) async* {
     if (event.isDialog == false) {
       if (state.remindertoGroup[state.keyMyList[event.index].name].length > 0) {
         //kiểm tra trong group có reminder không? nếu có hiện dialog
-        yield state.update(viewState: ViewState.showDiglog, index: event.index);
+        yield state.update(
+            viewState: ViewState.showDiglog, index: event.index, isOpen: true);
       } else {
         //trong group không có reminder
         await groupUs.deleteGroupLocal(event.index);
-        state.keyMyList.removeAt(event.index);
-        yield* isEmptyGroup(state, groupUs);
-      }
-    } else {
-      //ấn xóa ở dialog khi có reminder mới hiện dialog
-      await groupUs.deleteGroupLocal(event.index);
+      state.keyMyList.removeAt(event.index);
+      yield* isEmptyGroup(state, groupUs);
+    }
+  } else {
+  //ấn xóa ở dialog khi có reminder mới hiện dialog
+  await groupUs.deleteGroupLocal(event.index);
       await reminderUs.deleteReminderToGroup(state.keyMyList[event.index].name);
       state.keyMyList.removeAt(event.index);
       yield* isEmptyGroup(state, groupUs);
       yield* _mapUpDateReminderToState(UpDateReminderEvent());
     }
-    yield state.update(viewState: ViewState.initial, isOpen: true);
   }
 
   Stream<HomePageState> _mapUpDateGroupToState(UpDateGroupEvent event) async* {
     final currentState = state;
+    log('message');
     if (currentState is HomePageState) {
       List<GroupEntity> listGroup = await groupUs.getUnitList();
-      currentState.remindertoGroup.addAll(
-          {listGroup[listGroup.length - 1].name: <ReminderEntity>[].toList()});
+      // currentState.remindertoGroup.addAll(
+      //     {listGroup[listGroup.length - 1].name: <ReminderEntity>[].toList()});
       yield currentState.update(
           keyMyList: listGroup, remindertoGroup: state.remindertoGroup);
     }
@@ -178,11 +183,16 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     if (state.keyMyList.isEmpty) {
       yield state.update(keyMyList: [], updateOrder: !state.updateOrder);
       List<GroupEntity> listGroup = await groupUs.getUnitList();
-      await Future.delayed(Duration(seconds: 1));
-      yield state.update(keyMyList: listGroup, updateOrder: !state.updateOrder);
+      await Future.delayed(Duration(milliseconds: 700));
+      yield state.update(
+          keyMyList: listGroup,
+          updateOrder: !state.updateOrder,
+          viewState: ViewState.initial);
     } else {
       yield state.update(
-          keyMyList: state.keyMyList, updateOrder: !state.updateOrder);
+          keyMyList: state.keyMyList,
+          updateOrder: !state.updateOrder,
+          viewState: ViewState.initial);
     }
   }
 }

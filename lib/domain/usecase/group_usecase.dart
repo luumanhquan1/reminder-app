@@ -29,4 +29,7 @@ class GroupUseCase {
   Future<void> deleteGroupLocal(int index) async {
     await groupRepository.deleteGroupLocal(index);
   }
+  Future<void> updateGroupLocal(GroupEntity groupEntity) async {
+    await groupRepository.updateGroupLocal(groupEntity);
+  }
 }

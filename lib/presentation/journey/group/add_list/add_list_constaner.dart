@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 
 class AddListConstants {
-  static List listColors = [
+  static List<Color> listColors = [
     Colors.red,
     Colors.deepOrangeAccent,
     Colors.yellow,

@@ -68,20 +68,25 @@ class MyListWidget extends StatelessWidget {
   List<Widget> secondaryActionsWidget(BuildContext context) {
     return List.generate(state.isEdit ? 2 : 1, (index1) {
       if (index1 == 0 && state.isEdit) {
-        return Container(
-          color: Colors.grey,
-          height: double.infinity,
-          child: Icon(
-            Icons.error,
-            color: Colors.white,
-            size: ScreenUtil().setSp(30),
+        return GestureDetector(
+          onTap: () {
+            BlocProvider.of<HomePageBloc>(context).add(EditGroupEvent(index));
+          },
+          child: Container(
+            color: Colors.grey,
+            height: double.infinity,
+            child: Icon(
+              Icons.error,
+              color: Colors.white,
+              size: ScreenUtil().setSp(30),
+            ),
           ),
         );
       }
       return GestureDetector(
         onTap: () {
           BlocProvider.of<HomePageBloc>(context)
-              .add(DeleteGroupEvent(index: index,isDialog: false));
+              .add(DeleteGroupEvent(index: index, isDialog: false));
         },
         child: Container(
           decoration: BoxDecoration(

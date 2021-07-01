@@ -1,35 +1,52 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/screen_util.dart';
+import 'package:ghichu/domain/entities/group_entity.dart';
 
 import 'package:ghichu/presentation/journey/group/add_list/add_list_constaner.dart';
 import 'package:ghichu/presentation/journey/group/add_list/bloc/add_list_event.dart';
 import 'package:ghichu/presentation/journey/group/add_list/bloc/add_list_state.dart';
 import 'package:ghichu/presentation/journey/group/add_list/bloc/add_list_bloc.dart';
 import 'package:ghichu/presentation/journey/group/add_list/widgets/select_colors.dart';
+
 import 'package:ghichu/presentation/journey/widgets/app_bar.dart';
 import 'package:ghichu/presentation/journey/widgets/icon_widget.dart';
 import 'package:ghichu/presentation/journey/widgets/show_model_button_sheet.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ghichu/presentation/journey/widgets/show_toast_error.dart';
 import 'package:ghichu/presentation/view_state.dart';
 
 class AddGroupScreen extends StatefulWidget {
+  final GroupEntity groupEntity;
+  const AddGroupScreen({Key key, this.groupEntity}) : super(key: key);
   @override
   _AddListScreenState createState() => _AddListScreenState();
 }
 
 class _AddListScreenState extends State<AddGroupScreen> {
   TextEditingController _textEditingController = TextEditingController();
+  @override
+  void initState() {
+    if (widget.groupEntity != null) {
+      _textEditingController.text = widget.groupEntity.name;
+    }
+    super.initState();
+  }
 
-  // CheckButtonBloc checkButtonBloc =  CheckButtonBloc();
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AddListBloc, AddListState>(
       listener: (context, state) {
         if (state is InitialAddListState) {
-          if (state.viewState == ViewState.success) Navigator.pop(context);
+          if (state.viewState == ViewState.success){
+            Navigator.pop(context, 'done');}
+          if (state.viewState == ViewState.error) {
+            showError();
+          }
         }
         if (state is PopAddListGroupState) {
           if (state.isRemove) {
@@ -51,11 +68,21 @@ class _AddListScreenState extends State<AddGroupScreen> {
               },
               actions: state.activeAddBtn
                   ? () {
-                      BlocProvider.of<AddListBloc>(context).add(CreateListEvent(
-                          name: _textEditingController.text.trim(),
-                          color: state.color.value.toString(),
-                          createAt: DateTime.now().toString(),
-                          lastUpdate: DateTime.now().toString()));
+                      if (widget.groupEntity == null) {
+                        BlocProvider.of<AddListBloc>(context).add(
+                            CreateListEvent(
+                                name: _textEditingController.text.trim(),
+                                color: state.color.value.toString(),
+                                createAt: DateTime.now().toString(),
+                                lastUpdate: DateTime.now().toString()));
+                      } else {
+                        BlocProvider.of<AddListBloc>(context).add(
+                            EditGroupEvent(
+                                groupEntity: widget.groupEntity,
+                                name: _textEditingController.text,
+                                color: state.color.value.toString(),
+                                lastUpdate: DateTime.now().toString()));
+                      }
                     }
                   : null,
               textLeft: 'Hủy',
@@ -86,9 +113,7 @@ class _AddListScreenState extends State<AddGroupScreen> {
                     ),
                     TextField(
                       controller: _textEditingController,
-
                       textAlign: TextAlign.center,
-
                       style: TextStyle(
                           color: state.color,
                           fontWeight: FontWeight.w600,

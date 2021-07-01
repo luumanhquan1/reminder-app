@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:ghichu/common/constants/route_constants.dart';
+import 'package:ghichu/common/setting_argument/settting_argument.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_event.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_state.dart';
 import 'package:ghichu/presentation/journey/home/home_page/home_page_constants.dart';
@@ -15,6 +17,7 @@ import 'package:ghichu/presentation/journey/home/home_page/widgets/search.dart';
 import 'package:ghichu/presentation/journey/home/home_page/widgets/wrap_widget.dart';
 import 'package:ghichu/presentation/journey/widgets/app_bar.dart';
 import 'package:ghichu/presentation/journey/widgets/dia_log_widget.dart';
+import 'package:ghichu/presentation/journey/widgets/show_toast_error.dart';
 import 'package:ghichu/presentation/view_state.dart';
 
 import 'bloc/home_page_bloc.dart';
@@ -47,23 +50,25 @@ class _State extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<HomePageBloc, HomePageState>(
-      listener: (context,state){
-        if(state.viewState==ViewState.showDiglog){
+      listener: (context, state) {
+        if (state.viewState == ViewState.showDiglog) {
           showDialog(
               context: context,
-              builder:(_)=>DiaLogWidget(name: state.keyMyList[state.index].name,)
-          ).then((value) {
-            if(value!=null){
-                BlocProvider.of<HomePageBloc>(context).add(DeleteGroupEvent(isDialog: true,index: state.index));
+              builder: (_) => DiaLogWidget(
+                    name: state.keyMyList[state.index].name,
+                  )).then((value) {
+            if (value != null) {
+              BlocProvider.of<HomePageBloc>(context)
+                  .add(DeleteGroupEvent(isDialog: true, index: state.index));
             }
           });
         }
-        if(state.viewState==ViewState.error){
-          Fluttertoast.showToast(
-              msg: "This is Toast messaget",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.CENTER,
-          );
+        if (state.viewState == ViewState.error) {
+          showError();
+        }
+        if (state.feature == Feature.edit) {
+          Navigator.pushNamed(context, RouteList.addGroup,
+              arguments: SettingEditGroup(state.keyMyList[state.index]));
         }
       },
       builder: (context, state) {
@@ -78,10 +83,10 @@ class _State extends State<HomePage> {
               color: Colors.blue,
               actions: () {
                 BlocProvider.of<HomePageBloc>(context)
-                        .add(EditEvent(isEdit: state.isEdit));
+                    .add(EditEvent(isEdit: state.isEdit));
               },
             ),
-            bottomNavigationBar: BottomNavigationBarWidget(state: state),
+
             body: CustomScrollView(
               slivers: [
                 SliverPadding(
@@ -129,7 +134,9 @@ class _State extends State<HomePage> {
                   state: state,
                 )
               ],
-            ));
+            ),
+          bottomNavigationBar: BottomNavigationBarWidget(state: state),
+        );
       },
     );
   }
