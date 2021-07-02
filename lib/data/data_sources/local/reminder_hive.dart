@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:ghichu/common/configs/local_db_setup.dart';
+import 'package:ghichu/domain/entities/group_entity.dart';
 import 'package:ghichu/domain/entities/reminder_entity.dart';
 
 class ReminderLocalDataSource {
@@ -29,5 +30,31 @@ class ReminderLocalDataSource {
       }
     }
   }
-// Map<String,int> getLeghtReminderToGroupLocal(List<GroupEntr>)
+
+  Future<Map<String, int>> getLeghtReminderToGroupLocal(
+      List<GroupEntity> listGroup) async {
+    final result = localDbSetup.reminderBox.values;
+    Map<String, int> getLeghtReminder = {};
+    listGroup.forEach((element) {
+      getLeghtReminder.addAll({
+        element.name:
+            result.where((reminder) => element.name == reminder.list).length
+      });
+    });
+    return getLeghtReminder;
+  }
+
+  Future<int> getLengthScheduledLocal() async {
+    final result = localDbSetup.reminderBox.values;
+    return result.where((element) => element.details.date != null).length;
+  }
+
+  Future<int> getLenghtAllReminderLocal() async {
+    return localDbSetup.reminderBox.length;
+  }
+
+  Future<int> getLenghtToDayReminderLocal(String date) async {
+    final result = localDbSetup.reminderBox.values;
+    return result.where((element) => element.details.date == date).length;
+  }
 }

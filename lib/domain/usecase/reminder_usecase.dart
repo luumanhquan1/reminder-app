@@ -53,8 +53,26 @@ class ReminderUseCase {
     });
     return reminderGroup;
   }
+
   Future<void> deleteReminderToGroup(String group) async {
     log('message');
     await reminderRepository.deleteReminderToGroupLocal(group);
+  }
+
+  Future<Map<String, int>> getLeghtReminderToGroupLocal(
+      List<GroupEntity> listGroup) async {
+    return reminderRepository.getLeghtReminderToGroupLocal(listGroup);
+  }
+
+  Future<int> getLengthScheduledLocal() async {
+    return await reminderRepository.getLengthScheduledLocal();
+  }
+
+  Future<int> getLenghtAllReminderLocal() async {
+    return await reminderRepository.getLenghtAllReminderLocal();
+  }
+
+  Future<int> getLenghtToDayReminderLocal(String date) async {
+    return await reminderRepository.getLenghtToDayReminderLocal(date);
   }
 }

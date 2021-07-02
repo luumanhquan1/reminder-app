@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
 import 'package:ghichu/domain/usecase/group_usecase.dart';
@@ -6,6 +7,7 @@ import 'package:ghichu/domain/usecase/reminder_usecase.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_event.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_state.dart';
 import 'package:ghichu/presentation/view_state.dart';
+import 'package:ghichu/common/extension/extension_datetime.dart';
 
 class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   final GroupUseCase groupUs;
@@ -67,18 +69,20 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     final creentState = state;
     if (creentState is InitHomePageState) {
       if (event.isDialog == false) {
-        if (creentState.remindertoGroup[creentState.keyMyList[event.index].name]>
+        if (creentState
+                .remindertoGroup[creentState.keyMyList[event.index].name] >
             0) {
           //kiểm tra trong group có reminder không? nếu có hiện dialog
           yield creentState.update(
               viewState: ViewState.showDiglog,
               index: event.index,
               isOpen: true);
+          yield creentState.update(viewState: ViewState.initial);
         } else {
           //trong group không có reminder
           await groupUs.deleteGroupLocal(event.index);
           creentState.keyMyList.removeAt(event.index);
-          yield* isEmptyGroup(state, groupUs);
+          yield* isEmptyGroup(creentState, groupUs);
         }
       } else {
         //ấn xóa ở dialog khi có reminder mới hiện dialog
@@ -86,7 +90,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         await reminderUs
             .deleteReminderToGroup(creentState.keyMyList[event.index].name);
         creentState.keyMyList.removeAt(event.index);
-        yield* isEmptyGroup(state, groupUs);
+        yield* isEmptyGroup(creentState, groupUs);
         yield* _mapUpDateReminderToState(UpDateReminderEvent());
       }
     }
@@ -96,8 +100,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     final currentState = state;
     if (currentState is InitHomePageState) {
       List<GroupEntity> listGroup = await groupUs.getUnitList();
-      currentState.remindertoGroup.addAll(
-          {listGroup[listGroup.length - 1].name: 0});
+      currentState.remindertoGroup
+          .addAll({listGroup[listGroup.length - 1].name: 0});
       yield currentState.update(
           keyMyList: listGroup, remindertoGroup: currentState.remindertoGroup);
     }
@@ -105,30 +109,20 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
   Stream<HomePageState> _mapUpDateReminderToState(
       UpDateReminderEvent event) async* {
-    // final currentState = state;
-    // if (currentState is InitHomePageState) {
-    //   String toDay = DateTime.now().dateTimeFormat();
-    //   Map<String, List<ReminderEntity>> listReminderToGroup =
-    //       await reminderUs.getReminderToGroup(currentState.keyMyList);
-    //   Map<String, List<ReminderEntity>> listReminderToScheduled =
-    //       await reminderUs.getReminderScheduled();
-    //   int reminderAll = 0;
-    //   int reminderToDay = listReminderToScheduled[toDay].length;
-    //   int reminderScheduled = 0;
-    //   listReminderToScheduled.forEach((key, value) {
-    //     if (key != null) {
-    //       reminderScheduled = reminderScheduled + value.length;
-    //     }
-    //   });
-    //   listReminderToGroup.forEach((key, value) {
-    //     reminderAll = reminderAll + value.length;
-    //   });
-    //   yield currentState.update(
-    //       remindertoGroup: listReminderToGroup,
-    //       reminderAll: reminderAll,
-    //       reminderToday: reminderToDay,
-    //       reminderScheduled: reminderScheduled);
-    // }
+    final currentState = state;
+    if (currentState is InitHomePageState) {
+      Map<String, int> reminderToGroup =
+          await reminderUs.getLeghtReminderToGroupLocal(currentState.keyMyList);
+      int scheduleLenght = await reminderUs.getLengthScheduledLocal();
+      int toDayLenght = await reminderUs
+          .getLenghtToDayReminderLocal(DateTime.now().dateTimeFormat());
+      int allLenght = await reminderUs.getLenghtAllReminderLocal();
+      yield currentState.update(
+          reminderToday: toDayLenght,
+          reminderAll: allLenght,
+          remindertoGroup: reminderToGroup,
+          reminderScheduled: scheduleLenght);
+    }
   }
 
   Stream<HomePageState> _mapOrderGroupSystemToState(
@@ -176,27 +170,37 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     final currentState = state;
     if (currentState is InitHomePageState) {
       List<GroupEntity> listGroup = await groupUs.getUnitList();
-      yield currentState.update(keyMyList: []);
+      Map<String, int> reminderToGroup =
+          await reminderUs.getLeghtReminderToGroupLocal(listGroup);
+      int scheduleLenght = await reminderUs.getLengthScheduledLocal();
+      int toDayLenght = await reminderUs
+          .getLenghtToDayReminderLocal(DateTime.now().dateTimeFormat());
+      int allLenght = await reminderUs.getLenghtAllReminderLocal();
+      yield currentState.update(
+          reminderToday: toDayLenght,
+          reminderAll: allLenght,
+          keyMyList: listGroup,
+          remindertoGroup: reminderToGroup,
+          reminderScheduled: scheduleLenght);
     }
   }
 
   Stream<HomePageState> isEmptyGroup(
-      HomePageState state, GroupUseCase groupUs) async* {
-    final currentState = state;
-    if (currentState is InitHomePageState) if (currentState.keyMyList.isEmpty) {
-      yield currentState
-          .update(keyMyList: [], updateOrder: !currentState.updateOrder);
+      InitHomePageState state, GroupUseCase groupUs) async* {
+    if (state.keyMyList.isEmpty) {
+      yield state.update(keyMyList: [], updateOrder: !state.updateOrder);
       List<GroupEntity> listGroup = await groupUs.getUnitList();
       await Future.delayed(Duration(milliseconds: 700));
-      yield currentState.update(
-          keyMyList: listGroup,
-          updateOrder: !currentState.updateOrder,
-          viewState: ViewState.initial);
+
+      yield state.update(
+        keyMyList: listGroup,
+        updateOrder: !state.updateOrder,
+      );
     } else {
-      yield currentState.update(
-          keyMyList: currentState.keyMyList,
-          updateOrder: !currentState.updateOrder,
-          viewState: ViewState.initial);
+      yield state.update(
+        keyMyList: state.keyMyList,
+        updateOrder: !state.updateOrder,
+      );
     }
   }
 }

@@ -17,6 +17,7 @@ class LocalDbSetup {
     Hive.registerAdapter(DetailsEntityAdapter());
     groupBox = await Hive.openBox(HiveConstains.boxGroup);
     reminderBox = await Hive.openBox(HiveConstains.reminderBox);
+
   }
 
   void dispose() {

@@ -1,4 +1,4 @@
-
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,7 +36,7 @@ class ReorderableSliverWidget extends StatelessWidget {
                 title: state.keyMyList[index].name,
                 index: index,
                 state: state,
-                leght: 0,
+                leght: state.remindertoGroup[state.keyMyList[index].name],
                 color: state.keyMyList[index].color,
               );
             })),

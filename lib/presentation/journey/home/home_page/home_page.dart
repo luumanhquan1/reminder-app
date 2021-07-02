@@ -72,7 +72,6 @@ class _State extends State<HomePage> {
           Navigator.pushNamed(context, RouteList.addGroup,
                   arguments: SettingEditGroup(state.index, state.groupEntity))
               .then((value) {
-            log('$value');
             if (value != null) {
               BlocProvider.of<HomePageBloc>(context).add(UpDateGroupEvent());
             }
@@ -81,6 +80,7 @@ class _State extends State<HomePage> {
       },
       builder: (context, state) {
         if (state is InitHomePageState) {
+
           return Scaffold(
             backgroundColor: Colors.white.withOpacity(0.95),
             appBar: AppBarWidget(

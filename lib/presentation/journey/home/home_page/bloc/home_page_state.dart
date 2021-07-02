@@ -1,12 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
-import 'package:ghichu/domain/entities/reminder_entity.dart';
+
 import 'package:ghichu/presentation/view_state.dart';
 
 // ignore: must_be_immutable
 abstract class HomePageState extends Equatable {}
 
+// ignore: must_be_immutable
 class InitHomePageState extends HomePageState {
   ViewState viewState;
 
@@ -72,8 +73,8 @@ class InitHomePageState extends HomePageState {
 
 class EditGroupState extends HomePageState {
   final GroupEntity groupEntity;
- final int index;
-  EditGroupState({@required this.index,@required this.groupEntity});
+  final int index;
+  EditGroupState({@required this.index, @required this.groupEntity});
   @override
   List<Object> get props => [this.groupEntity];
 }

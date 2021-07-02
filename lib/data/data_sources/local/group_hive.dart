@@ -36,19 +36,21 @@ class GroupLocalDataSource {
             .where((element) => element.list == oldNameGroup)
             .length !=
         0) {
+      int index=0;
       localDbSetup.reminderBox.values.forEach((element) {
-        // if (element.list == oldNameGroup) {
-        //   localDbSetup.reminderBox.putAt(
-        //       element.id,
-        //       ReminderEntity(
-        //           id: element.id,
-        //           title: element.title,
-        //           note: element.note,
-        //           details: element.details,
-        //           list: groupEntity.name,
-        //           createAt: element.createAt,
-        //           lastUpdate: element.lastUpdate));
-        // }
+        if (element.list == oldNameGroup) {
+          localDbSetup.reminderBox.putAt(
+              index,
+              ReminderEntity(
+                  id: element.id,
+                  title: element.title,
+                  note: element.note,
+                  details: element.details,
+                  list: groupEntity.name,
+                  createAt: element.createAt,
+                  lastUpdate: element.lastUpdate));
+        }
+        index++;
       });
     }
   }
