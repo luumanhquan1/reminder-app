@@ -8,6 +8,7 @@ class ReminderLocalDataSource {
 
   ReminderLocalDataSource({this.localDbSetup});
   Future<int> setReminder(ReminderEntity reminderEntity) async {
+    // reminderEntity.id = localDbSetup.reminderBox.length;
     return await localDbSetup.reminderBox.add(reminderEntity);
   }
 
@@ -28,4 +29,5 @@ class ReminderLocalDataSource {
       }
     }
   }
+// Map<String,int> getLeghtReminderToGroupLocal(List<GroupEntr>)
 }

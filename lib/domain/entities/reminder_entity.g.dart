@@ -17,30 +17,33 @@ class ReminderEntityAdapter extends TypeAdapter<ReminderEntity> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ReminderEntity(
-      title: fields[0] as String,
-      note: fields[1] as String,
-      details: fields[2] as DetailsEntity,
-      list: fields[3] as String,
-      createAt: fields[4] as String,
-      lastUpdate: fields[5] as String,
+      id: fields[0] as int,
+      title: fields[1] as String,
+      note: fields[2] as String,
+      details: fields[3] as DetailsEntity,
+      list: fields[4] as String,
+      createAt: fields[5] as String,
+      lastUpdate: fields[6] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, ReminderEntity obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
-      ..write(obj.title)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.note)
+      ..write(obj.title)
       ..writeByte(2)
-      ..write(obj.details)
+      ..write(obj.note)
       ..writeByte(3)
-      ..write(obj.list)
+      ..write(obj.details)
       ..writeByte(4)
-      ..write(obj.createAt)
+      ..write(obj.list)
       ..writeByte(5)
+      ..write(obj.createAt)
+      ..writeByte(6)
       ..write(obj.lastUpdate);
   }
 

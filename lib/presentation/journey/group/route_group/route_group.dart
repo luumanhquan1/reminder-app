@@ -20,9 +20,10 @@ class RouteGroup {
           );
         }
         return BlocProvider(
-          create: (context) =>
-              locator<AddListBloc>()..add(UpDateEditGroupEvent(result.groupEntity)),
+          create: (context) => locator<AddListBloc>()
+            ..add(UpDateEditGroupEvent(result.groupEntity)),
           child: AddGroupScreen(
+            index: result.index,
             groupEntity: result.groupEntity,
           ),
         );

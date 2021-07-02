@@ -17,27 +17,24 @@ class GroupEntityAdapter extends TypeAdapter<GroupEntity> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return GroupEntity(
-      id: fields[0] as int,
-      name: fields[1] as String,
-      color: fields[2] as String,
-      createAt: fields[3] as String,
-      lastUpdate: fields[4] as String,
+      name: fields[0] as String,
+      color: fields[1] as String,
+      createAt: fields[2] as String,
+      lastUpdate: fields[3] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, GroupEntity obj) {
     writer
-      ..writeByte(5)
-      ..writeByte(0)
-      ..write(obj.id)
-      ..writeByte(1)
-      ..write(obj.name)
-      ..writeByte(2)
-      ..write(obj.color)
-      ..writeByte(3)
-      ..write(obj.createAt)
       ..writeByte(4)
+      ..writeByte(0)
+      ..write(obj.name)
+      ..writeByte(1)
+      ..write(obj.color)
+      ..writeByte(2)
+      ..write(obj.createAt)
+      ..writeByte(3)
       ..write(obj.lastUpdate);
   }
 

@@ -16,8 +16,8 @@ class SettingListGroup {
 
 class SettingEditGroup {
   final GroupEntity groupEntity;
-
-  SettingEditGroup(this.groupEntity);
+  final int index;
+  SettingEditGroup(this.index,this.groupEntity);
 }
 
 class SettingDetails {

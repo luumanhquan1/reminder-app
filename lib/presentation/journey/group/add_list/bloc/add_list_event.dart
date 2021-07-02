@@ -25,12 +25,13 @@ class UpDateEditGroupEvent extends AddListEvent {
 }
 
 class EditGroupEvent extends AddListEvent {
+  final int index;
   final String name;
   final String color;
   final String lastUpdate;
  final GroupEntity groupEntity;
   EditGroupEvent(
-      {@required this.name, @required this.color, @required this.lastUpdate,@required this.groupEntity});
+      {@required this.index,@required this.name, @required this.color, @required this.lastUpdate,@required this.groupEntity});
 }
 
 class CreateListEvent extends AddListEvent {

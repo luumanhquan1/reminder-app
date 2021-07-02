@@ -4,14 +4,12 @@ abstract class HomePageEvent {}
 class UpDate extends HomePageEvent {}
 
 class UpDateGroupEvent extends HomePageEvent {}
-
 class UpDateReminderEvent extends HomePageEvent {}
 class EditGroupEvent extends HomePageEvent{
   final int index;
-
   EditGroupEvent(this.index);
 }
-
+class UpdateEditGroupEvent extends HomePageEvent{}
 class OrderGroupEvent extends HomePageEvent {
   final int oldIndex;
   final int newIndex;

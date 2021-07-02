@@ -16,7 +16,7 @@ class InitHomePageState extends HomePageState {
   bool isEdit, isOpen;
   int index;
   List<String> reminderSystem = [];
-  Map<String, List<ReminderEntity>> remindertoGroup;
+  Map<String, int> remindertoGroup;
   InitHomePageState(
       {this.keyMyList,
       this.index,
@@ -40,7 +40,7 @@ class InitHomePageState extends HomePageState {
           reminderAll,
           bool isEdit,
           isOpen,
-          Map<String, List<ReminderEntity>> remindertoGroup}) =>
+          Map<String, int> remindertoGroup}) =>
       InitHomePageState(
           index: index ?? this.index,
           viewState: viewState ?? this.viewState,
@@ -72,8 +72,8 @@ class InitHomePageState extends HomePageState {
 
 class EditGroupState extends HomePageState {
   final GroupEntity groupEntity;
-
-  EditGroupState({@required this.groupEntity});
+ final int index;
+  EditGroupState({@required this.index,@required this.groupEntity});
   @override
   List<Object> get props => [this.groupEntity];
 }

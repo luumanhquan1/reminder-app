@@ -4,15 +4,13 @@ part 'group_entity.g.dart';
 @HiveType(typeId: 0)
 class GroupEntity {
   @HiveField(0)
-  int id;
-  @HiveField(1)
   String name;
-  @HiveField(2)
+  @HiveField(1)
   String color;
-  @HiveField(3)
+  @HiveField(2)
   String createAt;
-  @HiveField(4)
+  @HiveField(3)
   String lastUpdate;
 
-  GroupEntity({this.id,this.name, this.color, this.createAt, this.lastUpdate});
+  GroupEntity({this.name, this.color, this.createAt, this.lastUpdate});
 }

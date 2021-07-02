@@ -16,7 +16,7 @@ class _MyAppState extends State<MyApp> {
      return ScreenUtilInit(
       designSize: Size(414, 896),
       builder: () => MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Reminder',
         theme: ThemeData(
             primarySwatch: Colors.blue,
             visualDensity: VisualDensity.adaptivePlatformDensity,

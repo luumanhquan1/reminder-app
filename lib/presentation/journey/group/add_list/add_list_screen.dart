@@ -22,7 +22,8 @@ import 'package:ghichu/presentation/view_state.dart';
 
 class AddGroupScreen extends StatefulWidget {
   final GroupEntity groupEntity;
-  const AddGroupScreen({Key key, this.groupEntity}) : super(key: key);
+  final int index;
+  const AddGroupScreen({Key key, this.index,this.groupEntity}) : super(key: key);
   @override
   _AddListScreenState createState() => _AddListScreenState();
 }
@@ -78,6 +79,7 @@ class _AddListScreenState extends State<AddGroupScreen> {
                       } else {
                         BlocProvider.of<AddListBloc>(context).add(
                             EditGroupEvent(
+                              index: widget.index,
                                 groupEntity: widget.groupEntity,
                                 name: _textEditingController.text,
                                 color: state.color.value.toString(),

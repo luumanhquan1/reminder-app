@@ -56,7 +56,7 @@ class AddListBloc extends Bloc<AddListEvent, AddListState> {
        lastUpdate: event.lastUpdate,
        createAt: event.groupEntity.createAt
      );
-      await groupUseCase.updateGroupLocal(groupEntity,oldNameGroup);
+      await groupUseCase.updateGroupLocal(groupEntity,oldNameGroup,event.index);
     yield  currentState.update(viewState: ViewState.success);
     }
   }

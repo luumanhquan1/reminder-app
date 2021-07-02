@@ -36,7 +36,7 @@ class ReorderableSliverWidget extends StatelessWidget {
                 title: state.keyMyList[index].name,
                 index: index,
                 state: state,
-                leght: state.remindertoGroup[state.keyMyList[index].name].length,
+                leght: 0,
                 color: state.keyMyList[index].color,
               );
             })),

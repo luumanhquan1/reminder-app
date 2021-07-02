@@ -14,7 +14,9 @@ class Routes {
   }
 
   static Map<String, WidgetBuilder> generateRouteAll(RouteSettings settings) {
-    return {...RouteReminder.getRoutesWithSettings(settings)};
+    return {
+      ...RouteReminder.getRoutesWithSettings(settings)
+    };
   }
 
   static Route<dynamic> generateRoute(RouteSettings settings) {

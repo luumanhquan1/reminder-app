@@ -1,6 +1,8 @@
 import 'dart:developer';
+
 import 'package:ghichu/common/configs/local_db_setup.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
+import 'package:ghichu/domain/entities/reminder_entity.dart';
 
 class GroupLocalDataSource {
   final LocalDbSetup localDbSetup;
@@ -20,7 +22,6 @@ class GroupLocalDataSource {
   }
 
   Future<int> setGroupLocal(GroupEntity groups) async {
-    groups.id = localDbSetup.groupBox.length;
     return await localDbSetup.groupBox.add(groups);
   }
 
@@ -28,9 +29,28 @@ class GroupLocalDataSource {
     await localDbSetup.groupBox.deleteAt(index);
   }
 
-  Future<void> updateGroupLocal(GroupEntity groupEntity,String oldNameGroup) async {
-    // await localDbSetup.groupBox.putAt(groupEntity.id, groupEntity);
-
+  Future<void> updateGroupLocal(
+      GroupEntity groupEntity, String oldNameGroup,int index) async {
+    await localDbSetup.groupBox.putAt(index, groupEntity);
+    if (localDbSetup.reminderBox.values
+            .where((element) => element.list == oldNameGroup)
+            .length !=
+        0) {
+      localDbSetup.reminderBox.values.forEach((element) {
+        // if (element.list == oldNameGroup) {
+        //   localDbSetup.reminderBox.putAt(
+        //       element.id,
+        //       ReminderEntity(
+        //           id: element.id,
+        //           title: element.title,
+        //           note: element.note,
+        //           details: element.details,
+        //           list: groupEntity.name,
+        //           createAt: element.createAt,
+        //           lastUpdate: element.lastUpdate));
+        // }
+      });
+    }
   }
 
   Future<void> addAllGroupLocal(List<GroupEntity> list) async {

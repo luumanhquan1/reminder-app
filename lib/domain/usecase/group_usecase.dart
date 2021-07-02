@@ -29,8 +29,8 @@ class GroupUseCase {
   Future<void> deleteGroupLocal(int index) async {
     await groupRepository.deleteGroupLocal(index);
   }
-  Future<void> updateGroupLocal(GroupEntity groupEntity,String oldNameGroup) async {
-    await groupRepository.updateGroupLocal(groupEntity,oldNameGroup);
+  Future<void> updateGroupLocal(GroupEntity groupEntity,String oldNameGroup,int index) async {
+    await groupRepository.updateGroupLocal(groupEntity,oldNameGroup,index);
 
   }
 }

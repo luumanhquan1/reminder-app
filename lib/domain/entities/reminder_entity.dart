@@ -3,21 +3,30 @@ import 'package:hive/hive.dart';
 
 import 'details_entity.dart';
 part 'reminder_entity.g.dart';
+
 @HiveType(typeId: 1)
-class ReminderEntity{
+class ReminderEntity {
   @HiveField(0)
-  String title;
+  int id;
   @HiveField(1)
-  String note;
+  String title;
   @HiveField(2)
-  DetailsEntity details;
+  String note;
   @HiveField(3)
-  String list;
+  DetailsEntity details;
   @HiveField(4)
-  String createAt;
+  String list;
   @HiveField(5)
+  String createAt;
+  @HiveField(6)
   String lastUpdate;
 
-  ReminderEntity({this.title, this.note, this.details, this.list, this.createAt,
-    this.lastUpdate});
+  ReminderEntity(
+      {this.id,
+      this.title,
+      this.note,
+      this.details,
+      this.list,
+      this.createAt,
+      this.lastUpdate});
 }

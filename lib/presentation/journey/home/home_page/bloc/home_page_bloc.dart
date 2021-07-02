@@ -1,13 +1,8 @@
 import 'dart:async';
-import 'dart:developer';
-
-import 'package:ghichu/common/extension/extension_datetime.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
-import 'package:ghichu/domain/entities/reminder_entity.dart';
 import 'package:ghichu/domain/usecase/group_usecase.dart';
 import 'package:ghichu/domain/usecase/reminder_usecase.dart';
-
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_event.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_state.dart';
 import 'package:ghichu/presentation/view_state.dart';
@@ -58,21 +53,21 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     }
     if (event is EditGroupEvent) {
       InitHomePageState cureentState;
-      if(state is InitHomePageState){
-        cureentState=state;
+      if (state is InitHomePageState) {
+        cureentState = state;
       }
-      yield EditGroupState(groupEntity: cureentState.keyMyList[event.index]);
+      yield EditGroupState(
+          index: event.index, groupEntity: cureentState.keyMyList[event.index]);
       yield cureentState.update(isOpen: true);
-
     }
+    if (event is UpdateEditGroupEvent) {}
   }
 
   Stream<HomePageState> _mapDeleteGroupToState(DeleteGroupEvent event) async* {
     final creentState = state;
     if (creentState is InitHomePageState) {
       if (event.isDialog == false) {
-        if (creentState.remindertoGroup[creentState.keyMyList[event.index].name]
-                .length >
+        if (creentState.remindertoGroup[creentState.keyMyList[event.index].name]>
             0) {
           //kiểm tra trong group có reminder không? nếu có hiện dialog
           yield creentState.update(
@@ -102,7 +97,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     if (currentState is InitHomePageState) {
       List<GroupEntity> listGroup = await groupUs.getUnitList();
       currentState.remindertoGroup.addAll(
-          {listGroup[listGroup.length - 1].name: <ReminderEntity>[].toList()});
+          {listGroup[listGroup.length - 1].name: 0});
       yield currentState.update(
           keyMyList: listGroup, remindertoGroup: currentState.remindertoGroup);
     }
@@ -110,30 +105,30 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
   Stream<HomePageState> _mapUpDateReminderToState(
       UpDateReminderEvent event) async* {
-    final currentState = state;
-    if (currentState is InitHomePageState) {
-      String toDay = DateTime.now().dateTimeFormat();
-      Map<String, List<ReminderEntity>> listReminderToGroup =
-          await reminderUs.getReminderToGroup(currentState.keyMyList);
-      Map<String, List<ReminderEntity>> listReminderToScheduled =
-          await reminderUs.getReminderScheduled();
-      int reminderAll = 0;
-      int reminderToDay = listReminderToScheduled[toDay].length;
-      int reminderScheduled = 0;
-      listReminderToScheduled.forEach((key, value) {
-        if (key != null) {
-          reminderScheduled = reminderScheduled + value.length;
-        }
-      });
-      listReminderToGroup.forEach((key, value) {
-        reminderAll = reminderAll + value.length;
-      });
-      yield currentState.update(
-          remindertoGroup: listReminderToGroup,
-          reminderAll: reminderAll,
-          reminderToday: reminderToDay,
-          reminderScheduled: reminderScheduled);
-    }
+    // final currentState = state;
+    // if (currentState is InitHomePageState) {
+    //   String toDay = DateTime.now().dateTimeFormat();
+    //   Map<String, List<ReminderEntity>> listReminderToGroup =
+    //       await reminderUs.getReminderToGroup(currentState.keyMyList);
+    //   Map<String, List<ReminderEntity>> listReminderToScheduled =
+    //       await reminderUs.getReminderScheduled();
+    //   int reminderAll = 0;
+    //   int reminderToDay = listReminderToScheduled[toDay].length;
+    //   int reminderScheduled = 0;
+    //   listReminderToScheduled.forEach((key, value) {
+    //     if (key != null) {
+    //       reminderScheduled = reminderScheduled + value.length;
+    //     }
+    //   });
+    //   listReminderToGroup.forEach((key, value) {
+    //     reminderAll = reminderAll + value.length;
+    //   });
+    //   yield currentState.update(
+    //       remindertoGroup: listReminderToGroup,
+    //       reminderAll: reminderAll,
+    //       reminderToday: reminderToDay,
+    //       reminderScheduled: reminderScheduled);
+    // }
   }
 
   Stream<HomePageState> _mapOrderGroupSystemToState(
@@ -181,28 +176,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     final currentState = state;
     if (currentState is InitHomePageState) {
       List<GroupEntity> listGroup = await groupUs.getUnitList();
-      String toDay = DateTime.now().dateTimeFormat();
-      Map<String, List<ReminderEntity>> listReminderToGroup =
-          await reminderUs.getReminderToGroup(listGroup);
-      Map<String, List<ReminderEntity>> listReminderToScheduled =
-          await reminderUs.getReminderScheduled();
-      int reminderAll = 0;
-      int reminderToDay = listReminderToScheduled[toDay].length;
-      int reminderScheduled = 0;
-      listReminderToScheduled.forEach((key, value) {
-        if (key != null) {
-          reminderScheduled = reminderScheduled + value.length;
-        }
-      });
-      listReminderToGroup.forEach((key, value) {
-        reminderAll = reminderAll + value.length;
-      });
-      yield currentState.update(
-          reminderToday: reminderToDay,
-          reminderScheduled: reminderScheduled,
-          keyMyList: listGroup,
-          remindertoGroup: listReminderToGroup,
-          reminderAll: reminderAll);
+      yield currentState.update(keyMyList: []);
     }
   }
 
