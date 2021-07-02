@@ -73,7 +73,7 @@ class _State extends State<HomePage> {
                   arguments: SettingEditGroup(state.index, state.groupEntity))
               .then((value) {
             if (value != null) {
-              BlocProvider.of<HomePageBloc>(context).add(UpDateGroupEvent());
+              BlocProvider.of<HomePageBloc>(context).add(UpdateEditGroupEvent());
             }
           });
         }

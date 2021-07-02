@@ -34,6 +34,7 @@ class ReminderLocalDataSource {
   Future<Map<String, int>> getLeghtReminderToGroupLocal(
       List<GroupEntity> listGroup) async {
     final result = localDbSetup.reminderBox.values;
+
     Map<String, int> getLeghtReminder = {};
     listGroup.forEach((element) {
       getLeghtReminder.addAll({

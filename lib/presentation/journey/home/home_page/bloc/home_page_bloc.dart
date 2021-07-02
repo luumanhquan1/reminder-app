@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
 import 'package:ghichu/domain/usecase/group_usecase.dart';
 import 'package:ghichu/domain/usecase/reminder_usecase.dart';
+
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_event.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_state.dart';
 import 'package:ghichu/presentation/view_state.dart';
@@ -62,7 +63,21 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           index: event.index, groupEntity: cureentState.keyMyList[event.index]);
       yield cureentState.update(isOpen: true);
     }
-    if (event is UpdateEditGroupEvent) {}
+    if (event is UpdateEditGroupEvent) {
+      yield* _mapUpdateEditGroupToState(event);
+    }
+  }
+
+  Stream<HomePageState> _mapUpdateEditGroupToState(
+      UpdateEditGroupEvent event) async* {
+    final currentState = state;
+    if (currentState is InitHomePageState) {
+      List<GroupEntity> listGroup = await groupUs.getUnitList();
+      Map<String, int> reminderToGroup =
+          await reminderUs.getLeghtReminderToGroupLocal(listGroup);
+      yield currentState.update(
+          keyMyList: listGroup, remindertoGroup: reminderToGroup);
+    }
   }
 
   Stream<HomePageState> _mapDeleteGroupToState(DeleteGroupEvent event) async* {
