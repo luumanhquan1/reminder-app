@@ -23,6 +23,7 @@ class ReminderLocalDataSource {
   }
 
   Future<void> deleteReminderToGroupLocal(String group) async {
+    
     for (int i = 0; i < localDbSetup.reminderBox.length; i++) {
       ReminderEntity reminderEntity = localDbSetup.reminderBox.getAt(i);
       if (reminderEntity.list == group) {

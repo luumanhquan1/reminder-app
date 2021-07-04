@@ -1,8 +1,11 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+
+import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_bloc.dart';
+import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_event.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_state.dart';
 import 'package:ghichu/presentation/journey/reminder/reminder_constants.dart';
 import 'package:ghichu/presentation/journey/widgets/icon_widget.dart';
@@ -119,11 +122,16 @@ class GroupWidget extends StatelessWidget {
                             color: Colors.black54,
                             fontSize: ScreenUtil().setSp(16)),
                       )
-                    : Icon(
-                        Icons.error_outline,
-                        size: ScreenUtil().setSp(25),
-                        color: ReminderContants.colorIcon,
-                      ),
+                    : GestureDetector(
+                  onTap: (){
+                    BlocProvider.of<HomePageBloc>(context).add(EditGroupEvent(index));
+                  },
+                      child: Icon(
+                          Icons.error_outline,
+                          size: ScreenUtil().setSp(25),
+                          color: ReminderContants.colorIcon,
+                        ),
+                    ),
               ),
             ),
             Align(

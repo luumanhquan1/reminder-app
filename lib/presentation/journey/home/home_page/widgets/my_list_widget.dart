@@ -70,7 +70,8 @@ class MyListWidget extends StatelessWidget {
       if (index1 == 0 && state.isEdit) {
         return GestureDetector(
           onTap: () {
-            BlocProvider.of<HomePageBloc>(context).add(EditGroupEvent(index));
+            BlocProvider.of<HomePageBloc>(context).add(EditGroupEvent(index)
+            );
           },
           child: Container(
             color: Colors.grey,
