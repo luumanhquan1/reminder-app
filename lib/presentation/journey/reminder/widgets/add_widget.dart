@@ -14,7 +14,7 @@ class AddWidget extends StatelessWidget {
   String keyGroup, keyDate;
   Map<String, TextFiledController> controller;
   int index;
-  AllReminderBloc allReminderBloc;
+
   ScheduleReminderBloc scheduleReminderBloc;
   AddWidget(
       {Key key,
@@ -22,7 +22,6 @@ class AddWidget extends StatelessWidget {
       this.controller,
       this.keyDate,
       this.index,
-      this.allReminderBloc,
       this.scheduleReminderBloc})
       : super(key: key);
   @override
@@ -31,32 +30,32 @@ class AddWidget extends StatelessWidget {
       controller: controller['$index'].textEditingController,
       focusNode: controller['$index'].focusNode,
       onTap: () {
-        if (allReminderBloc == null) {
-          scheduleReminderBloc.scheduleReminderState.indexGroupReminder = null;
-          if (index != scheduleReminderBloc.scheduleReminderState.indexGroup) {
-            reminderUntil(
-                type: ReminderEnum.Schedule,
-                controller: controller,
-                scheduleReminderBloc: scheduleReminderBloc,
-                keyGroup: 'Reminder',
-                keyDate: scheduleReminderBloc.scheduleReminderState.keyDate);
-          }
-          controller['$index'].focusNode.requestFocus();
-          scheduleReminderBloc.setKeyDate(keyDate);
-          scheduleReminderBloc.setIndexGroup(index);
-        } else {
-          allReminderBloc.allReminderState.indexGroupReminder = null;
-          if (index != allReminderBloc.allReminderState.indexGroup) {
-            reminderUntil(
-                type: ReminderEnum.All,
-                controller: controller,
-                keyGroup: allReminderBloc.allReminderState.group,
-                allReminderBloc: allReminderBloc);
-          }
-          controller['$index'].focusNode.requestFocus();
-          allReminderBloc.setIndexGroup(index);
-          allReminderBloc.setGroup(keyGroup);
-        }
+        // if (allReminderBloc == null) {
+        //   scheduleReminderBloc.scheduleReminderState.indexGroupReminder = null;
+        //   if (index != scheduleReminderBloc.scheduleReminderState.indexGroup) {
+        //     reminderUntil(
+        //         type: ReminderEnum.Schedule,
+        //         controller: controller,
+        //         scheduleReminderBloc: scheduleReminderBloc,
+        //         keyGroup: 'Reminder',
+        //         keyDate: scheduleReminderBloc.scheduleReminderState.keyDate);
+        //   }
+        //   controller['$index'].focusNode.requestFocus();
+        //   scheduleReminderBloc.setKeyDate(keyDate);
+        //   scheduleReminderBloc.setIndexGroup(index);
+        // } else {
+        //   allReminderBloc.allReminderState.indexGroupReminder = null;
+        //   if (index != allReminderBloc.allReminderState.indexGroup) {
+        //     reminderUntil(
+        //         type: ReminderEnum.All,
+        //         controller: controller,
+        //         keyGroup: allReminderBloc.allReminderState.group,
+        //         allReminderBloc: allReminderBloc);
+        //   }
+        //   controller['$index'].focusNode.requestFocus();
+        //   allReminderBloc.setIndexGroup(index);
+        //   allReminderBloc.setGroup(keyGroup);
+        // }
       },
       style: TextStyle(fontSize: ScreenUtil().setSp(16)),
       decoration: InputDecoration(
@@ -66,25 +65,25 @@ class AddWidget extends StatelessWidget {
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.black45, width: 1.5),
         ),
-        suffixIcon: StreamBuilder(
-            initialData: scheduleReminderBloc == null
-                ? allReminderBloc.allReminderState
-                : scheduleReminderBloc.scheduleReminderState,
-            stream: scheduleReminderBloc == null
-                ? allReminderBloc.allController
-                : scheduleReminderBloc.streamController,
-            builder: (context, snapshot) {
-              return Visibility(
-                  visible: index == snapshot.data.indexGroup ? true : false,
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: Icon(
-                      Icons.error_outline,
-                      size: ScreenUtil().setSp(23),
-                      color: ReminderContants.colorIcon,
-                    ),
-                  ));
-            }),
+        // suffixIcon: StreamBuilder(
+        //     initialData: scheduleReminderBloc == null
+        //         ? allReminderBloc.allReminderState
+        //         : scheduleReminderBloc.scheduleReminderState,
+        //     stream: scheduleReminderBloc == null
+        //         ? allReminderBloc.allController
+        //         : scheduleReminderBloc.streamController,
+        //     builder: (context, snapshot) {
+        //       return Visibility(
+        //           visible: index == snapshot.data.indexGroup ? true : false,
+        //           child: GestureDetector(
+        //             onTap: () {},
+        //             child: Icon(
+        //               Icons.error_outline,
+        //               size: ScreenUtil().setSp(23),
+        //               color: ReminderContants.colorIcon,
+        //             ),
+        //           ));
+        //     }),
         prefixIcon: Icon(
           Icons.add_circle_outlined,
           size: ScreenUtil().setSp(25),

@@ -13,11 +13,6 @@ class ReminderRepositoryImpl extends ReminderRepository {
     return await reminderLDs.setReminder(reminderEntity);
   }
 
-  @override
-  Future<List<ReminderEntity>> getReminderLocal() async {
-    return await reminderLDs.getReminderLocal();
-  }
-
   Future<Map<String, int>> getLeghtReminderToGroupLocal(
       List<GroupEntity> listGroup) async {
     return await reminderLDs.getLeghtReminderToGroupLocal(listGroup);
@@ -39,6 +34,11 @@ class ReminderRepositoryImpl extends ReminderRepository {
   @override
   Future<int> getLenghtToDayReminderLocal(String date) async {
     return await reminderLDs.getLenghtToDayReminderLocal(date);
+  }
+
+  @override
+  Future<Map<String, List<ReminderEntity>>> getReminderAllToGroupLoCal() {
+    return reminderLDs.getReminderAllToGroup();
   }
 
 

@@ -60,52 +60,52 @@ class _State extends State<TodayPage> {
                           fontSize: ScreenUtil().setSp(30)),
                     ),
                   ),
-                  Column(
-                      children: List.generate(
-                          widget.keyGroup == null
-                              ? ModelListReminder.listReminder.values.length
-                              : ModelListReminder.listReminder[widget.keyGroup]
-                                  .values.length, (index) {
-                    return Column(
-                      children: List.generate(
-                          widget.keyGroup == null
-                              ? ModelListReminder.listReminder.values.elementAt(
-                                          index)['${snapshot.data.nowDate}'] ==
-                                      null
-                                  ? 0
-                                  : ModelListReminder.listReminder.values
-                                      .elementAt(
-                                          index)['${snapshot.data.nowDate}']
-                                      .length
-                              : ModelListReminder
-                                  .listReminder[widget.keyGroup].values
-                                  .elementAt(index)
-                                  .length, (index1) {
-                        List<Reminder> reminder;
-                        if (widget.keyGroup == null) {
-                          reminder = ModelListReminder.listReminder.values
-                              .elementAt(index)['${snapshot.data.nowDate}'];
-                        } else {
-                          reminder = ModelListReminder
-                              .listReminder[widget.keyGroup].values
-                              .elementAt(index);
-                        }
-                        indexReminder=indexReminder+1;
-                        return ListReminder(
-                          indexGroup: 0,
-                          todayReminderBloc: todayReminderBloc,
-                          indexReminder: indexReminder,
-                          title: reminder[index1].title,
-                          note: reminder[index1].note,
-                          group: widget.keyGroup == null
-                              ? ModelListReminder.myList[reminder[index1].group].title
-                              : null,
-                          time: reminder[index1].time,
-                          date: reminder[index1].date,
-                        );
-                      }),
-                    );
-                  }))
+                  // Column(
+                  //     children: List.generate(
+                  //         widget.keyGroup == null
+                  //             ? ModelListReminder.listReminder.values.length
+                  //             : ModelListReminder.listReminder[widget.keyGroup]
+                  //                 .values.length, (index) {
+                  //   return Column(
+                  //     children: List.generate(
+                  //         widget.keyGroup == null
+                  //             ? ModelListReminder.listReminder.values.elementAt(
+                  //                         index)['${snapshot.data.nowDate}'] ==
+                  //                     null
+                  //                 ? 0
+                  //                 : ModelListReminder.listReminder.values
+                  //                     .elementAt(
+                  //                         index)['${snapshot.data.nowDate}']
+                  //                     .length
+                  //             : ModelListReminder
+                  //                 .listReminder[widget.keyGroup].values
+                  //                 .elementAt(index)
+                  //                 .length, (index1) {
+                  //       List<Reminder> reminder;
+                  //       if (widget.keyGroup == null) {
+                  //         reminder = ModelListReminder.listReminder.values
+                  //             .elementAt(index)['${snapshot.data.nowDate}'];
+                  //       } else {
+                  //         reminder = ModelListReminder
+                  //             .listReminder[widget.keyGroup].values
+                  //             .elementAt(index);
+                  //       }
+                  //       indexReminder=indexReminder+1;
+                  //       return ListReminder(
+                  //         indexGroup: 0,
+                  //         todayReminderBloc: todayReminderBloc,
+                  //         indexReminder: indexReminder,
+                  //         title: reminder[index1].title,
+                  //         note: reminder[index1].note,
+                  //         group: widget.keyGroup == null
+                  //             ? ModelListReminder.myList[reminder[index1].group].title
+                  //             : null,
+                  //         time: reminder[index1].time,
+                  //         date: reminder[index1].date,
+                  //       );
+                  //     }),
+                  //   );
+                  // }))
                 ],
               ),
             ),

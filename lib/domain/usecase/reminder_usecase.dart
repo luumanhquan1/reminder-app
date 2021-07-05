@@ -12,48 +12,22 @@ class ReminderUseCase {
     return await reminderRepository.setReminder(reminderEntity);
   }
 
-  Future<Map<String, List<ReminderEntity>>> getReminderScheduled() async {
-    List<ReminderEntity> listReminder =
-        await reminderRepository.getReminderLocal();
-    String toDay = DateTime.now().dateTimeFormat();
-    Map<String, List<ReminderEntity>> reminderScheduled = {};
-    reminderScheduled.addAll({toDay: <ReminderEntity>[].toList()});
-    listReminder.forEach((element) {
-      if (reminderScheduled.containsKey(element.details.date)) {
-        reminderScheduled[element.details.date].add(element);
-      } else {
-        reminderScheduled.addAll({
-          element.details.date: [element].toList()
-        });
-      }
-    });
-    return reminderScheduled;
-  }
-
-  Future<Map<String, List<ReminderEntity>>> getReminderToGroup(
+  Future<Map<String, List<ReminderEntity>>> getReminderScheduled() async {}
+  Future<Map<String, List<ReminderEntity>>> getReminderAll(
       List<GroupEntity> listGroup) async {
-    Map<String, List<ReminderEntity>> reminderGroup = {};
-    List<ReminderEntity> listReminder =
-        await reminderRepository.getReminderLocal();
-    listReminder.forEach((element) {
-      if (reminderGroup.containsKey(element.list)) {
-        reminderGroup[element.list].add(element);
-      } else {
-        //nếu chưa tồn tại key group thì tạo mới key
-        reminderGroup.addAll({
-          element.list: <ReminderEntity>[element].toList()
-        });
-      }
-    });
+    Map<String, List<ReminderEntity>> listReminder =
+        await reminderRepository.getReminderAllToGroupLoCal();
     listGroup.forEach((element) {
-      //nếu reminderGroup chưa tồn tại thì tạo list rỗng
-      if (reminderGroup.containsKey(element.name) == false) {
-        reminderGroup.addAll({element.name: []});
+      if (listReminder.containsKey(element.name) == false) {
+        //nếu chưa tồn tại set List rỗng
+        listReminder.addAll({element.name: []});
       }
     });
-    return reminderGroup;
+
+    return listReminder;
   }
 
+  Future<List<ReminderEntity>> getReminderToDay() async {}
   Future<void> deleteReminderToGroup(String group) async {
     await reminderRepository.deleteReminderToGroupLocal(group);
   }

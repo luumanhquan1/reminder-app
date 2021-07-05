@@ -66,21 +66,21 @@ class _State extends State<SchedulePage> {
                       ),
                     ),
                   ),
-                  Column(
-                    children: List.generate(
-                        snapshot.data.reminderSchedule.length, (index) {
-                      int indexReminder = 0;
-                      return StickyReminderSchedule(
-                        keyDate: snapshot.data.keyDate,
-                        scheduleReminderBloc: scheduleReminderBloc,
-                        indexReminder: indexReminder,
-                        title: snapshot.data.reminderSchedule.keys
-                            .elementAt(index),
-                        indexSticky: index,
-                        controler: snapshot.data.textEditing,
-                      );
-                    }),
-                  )
+                  // Column(
+                  //   children: List.generate(
+                  //       snapshot.data.reminderSchedule.length, (index) {
+                  //     int indexReminder = 0;
+                  //     return StickyReminderSchedule(
+                  //       keyDate: snapshot.data.keyDate,
+                  //       scheduleReminderBloc: scheduleReminderBloc,
+                  //       indexReminder: indexReminder,
+                  //       title: snapshot.data.reminderSchedule.keys
+                  //           .elementAt(index),
+                  //       indexSticky: index,
+                  //       controler: snapshot.data.textEditing,
+                  //     );
+                  //   }),
+                  // )
                 ],
               ),
             ),

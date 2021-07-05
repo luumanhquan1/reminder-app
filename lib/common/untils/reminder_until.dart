@@ -7,7 +7,7 @@ import 'package:ghichu/presentation/journey/reminder/schedule_reminder/bloc/sche
 void reminderUntil(
     {ReminderEnum type,
     ScheduleReminderBloc scheduleReminderBloc,
-    AllReminderBloc allReminderBloc,
+
     String keyGroup,
     Map<String, TextFiledController> controller,
     String keyDate}) {
@@ -15,8 +15,8 @@ void reminderUntil(
     case ReminderEnum.All:
       for (int i = 0; i < controller.length; i++) {
         if (controller['$i'].textEditingController.text.isNotEmpty) {
-          allReminderBloc.addAll(
-              keyGroup, controller['$i'].textEditingController.text);
+          // allReminderBloc.addAll(
+          //     keyGroup, controller['$i'].textEditingController.text);
         }
         controller['$i'].textEditingController.text = '';
         controller['$i'].focusNode.unfocus();

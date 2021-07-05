@@ -17,7 +17,7 @@ class SettingListGroup {
 class SettingEditGroup {
   final GroupEntity groupEntity;
   final int index;
-  SettingEditGroup(this.index,this.groupEntity);
+  SettingEditGroup(this.index, this.groupEntity);
 }
 
 class SettingDetails {
@@ -36,4 +36,10 @@ class SettingPriority {
   final String priority;
   final int indexSelect;
   SettingPriority({this.priority, this.indexSelect});
+}
+
+class SettingAllReminder {
+  final List<GroupEntity> listGroup;
+
+  SettingAllReminder({this.listGroup});
 }

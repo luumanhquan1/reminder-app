@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ghichu/common/constants/route_constants.dart';
 
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_bloc.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_state.dart';
@@ -24,6 +25,7 @@ class WrapWidget extends StatelessWidget {
                 // return SightWidget(index: index);
                 if (state.reminderSystem[index] == 'Today') {
                   return SightWidget(
+                    routeName: RouteList.todayPage,
                       index: index,
                       reminderColor: HomePageConstants.reminderTodayColor,
                       reminderIcon: HomePageConstants.reminderTodayIcon,
@@ -32,6 +34,7 @@ class WrapWidget extends StatelessWidget {
                 }
                 if (state.reminderSystem[index] == 'Scheduled') {
                   return SightWidget(
+                      routeName: RouteList.scheduled,
                       index: index,
                       reminderColor: HomePageConstants.reminderScheduledColor,
                       reminderIcon: HomePageConstants.reminderScheduledIcon,
@@ -40,11 +43,14 @@ class WrapWidget extends StatelessWidget {
                 }
                 if (state.reminderSystem[index] == 'All') {
                   return SightWidget(
+                      routeName: RouteList.allPage,
                       index: index,
                       reminderColor: HomePageConstants.reminderAllColor,
                       reminderIcon: HomePageConstants.reminderAllIcon,
                       reminderTxt: HomePageConstants.reminderAllTxt,
-                      reminderLeght: state.reminderAll);
+                      reminderLeght: state.reminderAll,
+                       listGroup: state.keyMyList,
+                  );
                 }
                 return SizedBox();
               }))),

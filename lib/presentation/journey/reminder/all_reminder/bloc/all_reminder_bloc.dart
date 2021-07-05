@@ -1,35 +1,35 @@
-import 'dart:async';
+import 'dart:developer';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ghichu/domain/entities/reminder_entity.dart';
+import 'package:ghichu/domain/usecase/reminder_usecase.dart';
+import 'package:ghichu/presentation/journey/reminder/all_reminder/bloc/all_reminder_event.dart';
 import 'package:ghichu/presentation/journey/reminder/all_reminder/bloc/all_reminder_state.dart';
 
-class AllReminderBloc {
-  AllReminderState allReminderState = AllReminderState();
-  StreamController _allController =
-      StreamController<AllReminderState>.broadcast();
+class AllReminderBloc extends Bloc<AllReminderEvent, AllReminderState> {
+  final ReminderUseCase reminderUC;
 
-  Stream get allController => _allController.stream;
-  void addAll(String group, String title) {
-    allReminderState.addAll(group, title);
-    _allController.sink.add(allReminderState);
-  }
-void setGroup(String group){
-    allReminderState.setGroup(group);
-    _allController.sink.add(allReminderState);
-}
-  void setIndexGroup(int index) {
-    allReminderState.indexGroup = index;
-    _allController.sink.add(allReminderState);
+  AllReminderBloc({@required this.reminderUC});
+  @override
+  // TODO: implement initialState
+  AllReminderState get initialState => InitAllReminderState(listReminder: {});
+
+  @override
+  Stream<AllReminderState> mapEventToState(AllReminderEvent event) async* {
+    if (event is GetDataReminderEvent) {
+      yield* _mapGetDateReminder(event);
+    }
   }
 
-  void update() {
-    _allController.sink.add(allReminderState);
-  }
-
-  void setIndexReminder(int index,int group) {
-    allReminderState.setIndexReminder(index,group);
-    _allController.sink.add(allReminderState);
-  }
-
-  void dispose() {
-    _allController.close();
+  Stream<AllReminderState> _mapGetDateReminder(
+      GetDataReminderEvent event) async* {
+    final creentState = state;
+    if (creentState is InitAllReminderState) {
+      Map<String, List<ReminderEntity>> listReminder =
+          await reminderUC.getReminderAll(event.listGroup);
+      log('$listReminder');
+      yield creentState.update(listReminder: listReminder,listGroup: event.listGroup);
+    }
   }
 }

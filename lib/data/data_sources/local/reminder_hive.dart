@@ -13,13 +13,19 @@ class ReminderLocalDataSource {
     return await localDbSetup.reminderBox.add(reminderEntity);
   }
 
-  Future<List<ReminderEntity>> getReminderLocal() async {
-    List<ReminderEntity> listReminder = [];
-    for (int i = 0; i < localDbSetup.reminderBox.length; i++) {
-      ReminderEntity reminderEntity = localDbSetup.reminderBox.getAt(i);
-      listReminder.add(reminderEntity);
-    }
-    return listReminder;
+  Future<Map<String, List<ReminderEntity>>> getReminderAllToGroup() async {
+    List<ReminderEntity> listReminder = localDbSetup.reminderBox.values.toList();
+    Map<String, List<ReminderEntity>> reminderToGroup = {};
+    listReminder.forEach((element) {
+      if (reminderToGroup.containsKey(element.list)) {
+        reminderToGroup[element.list].add(element);
+      } else {
+        reminderToGroup.addAll({
+          element.list: [element].toList()
+        });
+      }
+    });
+    return reminderToGroup;
   }
 
   Future<void> deleteReminderToGroupLocal(String group) async {

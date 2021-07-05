@@ -1,35 +1,17 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:ghichu/data/models/model_map.dart';
-import 'package:ghichu/data/models/reminder.dart';
-
-import 'package:ghichu/presentation/journey/reminder/__mock__/textfiled_controller.dart';
-import 'package:ghichu/presentation/journey/reminder/all_reminder/bloc/all_reminder_bloc.dart';
+import 'package:ghichu/domain/entities/reminder_entity.dart';
+import 'package:ghichu/presentation/journey/reminder/widgets/add_widget.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/list_reminder.dart';
-
 import 'package:sticky_headers/sticky_headers.dart';
-import '../../widgets/add_widget.dart';
 
 class StickyReminderAll extends StatelessWidget {
-  String header;
-  Map<String, List<Reminder>> listReminderAll;
-  String keyGroup;
-  String color;
-  int indexHeader, indexReminder;
-  AllReminderBloc allReminderBloc;
-
-  Map<String, TextFiledController> controller;
-  StickyReminderAll(
-      {Key key,
-      this.allReminderBloc,
-      this.listReminderAll,
-      this.keyGroup,
-      this.header,
-      this.color,
-      this.controller,
-      this.indexHeader,
-      this.indexReminder})
+  final String header;
+  final String color;
+  final List<ReminderEntity> listReminder;
+  const StickyReminderAll(
+      {Key key, @required this.header, @required this.color,@required this.listReminder})
       : super(key: key);
 
   @override
@@ -42,7 +24,7 @@ class StickyReminderAll extends StatelessWidget {
         color: Colors.white,
         alignment: Alignment.centerLeft,
         child: Text(
-          ModelListReminder.myList['$header'].title,
+          header,
           style: TextStyle(
               color: Color(int.parse(color)),
               fontWeight: FontWeight.w700,
@@ -55,33 +37,19 @@ class StickyReminderAll extends StatelessWidget {
           child: Column(
             children: [
               Column(
-                children: List.generate(listReminderAll.values.length, (index) {
-                  List<Reminder> reminder =
-                      listReminderAll.values.elementAt(index);
-                  return Column(
-                    children: List.generate(reminder.length, (index1) {
-                      indexReminder = indexReminder + 1;
-                      return ListReminder(
-                        keyGroup: keyGroup,
-                        controller: controller,
-                        allReminderBloc: allReminderBloc,
-                        indexGroup: indexHeader,
-                        indexReminder: indexReminder,
-                        title: reminder[index1].title,
-                        note: reminder[index1].note,
-                        date: reminder[index1].date,
-                        time: reminder[index1].time,
-                      );
-                    }),
+                children: List.generate(listReminder.length, (index) {
+                  return ListReminder(
+                    title: listReminder[index].title,
+                    note: listReminder[index].note,
+                    date: listReminder[index].details.date??'',
+                    // date: listReminder[index].details.date,
+                    // time: listReminder[index].details.time,
                   );
                 }),
               ),
-              AddWidget(
-                allReminderBloc: allReminderBloc,
-                index: indexHeader,
-                keyGroup: header,
-                controller: controller,
-              ),
+              // AddWidget(
+              //   keyGroup: header,
+              // ),
             ],
           )),
     );
