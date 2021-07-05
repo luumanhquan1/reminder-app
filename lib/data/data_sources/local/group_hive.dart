@@ -9,8 +9,6 @@ class GroupLocalDataSource {
 
   GroupLocalDataSource({this.localDbSetup});
   Future<List<GroupEntity>> getGroupLocalList() async {
-    log('>>>GroupsHive');
-
     List<GroupEntity> listGroup = [];
     int length = localDbSetup.groupBox.length;
     for (int i = 0; i < length; i++) {

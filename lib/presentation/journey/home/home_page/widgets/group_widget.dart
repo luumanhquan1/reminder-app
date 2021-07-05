@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/screen_util.dart';
@@ -23,7 +22,7 @@ class GroupWidget extends StatelessWidget {
   const GroupWidget(
       {Key key,
       @required this.state,
-        @required this.leght,
+      @required this.leght,
       @required this.index,
       @required this.keyGroup,
       @required this.title,
@@ -57,7 +56,8 @@ class GroupWidget extends StatelessWidget {
         children: [
           editGroupWidget(context),
           AnimatedContainer(
-            margin: EdgeInsets.only(left: state.isEdit ? 0 : ScreenUtil().setWidth(40)),
+            margin: EdgeInsets.only(
+                left: state.isEdit ? 0 : ScreenUtil().setWidth(40)),
             duration: HomePageConstants.durationEdit,
             child: Row(
               children: [
@@ -123,15 +123,16 @@ class GroupWidget extends StatelessWidget {
                             fontSize: ScreenUtil().setSp(16)),
                       )
                     : GestureDetector(
-                  onTap: (){
-                    BlocProvider.of<HomePageBloc>(context).add(EditGroupEvent(index));
-                  },
-                      child: Icon(
+                        onTap: () {
+                          BlocProvider.of<HomePageBloc>(context)
+                              .add(EditGroupEvent(index));
+                        },
+                        child: Icon(
                           Icons.error_outline,
                           size: ScreenUtil().setSp(25),
                           color: ReminderContants.colorIcon,
                         ),
-                    ),
+                      ),
               ),
             ),
             Align(

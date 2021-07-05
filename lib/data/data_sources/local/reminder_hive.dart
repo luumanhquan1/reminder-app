@@ -9,7 +9,7 @@ class ReminderLocalDataSource {
 
   ReminderLocalDataSource({this.localDbSetup});
   Future<int> setReminder(ReminderEntity reminderEntity) async {
-    // reminderEntity.id = localDbSetup.reminderBox.length;
+    reminderEntity.id = localDbSetup.reminderBox.length;
     return await localDbSetup.reminderBox.add(reminderEntity);
   }
 
@@ -23,19 +23,17 @@ class ReminderLocalDataSource {
   }
 
   Future<void> deleteReminderToGroupLocal(String group) async {
-    
-    for (int i = 0; i < localDbSetup.reminderBox.length; i++) {
-      ReminderEntity reminderEntity = localDbSetup.reminderBox.getAt(i);
-      if (reminderEntity.list == group) {
-        localDbSetup.reminderBox.deleteAt(i);
-      }
-    }
+    final result = localDbSetup.reminderBox.values
+        .where((element) => element.list != group)
+        .toList();
+    localDbSetup.reminderBox.clear();
+    await localDbSetup.reminderBox.addAll(result);
+    log('dellt');////////
   }
 
   Future<Map<String, int>> getLeghtReminderToGroupLocal(
       List<GroupEntity> listGroup) async {
     final result = localDbSetup.reminderBox.values;
-
     Map<String, int> getLeghtReminder = {};
     listGroup.forEach((element) {
       getLeghtReminder.addAll({
@@ -52,6 +50,7 @@ class ReminderLocalDataSource {
   }
 
   Future<int> getLenghtAllReminderLocal() async {
+    log('${localDbSetup.reminderBox.values}');//////////////
     return localDbSetup.reminderBox.length;
   }
 

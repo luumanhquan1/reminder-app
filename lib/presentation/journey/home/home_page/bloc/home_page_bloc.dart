@@ -101,12 +101,14 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         }
       } else {
         //ấn xóa ở dialog khi có reminder mới hiện dialog
+
         await groupUs.deleteGroupLocal(event.index);
         await reminderUs
             .deleteReminderToGroup(creentState.keyMyList[event.index].name);
         creentState.keyMyList.removeAt(event.index);
         yield* isEmptyGroup(creentState, groupUs);
         yield* _mapUpDateReminderToState(UpDateReminderEvent());
+
       }
     }
   }
@@ -206,7 +208,6 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield state.update(keyMyList: [], updateOrder: !state.updateOrder);
       List<GroupEntity> listGroup = await groupUs.getUnitList();
       await Future.delayed(Duration(milliseconds: 700));
-
       yield state.update(
         keyMyList: listGroup,
         updateOrder: !state.updateOrder,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ghichu/common/configs/local_db_setup.dart';
+import 'package:ghichu/common/locator/service_locator.dart';
 import 'package:ghichu/routes.dart';
 import 'common/constants/route_constants.dart';
 class MyApp extends StatefulWidget {
@@ -31,7 +33,7 @@ class _MyAppState extends State<MyApp> {
   }
   @override
   void dispose() {
-
+    locator<LocalDbSetup>().dispose();
     super.dispose();
   }
 }
