@@ -55,7 +55,6 @@ class ReminderUseCase {
   }
 
   Future<void> deleteReminderToGroup(String group) async {
-    log('message');
     await reminderRepository.deleteReminderToGroupLocal(group);
   }
 

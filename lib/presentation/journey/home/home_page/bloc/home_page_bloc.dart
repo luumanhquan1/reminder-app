@@ -103,12 +103,10 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         //ấn xóa ở dialog khi có reminder mới hiện dialog
 
         await groupUs.deleteGroupLocal(event.index);
-        await reminderUs
-            .deleteReminderToGroup(creentState.keyMyList[event.index].name);
+        await reminderUs.deleteReminderToGroup(creentState.keyMyList[event.index].name);
         creentState.keyMyList.removeAt(event.index);
         yield* isEmptyGroup(creentState, groupUs);
         yield* _mapUpDateReminderToState(UpDateReminderEvent());
-
       }
     }
   }

@@ -26,9 +26,12 @@ class ReminderLocalDataSource {
     final result = localDbSetup.reminderBox.values
         .where((element) => element.list != group)
         .toList();
-    localDbSetup.reminderBox.clear();
+    await localDbSetup.reminderBox.clear();
     await localDbSetup.reminderBox.addAll(result);
-    log('dellt');////////
+  }
+
+  Future<int> getLenghtAllReminderLocal() async {
+    return localDbSetup.reminderBox.length;
   }
 
   Future<Map<String, int>> getLeghtReminderToGroupLocal(
@@ -47,11 +50,6 @@ class ReminderLocalDataSource {
   Future<int> getLengthScheduledLocal() async {
     final result = localDbSetup.reminderBox.values;
     return result.where((element) => element.details.date != null).length;
-  }
-
-  Future<int> getLenghtAllReminderLocal() async {
-    log('${localDbSetup.reminderBox.values}');//////////////
-    return localDbSetup.reminderBox.length;
   }
 
   Future<int> getLenghtToDayReminderLocal(String date) async {
