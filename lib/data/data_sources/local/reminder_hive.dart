@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:ghichu/common/extension/extension_datetime.dart';
 import 'package:ghichu/common/configs/local_db_setup.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
 import 'package:ghichu/domain/entities/reminder_entity.dart';
@@ -12,7 +12,21 @@ class ReminderLocalDataSource {
     reminderEntity.id = localDbSetup.reminderBox.length;
     return await localDbSetup.reminderBox.add(reminderEntity);
   }
-
+  Future<Map<String, List<ReminderEntity>>> getReminderSchedule()async{
+    List<ReminderEntity> listReminder = localDbSetup.reminderBox.values.where((element) => element.details.date!=null).toList();
+    String toDay=DateTime.now().dateTimeFormat();
+    Map<String, List<ReminderEntity>> reminderToSchedule = {toDay:<ReminderEntity>[].toList()};
+    listReminder.forEach((element) {
+      if (reminderToSchedule.containsKey(element.details.date)) {
+        reminderToSchedule[element.details.date].add(element);
+      } else {
+        reminderToSchedule.addAll({
+          element.details.date: [element].toList()
+        });
+      }
+    });
+    return reminderToSchedule;
+  }
   Future<Map<String, List<ReminderEntity>>> getReminderAllToGroup() async {
     List<ReminderEntity> listReminder = localDbSetup.reminderBox.values.toList();
     Map<String, List<ReminderEntity>> reminderToGroup = {};

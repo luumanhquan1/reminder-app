@@ -6,8 +6,7 @@ import 'package:ghichu/common/locator/service_locator.dart';
 import 'package:ghichu/common/setting_argument/settting_argument.dart';
 
 import 'package:ghichu/presentation/journey/reminder/all_reminder/all_reminder_screen.dart';
-import 'package:ghichu/presentation/journey/reminder/all_reminder/bloc/all_reminder_bloc.dart';
-import 'package:ghichu/presentation/journey/reminder/all_reminder/bloc/all_reminder_event.dart';
+
 import 'package:ghichu/presentation/journey/reminder/create_reminder/details_screen/bloc/details_bloc.dart';
 import 'package:ghichu/presentation/journey/reminder/create_reminder/details_screen/bloc/details_event.dart';
 
@@ -26,25 +25,28 @@ import 'package:ghichu/presentation/journey/reminder/create_reminder/priorities_
 import 'package:ghichu/presentation/journey/reminder/schedule_reminder/schedule_reminder_screen.dart';
 import 'package:ghichu/presentation/journey/reminder/today_reminder/today_reminder_screen.dart';
 
+import 'blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
+import 'blocs/manage_reminder_bloc/manage_reminder_event.dart';
 import 'create_reminder/new_reminder/bloc/new_reminder_event.dart';
 
 class RouteReminder {
-  static Map<String, WidgetBuilder> getAll() {
-    return {
-      RouteList.scheduled: (context) => SchedulePage(),
-    };
-  }
-
   static Map<String, WidgetBuilder> getRoutesWithSettings(
       RouteSettings settings) {
     final args = settings.arguments;
     return {
+      RouteList.scheduled: (context) {
+        return MultiBlocProvider(providers: [
+          BlocProvider(
+              create: (context) =>
+                  locator<ManageReminderBloc>()..add(GetDataScheduled()))
+        ], child: SchedulePage());
+      },
       RouteList.allPage: (context) {
         SettingAllReminder settingAll = args;
         return MultiBlocProvider(providers: [
           BlocProvider(
-              create: (context) => locator<AllReminderBloc>()
-                ..add(GetDataReminderEvent(listGroup: settingAll.listGroup)))
+              create: (context) => locator<ManageReminderBloc>()
+                ..add(GetDataReminderAllEvent(listGroup: settingAll.listGroup)))
         ], child: AllPage());
       },
       RouteList.todayPage: (context) {

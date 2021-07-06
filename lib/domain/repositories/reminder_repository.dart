@@ -11,4 +11,5 @@ abstract class ReminderRepository {
   Future<int> getLenghtAllReminderLocal();
   Future<int> getLenghtToDayReminderLocal(String date);
   Future<Map<String, List<ReminderEntity>>> getReminderAllToGroupLoCal();
+  Future<Map<String, List<ReminderEntity>>> getReminderScheduledLoCal();
 }

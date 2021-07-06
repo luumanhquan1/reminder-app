@@ -10,7 +10,8 @@ import 'package:ghichu/domain/usecase/group_usecase.dart';
 import 'package:ghichu/domain/usecase/reminder_usecase.dart';
 import 'package:ghichu/presentation/journey/group/add_list/bloc/add_list_bloc.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_bloc.dart';
-import 'package:ghichu/presentation/journey/reminder/all_reminder/bloc/all_reminder_bloc.dart';
+
+import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
 import 'package:ghichu/presentation/journey/reminder/create_reminder/details_screen/bloc/details_bloc.dart';
 import 'package:ghichu/presentation/journey/reminder/create_reminder/new_reminder/bloc/new_reminder_bloc.dart';
 
@@ -27,8 +28,8 @@ void setup() {
       () => AddListBloc(groupUseCase: locator<GroupUseCase>()));
   locator.registerFactory<NewReminderBloc>(
       () => NewReminderBloc(reminderUseCase: locator<ReminderUseCase>()));
-  locator.registerFactory<AllReminderBloc>(
-      () => AllReminderBloc(reminderUC: locator<ReminderUseCase>()));
+  locator.registerFactory<ManageReminderBloc>(
+      () => ManageReminderBloc(reminderUC: locator<ReminderUseCase>()));
 
   /// UseCases
   locator.registerFactory<GroupUseCase>(

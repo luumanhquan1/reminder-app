@@ -5,8 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ghichu/common/enums/reminder_enum.dart';
 import 'package:ghichu/common/untils/reminder_until.dart';
 import 'package:ghichu/presentation/journey/reminder/__mock__/textfiled_controller.dart';
-import 'package:ghichu/presentation/journey/reminder/all_reminder/bloc/all_reminder_bloc.dart';
-import 'package:ghichu/presentation/journey/reminder/schedule_reminder/bloc/schedule_reminder_bloc.dart';
 
 import '../reminder_constants.dart';
 
@@ -15,14 +13,13 @@ class AddWidget extends StatelessWidget {
   Map<String, TextFiledController> controller;
   int index;
 
-  ScheduleReminderBloc scheduleReminderBloc;
   AddWidget(
       {Key key,
       this.keyGroup,
       this.controller,
       this.keyDate,
       this.index,
-      this.scheduleReminderBloc})
+      })
       : super(key: key);
   @override
   Widget build(BuildContext context) {

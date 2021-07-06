@@ -9,14 +9,11 @@ class Routes {
     return {
       ...RouteGroup.getAll(),
       ...RouteHome.getAll(),
-      ...RouteReminder.getAll(),
     };
   }
 
   static Map<String, WidgetBuilder> generateRouteAll(RouteSettings settings) {
-    return {
-      ...RouteReminder.getRoutesWithSettings(settings)
-    };
+    return {...RouteReminder.getRoutesWithSettings(settings)};
   }
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -27,6 +24,7 @@ class Routes {
       case RouteList.listGroup:
       case RouteList.prioritiesScreen:
       case RouteList.allPage:
+      case RouteList.scheduled:
         return MaterialPageRoute(
             builder: generateRouteAll(settings)[settings.name],
             settings: settings);

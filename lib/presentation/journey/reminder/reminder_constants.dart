@@ -28,7 +28,7 @@ class ReminderContants {
   static TextStyle textStyleNote =
       TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(13));
   static TextStyle textStyleDateGroup=TextStyle(
-      color: Colors.black45,
+      color: Colors.black54,
       fontSize: ScreenUtil().setSp(14));
   static TextStyle textStyleSchedule=TextStyle(
       color: Colors.red,

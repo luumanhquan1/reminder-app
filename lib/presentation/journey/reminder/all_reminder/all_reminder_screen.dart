@@ -10,9 +10,10 @@ import 'package:ghichu/domain/entities/group_entity.dart';
 
 import 'package:ghichu/presentation/journey/reminder/__mock__/textfiled_controller.dart';
 import 'package:ghichu/presentation/journey/reminder/all_reminder/all_reminder_constants.dart';
-import 'package:ghichu/presentation/journey/reminder/all_reminder/bloc/all_reminder_bloc.dart';
-import 'package:ghichu/presentation/journey/reminder/all_reminder/bloc/all_reminder_state.dart';
+
 import 'package:ghichu/presentation/journey/reminder/all_reminder/widgets/sticky_header_widget.dart';
+import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
+import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_state.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/app_bar_reminder.dart';
 
 class AllPage extends StatefulWidget {
@@ -38,58 +39,55 @@ class _State extends State<AllPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AllReminderBloc, AllReminderState>(
+    return BlocConsumer<ManageReminderBloc, ManageReminderState>(
       listener: (context, state) {},
       builder: (context, state) {
-        if (state is InitAllReminderState) {
-          return Scaffold(
-            backgroundColor: Colors.white,
-            appBar: AppBarReminderWidget(
-              isIconEdit: false,
-              actions: true
-                  ? () {
-                      // reminderUntil(
-                      //     type: ReminderEnum.All,
-                      //     allReminderBloc: allReminderBloc,
-                      //     controller: listController,
-                      //     keyGroup: snapshot.data.group);
-                      // allReminderBloc.allReminderState.indexGroup = null;
-                      // allReminderBloc.allReminderState.indexGroupReminder =
-                      // null;
-                      // allReminderBloc.update();
-                    }
-                  : null,
-              leading: () {
-                Navigator.pop(context, state.isChangeState);
-              },
-            ),
-            body: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: ScreenUtil().setWidth(10)),
-                    child: Text(
-                      AllReminderConstains.allTxt,
-                      style: AllReminderConstains.allStyle,
-                    ),
+       return Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBarReminderWidget(
+            isIconEdit: false,
+            actions: true
+                ? () {
+              // reminderUntil(
+              //     type: ReminderEnum.All,
+              //     allReminderBloc: allReminderBloc,
+              //     controller: listController,
+              //     keyGroup: snapshot.data.group);
+              // allReminderBloc.allReminderState.indexGroup = null;
+              // allReminderBloc.allReminderState.indexGroupReminder =
+              // null;
+              // allReminderBloc.update();
+            }
+                : null,
+            leading: () {
+              Navigator.pop(context, state.isChangeState);
+            },
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: ScreenUtil().setWidth(10)),
+                  child: Text(
+                    AllReminderConstains.allTxt,
+                    style: AllReminderConstains.allStyle,
                   ),
-                  Column(
-                    children: List.generate(state.listReminder.length, (index) {
-                      GroupEntity listGroup = state.listGroup[index];
-                      return StickyReminderAll(
-                        listReminder: state.listReminder[listGroup.name],
-                        header: listGroup.name,
-                        color: listGroup.color,
-                      );
-                    }),
-                  ),
-                ],
-              ),
+                ),
+                Column(
+                  children: List.generate(state.listReminder.length, (index) {
+                    GroupEntity listGroup = state.listGroup[index];
+                    return StickyReminderAll(
+                      listReminder: state.listReminder[listGroup.name],
+                      header: listGroup.name,
+                      color: listGroup.color,
+                    );
+                  }),
+                ),
+              ],
             ),
-          );
-        }
-        return SizedBox();
+          ),
+        );
       },
     );
   }

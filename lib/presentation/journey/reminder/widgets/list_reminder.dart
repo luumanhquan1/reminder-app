@@ -82,24 +82,17 @@ class ListReminder extends StatelessWidget {
                       SizedBox(
                         height: ScreenUtil().setHeight(5),
                       ),
-                      // group == null
-                      //     ? SizedBox()
-                      //     : Row(
-                      //         children: [
-                      //           Text(
-                      //             '$group',
-                      //             style: ReminderContants.textStyleDateGroup,
-                      //           ),
-                      //           Visibility(
-                      //               visible: time,
-                      //               child: Text(
-                      //                 ' - ${DateFormat('HH:mm').format(DateTime.fromMillisecondsSinceEpoch(date))}',
-                      //                 style: ReminderContants.textStyleSchedule,
-                      //               ))
-                      //         ],
-                      //       ),
                       group != null
-                          ? SizedBox()
+                          ? Row(
+                              children: [
+                                Text(
+                                  time == ''
+                                      ? "$group"
+                                      : "$group - ${time.replaceAll('-', ':')}" ,
+                                  style: ReminderContants.textStyleDateGroup,
+                                ),
+                              ],
+                            )
                           : Visibility(
                               visible: date == '' ? false : true,
                               child: Column(
@@ -108,7 +101,9 @@ class ListReminder extends StatelessWidget {
                                     height: ScreenUtil().setHeight(5),
                                   ),
                                   Text(
-                                    time == '' ? "$date" : "${time.replaceAll('-',':')},$date",
+                                    time == ''
+                                        ? "$date"
+                                        : "${time.replaceAll('-', ':')},$date",
                                     style: ReminderContants.textStyleDateGroup,
                                   ),
                                 ],

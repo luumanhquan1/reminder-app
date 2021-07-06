@@ -1,5 +1,6 @@
+
 import 'dart:developer';
-import 'package:ghichu/common/extension/extension_datetime.dart';
+
 import 'package:ghichu/domain/entities/group_entity.dart';
 import 'package:ghichu/domain/entities/reminder_entity.dart';
 import 'package:ghichu/domain/repositories/reminder_repository.dart';
@@ -12,7 +13,10 @@ class ReminderUseCase {
     return await reminderRepository.setReminder(reminderEntity);
   }
 
-  Future<Map<String, List<ReminderEntity>>> getReminderScheduled() async {}
+  Future<Map<String, List<ReminderEntity>>> getReminderScheduled() async {
+    log('${reminderRepository.getReminderScheduledLoCal()}');
+    return reminderRepository.getReminderScheduledLoCal();
+  }
   Future<Map<String, List<ReminderEntity>>> getReminderAll(
       List<GroupEntity> listGroup) async {
     Map<String, List<ReminderEntity>> listReminder =
@@ -47,5 +51,8 @@ class ReminderUseCase {
 
   Future<int> getLenghtToDayReminderLocal(String date) async {
     return await reminderRepository.getLenghtToDayReminderLocal(date);
+  }
+  Future<Map<String, List<ReminderEntity>>> getReminderSchedule() async{
+    return reminderRepository.getReminderScheduledLoCal();
   }
 }
