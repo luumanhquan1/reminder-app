@@ -30,8 +30,7 @@ class ReminderLocalDataSource {
 
   Future<void> deleteReminderToGroupLocal(String group) async {
     final result = localDbSetup.reminderBox.values
-        .where((element) => element.list != group)
-        .toList();
+        .where((element) => element.list != group).toList();
     await localDbSetup.reminderBox.clear();
     await localDbSetup.reminderBox.addAll(result);
   }

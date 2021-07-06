@@ -1,4 +1,5 @@
 
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,8 +22,6 @@ class AllPage extends StatefulWidget {
 
 class _State extends State<AllPage> {
   Map<String, TextFiledController> listController = {};
-  // AllReminderBloc allReminderBloc = AllReminderBloc();
-
   bool isEdit;
   @override
   void initState() {
@@ -40,28 +39,29 @@ class _State extends State<AllPage> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AllReminderBloc, AllReminderState>(
-      listener: (context,state){
-
-      },
+      listener: (context, state) {},
       builder: (context, state) {
-        if(state is InitAllReminderState){
-          return  Scaffold(
+        if (state is InitAllReminderState) {
+          return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBarReminderWidget(
               isIconEdit: false,
               actions: true
                   ? () {
-                // reminderUntil(
-                //     type: ReminderEnum.All,
-                //     allReminderBloc: allReminderBloc,
-                //     controller: listController,
-                //     keyGroup: snapshot.data.group);
-                // allReminderBloc.allReminderState.indexGroup = null;
-                // allReminderBloc.allReminderState.indexGroupReminder =
-                // null;
-                // allReminderBloc.update();
-              }
+                      // reminderUntil(
+                      //     type: ReminderEnum.All,
+                      //     allReminderBloc: allReminderBloc,
+                      //     controller: listController,
+                      //     keyGroup: snapshot.data.group);
+                      // allReminderBloc.allReminderState.indexGroup = null;
+                      // allReminderBloc.allReminderState.indexGroupReminder =
+                      // null;
+                      // allReminderBloc.update();
+                    }
                   : null,
+              leading: () {
+                Navigator.pop(context, state.isChangeState);
+              },
             ),
             body: SingleChildScrollView(
               child: Column(
@@ -75,15 +75,14 @@ class _State extends State<AllPage> {
                     ),
                   ),
                   Column(
-                    children: List.generate(state.listReminder.length,
-                            (index) {
-                      GroupEntity listGroup=state.listGroup[index];
-                          return StickyReminderAll(
-                            listReminder: state.listReminder[listGroup.name],
-                            header: listGroup.name,
-                            color: listGroup.color,
-                          );
-                        }),
+                    children: List.generate(state.listReminder.length, (index) {
+                      GroupEntity listGroup = state.listGroup[index];
+                      return StickyReminderAll(
+                        listReminder: state.listReminder[listGroup.name],
+                        header: listGroup.name,
+                        color: listGroup.color,
+                      );
+                    }),
                   ),
                 ],
               ),

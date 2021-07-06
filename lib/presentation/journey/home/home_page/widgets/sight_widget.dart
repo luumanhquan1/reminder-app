@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/screen_util.dart';
-import 'package:ghichu/common/constants/string_constants.dart';
 import 'package:ghichu/common/setting_argument/settting_argument.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_bloc.dart';
+import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_event.dart';
 import 'package:ghichu/presentation/journey/home/home_page/home_page_constants.dart';
 import 'package:ghichu/presentation/journey/widgets/icon_widget.dart';
 
@@ -24,7 +25,7 @@ class SightWidget extends StatelessWidget {
       @required this.reminderTxt,
       @required this.reminderLeght,
       @required this.routeName,
-       this.listGroup})
+      this.listGroup})
       : super(key: key);
 
   @override
@@ -33,9 +34,18 @@ class SightWidget extends StatelessWidget {
       onTap: () {
         if (listGroup != null) {
           Navigator.pushNamed(context, routeName,
-              arguments: SettingAllReminder(listGroup: listGroup));
+                  arguments: SettingAllReminder(listGroup: listGroup))
+              .then((value) {
+            if (value == true) {
+              BlocProvider.of<HomePageBloc>(context).add(UpDateReminderEvent());
+            }
+          });
         } else {
-          Navigator.pushNamed(context, routeName);
+          Navigator.pushNamed(context, routeName).then((value) {
+            if (value == true) {
+              BlocProvider.of<HomePageBloc>(context).add(UpDateReminderEvent());
+            }
+          });
         }
         // if (HomePageConstants.list[index]['title'] == 'Today') {
         //   Navigator.pushNamed(context, HomePageConstants.list[index]['push'],arguments: {StringConstants.keyGroup:null})

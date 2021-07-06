@@ -42,14 +42,13 @@ class StickyReminderAll extends StatelessWidget {
                     title: listReminder[index].title,
                     note: listReminder[index].note,
                     date: listReminder[index].details.date??'',
-                    // date: listReminder[index].details.date,
-                    // time: listReminder[index].details.time,
+                    time: listReminder[index].details.time??'',
                   );
                 }),
               ),
-              // AddWidget(
-              //   keyGroup: header,
-              // ),
+              AddWidget(
+                keyGroup: header,
+              ),
             ],
           )),
     );

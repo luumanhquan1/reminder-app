@@ -27,8 +27,8 @@ class AddWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: controller['$index'].textEditingController,
-      focusNode: controller['$index'].focusNode,
+      // controller: controller['$index'].textEditingController,
+      // focusNode: controller['$index'].focusNode,
       onTap: () {
         // if (allReminderBloc == null) {
         //   scheduleReminderBloc.scheduleReminderState.indexGroupReminder = null;
@@ -89,7 +89,7 @@ class AddWidget extends StatelessWidget {
           size: ScreenUtil().setSp(25),
           color: Colors.black45,
         ),
-        helperText: scheduleReminderBloc != null ? "Reminder" : '',
+        // helperText: scheduleReminderBloc != null ? "Reminder" : '',
         helperStyle:
             TextStyle(color: Colors.black45, fontSize: ScreenUtil().setSp(13)),
       ),

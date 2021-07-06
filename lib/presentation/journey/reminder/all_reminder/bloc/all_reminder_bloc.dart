@@ -13,7 +13,8 @@ class AllReminderBloc extends Bloc<AllReminderEvent, AllReminderState> {
   AllReminderBloc({@required this.reminderUC});
   @override
   // TODO: implement initialState
-  AllReminderState get initialState => InitAllReminderState(listReminder: {});
+  AllReminderState get initialState =>
+      InitAllReminderState(listReminder: {}, isChangeState: false);
 
   @override
   Stream<AllReminderState> mapEventToState(AllReminderEvent event) async* {
@@ -29,7 +30,8 @@ class AllReminderBloc extends Bloc<AllReminderEvent, AllReminderState> {
       Map<String, List<ReminderEntity>> listReminder =
           await reminderUC.getReminderAll(event.listGroup);
       log('$listReminder');
-      yield creentState.update(listReminder: listReminder,listGroup: event.listGroup);
+      yield creentState.update(
+          listReminder: listReminder, listGroup: event.listGroup);
     }
   }
 }

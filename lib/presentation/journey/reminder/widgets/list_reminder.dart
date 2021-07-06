@@ -8,25 +8,22 @@ import 'package:ghichu/presentation/journey/reminder/widgets/check_box.dart';
 import 'package:intl/intl.dart';
 
 class ListReminder extends StatelessWidget {
-  String title, group, note, keyGroup, keyDate, date;
+  String title, group, note, date, time;
   int createAt;
-  bool time;
   Map<String, TextFiledController> controller;
   Reminder reminder;
   int indexReminder, indexGroup, index;
   ListReminder(
       {Key key,
       this.title,
-      this.keyDate,
+      this.time,
       this.indexReminder,
       this.group,
       this.note,
       this.date,
       this.indexGroup,
-      this.time,
       this.controller,
       this.createAt,
-      this.keyGroup,
       this.reminder})
       : super(key: key);
 
@@ -111,7 +108,7 @@ class ListReminder extends StatelessWidget {
                                     height: ScreenUtil().setHeight(5),
                                   ),
                                   Text(
-                                    date,
+                                    time == '' ? "$date" : "${time.replaceAll('-',':')},$date",
                                     style: ReminderContants.textStyleDateGroup,
                                   ),
                                 ],
