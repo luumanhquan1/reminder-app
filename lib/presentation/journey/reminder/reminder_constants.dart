@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screen_util.dart';
+import 'package:ghichu/presentation/journey/group/add_list/add_list_constaner.dart';
 
 class ReminderContants {
   static double CircleGroup = ScreenUtil().setWidth(5);
@@ -19,6 +20,8 @@ class ReminderContants {
   static String noteHintTxt = 'Notes';
   static String detailsTxt = 'Chi tiết';
   static String listTxt = 'Danh sách';
+  static String emptyTxt='Không có lời nhắc';
+  static TextStyle textStyleEmpty=TextStyle(color: Colors.black45,fontSize: ScreenUtil().setSp(20));
   static TextStyle textStyleLeading =
       TextStyle(color: Colors.blue, fontSize: ScreenUtil().setSp(15));
   static TextStyle textStyleTitleAppBar =

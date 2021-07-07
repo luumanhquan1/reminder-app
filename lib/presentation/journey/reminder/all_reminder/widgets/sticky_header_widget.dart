@@ -5,13 +5,21 @@ import 'package:ghichu/domain/entities/reminder_entity.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/add_widget.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/list_reminder.dart';
 import 'package:sticky_headers/sticky_headers.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class StickyReminderAll extends StatelessWidget {
   final String header;
   final String color;
+  final int indexGroup;
   final List<ReminderEntity> listReminder;
-  const StickyReminderAll(
-      {Key key, @required this.header, @required this.color,@required this.listReminder})
+  SlidableController slidableController;
+  StickyReminderAll(
+      {Key key,
+      @required this.slidableController,
+      @required this.indexGroup,
+      @required this.header,
+      @required this.color,
+      @required this.listReminder})
       : super(key: key);
 
   @override
@@ -29,6 +37,7 @@ class StickyReminderAll extends StatelessWidget {
               color: Color(int.parse(color)),
               fontWeight: FontWeight.w700,
               fontSize: ScreenUtil().setSp(25)),
+          overflow: TextOverflow.ellipsis,
         ),
       ),
       content: Container(
@@ -38,11 +47,14 @@ class StickyReminderAll extends StatelessWidget {
             children: [
               Column(
                 children: List.generate(listReminder.length, (index) {
-                  return ListReminder(
-                    title: listReminder[index].title,
-                    note: listReminder[index].note,
-                    date: listReminder[index].details.date??'',
-                    time: listReminder[index].details.time??'',
+                  return   ListReminder(
+                    slidableController: slidableController,
+                  indexGroup: indexGroup,
+                  indexReminder: index,
+                  title: listReminder[index].title,
+                  note: listReminder[index].note,
+                  date: listReminder[index].details.date ?? '',
+                  time: listReminder[index].details.time ?? '',
                   );
                 }),
               ),

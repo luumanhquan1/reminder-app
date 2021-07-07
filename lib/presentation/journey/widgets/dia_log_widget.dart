@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 class DiaLogWidget extends StatelessWidget {
@@ -25,6 +26,8 @@ final String name;
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: ScreenUtil().setSp(20)),
+                maxLines: 2,
+
               ),
             ),
             Padding(

@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:ghichu/domain/entities/reminder_entity.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/add_widget.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/list_reminder.dart';
@@ -10,8 +11,13 @@ class StickyReminderSchedule extends StatelessWidget {
   final String header;
   final String color;
   final List<ReminderEntity> listReminder;
-  const StickyReminderSchedule(
-      {Key key, @required this.header, @required this.color,@required this.listReminder})
+  SlidableController slidableController;
+  StickyReminderSchedule(
+      {Key key,
+      @required this.slidableController,
+      @required this.header,
+      @required this.color,
+      @required this.listReminder})
       : super(key: key);
 
   @override
@@ -39,10 +45,11 @@ class StickyReminderSchedule extends StatelessWidget {
               Column(
                 children: List.generate(listReminder.length, (index) {
                   return ListReminder(
+                    slidableController: slidableController,
                     title: listReminder[index].title,
                     note: listReminder[index].note,
                     group: listReminder[index].list,
-                    time: listReminder[index].details.time??'',
+                    time: listReminder[index].details.time ?? '',
                   );
                 }),
               ),

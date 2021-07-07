@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/screen_util.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:ghichu/data/models/model_map.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
@@ -24,9 +25,11 @@ class AllPage extends StatefulWidget {
 class _State extends State<AllPage> {
   Map<String, TextFiledController> listController = {};
   bool isEdit;
+  SlidableController slidableController;
   @override
   void initState() {
     // TODO: implement initState
+    slidableController=SlidableController();
     super.initState();
     for (int i = 0; i < ModelListReminder.myList.length; i++) {
       listController.addAll({
@@ -42,7 +45,8 @@ class _State extends State<AllPage> {
     return BlocConsumer<ManageReminderBloc, ManageReminderState>(
       listener: (context, state) {},
       builder: (context, state) {
-       return Scaffold(
+      if(state is InitManagerReminderState){
+        return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBarReminderWidget(
             isIconEdit: false,
@@ -78,6 +82,8 @@ class _State extends State<AllPage> {
                   children: List.generate(state.listReminder.length, (index) {
                     GroupEntity listGroup = state.listGroup[index];
                     return StickyReminderAll(
+                      slidableController: slidableController,
+                      indexGroup: index,
                       listReminder: state.listReminder[listGroup.name],
                       header: listGroup.name,
                       color: listGroup.color,
@@ -88,6 +94,8 @@ class _State extends State<AllPage> {
             ),
           ),
         );
+      }
+      return SizedBox();
       },
     );
   }

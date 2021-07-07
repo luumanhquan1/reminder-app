@@ -78,3 +78,24 @@ class EditGroupState extends HomePageState {
   @override
   List<Object> get props => [this.groupEntity];
 }
+
+class PushMyListState extends HomePageState {
+  final GroupEntity groupEntity;
+  PushMyListState({@required this.groupEntity});
+  @override
+  // TODO: implement props
+  List<Object> get props => [this.groupEntity];
+}
+
+class PushAddGroupState extends HomePageState {
+  @override
+  List<Object> get props => [];
+}
+class PushNewReminderState extends HomePageState{
+  final List<GroupEntity> listGroup;
+
+  PushNewReminderState({this.listGroup});
+  @override
+  List<Object> get props => [this.listGroup];
+
+}

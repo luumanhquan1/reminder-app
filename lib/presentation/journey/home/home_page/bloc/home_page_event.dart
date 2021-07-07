@@ -1,15 +1,20 @@
+import 'package:ghichu/domain/entities/group_entity.dart';
 
 abstract class HomePageEvent {}
 
 class UpDate extends HomePageEvent {}
 
 class UpDateGroupEvent extends HomePageEvent {}
+
 class UpDateReminderEvent extends HomePageEvent {}
-class EditGroupEvent extends HomePageEvent{
+
+class EditGroupEvent extends HomePageEvent {
   final int index;
   EditGroupEvent(this.index);
 }
-class UpdateEditGroupEvent extends HomePageEvent{}
+
+class UpdateEditGroupEvent extends HomePageEvent {}
+
 class OrderGroupEvent extends HomePageEvent {
   final int oldIndex;
   final int newIndex;
@@ -38,6 +43,20 @@ class SlideIsOpenEvent extends HomePageEvent {
 
 class DeleteGroupEvent extends HomePageEvent {
   final int index;
- final bool isDialog;
-  DeleteGroupEvent({this.index,this.isDialog});
+  final bool isDialog;
+  DeleteGroupEvent({this.index, this.isDialog});
+}
+
+class PushMyListEvent extends HomePageEvent {
+  final GroupEntity groupEntity;
+
+  PushMyListEvent({this.groupEntity});
+}
+
+class PushAddGroupEvent extends HomePageEvent {}
+
+class PushNewReminderEvent extends HomePageEvent {
+  final List<GroupEntity> listGroup;
+
+  PushNewReminderEvent({this.listGroup});
 }

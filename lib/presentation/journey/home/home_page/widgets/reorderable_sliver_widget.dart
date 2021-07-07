@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,13 +31,18 @@ class ReorderableSliverWidget extends StatelessWidget {
             enabled: state.isOpen,
             delegate: ReorderableSliverChildListDelegate(
                 List.generate(state.keyMyList.length, (index) {
-              return MyListWidget(
-                slidableController: slidableController,
-                title: state.keyMyList[index].name,
-                index: index,
-                state: state,
-                leght: state.remindertoGroup[state.keyMyList[index].name],
-                color: state.keyMyList[index].color,
+              return GestureDetector(
+                onTap: (){
+                  BlocProvider.of<HomePageBloc>(context).add(PushMyListEvent(groupEntity: state.keyMyList[index]));
+                },
+                child: MyListWidget(
+                  slidableController: slidableController,
+                  title: state.keyMyList[index].name,
+                  index: index,
+                  state: state,
+                  leght: state.remindertoGroup[state.keyMyList[index].name],
+                  color: state.keyMyList[index].color,
+                ),
               );
             })),
             onReorder: (int oldIndex, int newIndex) {

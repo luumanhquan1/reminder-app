@@ -1,47 +1,49 @@
 import 'dart:ui';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/screen_util.dart';
-import 'package:ghichu/data/models/model_map.dart';
-import 'package:ghichu/data/models/reminder.dart';
-import 'package:ghichu/presentation/journey/reminder/today_reminder/bloc/today_reminder_bloc.dart';
-import 'package:ghichu/presentation/journey/reminder/today_reminder/bloc/today_reminder_state.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:ghichu/domain/entities/group_entity.dart';
+import 'package:ghichu/domain/entities/reminder_entity.dart';
+import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
+import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_state.dart';
+import 'package:ghichu/presentation/journey/reminder/reminder_constants.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/app_bar_reminder.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/list_reminder.dart';
 
-
+// ignore: must_be_immutable
 class TodayPage extends StatefulWidget {
-  String keyGroup;
+  final GroupEntity groupEntity;
 
-  TodayPage({this.keyGroup});
+  TodayPage({this.groupEntity});
 
   @override
   _State createState() => _State();
 }
 
 class _State extends State<TodayPage> {
-  bool isEdit;
-  int indexReminder=0;
-  TodayReminderBloc todayReminderBloc = TodayReminderBloc();
+  SlidableController slidableController;
+  @override
+  void initState() {
+    slidableController = SlidableController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<TodayReminderState>(
-        initialData: todayReminderBloc.todayReminderState,
-        stream: todayReminderBloc.todayReminderController,
-        builder: (context, snapshot) {
-          indexReminder=0;
-          if (snapshot.data.indexReminder == null) {
-            isEdit = false;
-          } else {
-            isEdit = true;
-          }
+    return BlocConsumer<ManageReminderBloc, ManageReminderState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        if(state is InitManagerReminderState){
           return Scaffold(
             appBar: AppBarReminderWidget(
-              isIconEdit: isEdit,
-              actions: isEdit
+              isIconEdit: false,
+              actions: true
                   ? () {
-                      todayReminderBloc.todayReminderState.indexReminder = null;
-                      todayReminderBloc.update();
-                    }
+                // todayReminderBloc.todayReminderState.indexReminder = null;
+                // todayReminderBloc.update();
+              }
                   : null,
             ),
             body: SingleChildScrollView(
@@ -51,81 +53,56 @@ class _State extends State<TodayPage> {
                   Padding(
                     padding: EdgeInsets.only(left: ScreenUtil().setWidth(10)),
                     child: Text(
-                      widget.keyGroup == null
+                      widget.groupEntity == null
                           ? 'Hôm nay'
-                          : ModelListReminder.myList[widget.keyGroup].title,
+                          : widget.groupEntity.name,
                       style: TextStyle(
-                          color: Colors.blue,
+                          color: widget.groupEntity == null
+                              ? Colors.blue
+                              : Color(int.parse(widget.groupEntity.color)),
                           fontWeight: FontWeight.w800,
                           fontSize: ScreenUtil().setSp(30)),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  // Column(
-                  //     children: List.generate(
-                  //         widget.keyGroup == null
-                  //             ? ModelListReminder.listReminder.values.length
-                  //             : ModelListReminder.listReminder[widget.keyGroup]
-                  //                 .values.length, (index) {
-                  //   return Column(
-                  //     children: List.generate(
-                  //         widget.keyGroup == null
-                  //             ? ModelListReminder.listReminder.values.elementAt(
-                  //                         index)['${snapshot.data.nowDate}'] ==
-                  //                     null
-                  //                 ? 0
-                  //                 : ModelListReminder.listReminder.values
-                  //                     .elementAt(
-                  //                         index)['${snapshot.data.nowDate}']
-                  //                     .length
-                  //             : ModelListReminder
-                  //                 .listReminder[widget.keyGroup].values
-                  //                 .elementAt(index)
-                  //                 .length, (index1) {
-                  //       List<Reminder> reminder;
-                  //       if (widget.keyGroup == null) {
-                  //         reminder = ModelListReminder.listReminder.values
-                  //             .elementAt(index)['${snapshot.data.nowDate}'];
-                  //       } else {
-                  //         reminder = ModelListReminder
-                  //             .listReminder[widget.keyGroup].values
-                  //             .elementAt(index);
-                  //       }
-                  //       indexReminder=indexReminder+1;
-                  //       return ListReminder(
-                  //         indexGroup: 0,
-                  //         todayReminderBloc: todayReminderBloc,
-                  //         indexReminder: indexReminder,
-                  //         title: reminder[index1].title,
-                  //         note: reminder[index1].note,
-                  //         group: widget.keyGroup == null
-                  //             ? ModelListReminder.myList[reminder[index1].group].title
-                  //             : null,
-                  //         time: reminder[index1].time,
-                  //         date: reminder[index1].date,
-                  //       );
-                  //     }),
-                  //   );
-                  // }))
+                  state.reminderGroupOrToday.length == 0
+                      ? Center(
+                    heightFactor: ScreenUtil().setHeight(30),
+                    child: Text(
+                      ReminderContants.emptyTxt,
+                      style: ReminderContants.textStyleEmpty,
+                    ),
+                  )
+                      : Column(
+                    children: List.generate(
+                        state.reminderGroupOrToday.length, (index) {
+                      ReminderEntity reminder =
+                      state.reminderGroupOrToday[index];
+                      if (widget.groupEntity == null) {
+                        return ListReminder(
+                          slidableController: slidableController,
+                          title: reminder.title,
+                          note: reminder.note,
+                          group: reminder.list,
+                          time: reminder.details.time ?? '',
+                        );
+                      }
+                      return ListReminder(
+                        slidableController: slidableController,
+                        title: reminder.title,
+                        note: reminder.note,
+                        date: reminder.details.date ?? '',
+                        time: reminder.details.time ?? '',
+                      );
+                    }),
+                  )
                 ],
               ),
             ),
           );
-        });
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      todayReminderBloc.getToday();
-    });
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    todayReminderBloc.dispose();
-    super.dispose();
+        }
+        return SizedBox();
+      },
+    );
   }
 }

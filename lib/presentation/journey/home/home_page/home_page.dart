@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -73,14 +74,35 @@ class _State extends State<HomePage> {
                   arguments: SettingEditGroup(state.index, state.groupEntity))
               .then((value) {
             if (value != null) {
-              BlocProvider.of<HomePageBloc>(context).add(UpdateEditGroupEvent());
+              BlocProvider.of<HomePageBloc>(context)
+                  .add(UpdateEditGroupEvent());
+            }
+          });
+        }
+        if (state is PushMyListState) {
+          Navigator.pushNamed(context, RouteList.todayPage,
+              arguments: SettingToDay(groupEntity: state.groupEntity));
+        }
+        if (state is PushAddGroupState) {
+          Navigator.pushNamed(context, RouteList.addGroup).then((value) {
+            if (value != null) {
+              BlocProvider.of<HomePageBloc>(context).add(UpDateGroupEvent());
+            }
+          });
+        }
+        if (state is PushNewReminderState) {
+          Navigator.pushNamed(context, RouteList.newReminder,
+                  arguments: SettingNewReminder(
+                      listGroup: state.listGroup, isEditReminder: false))
+              .then((value) {
+            if (value != null) {
+              BlocProvider.of<HomePageBloc>(context).add(UpDateReminderEvent());
             }
           });
         }
       },
       builder: (context, state) {
         if (state is InitHomePageState) {
-
           return Scaffold(
             backgroundColor: Colors.white.withOpacity(0.95),
             appBar: AppBarWidget(

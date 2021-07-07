@@ -66,6 +66,23 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     if (event is UpdateEditGroupEvent) {
       yield* _mapUpdateEditGroupToState(event);
     }
+    if (event is PushMyListEvent) {
+      InitHomePageState creentState = state;
+      if (creentState.isEdit == true) {
+        yield PushMyListState(groupEntity: event.groupEntity);
+        yield creentState;
+      }
+    }
+    if (event is PushAddGroupEvent) {
+      InitHomePageState creentState = state;
+      yield PushAddGroupState();
+      yield creentState;
+    }
+    if(event is PushNewReminderEvent){
+      InitHomePageState creentState = state;
+      yield PushNewReminderState(listGroup: event.listGroup);
+      yield creentState;
+    }
   }
 
   Stream<HomePageState> _mapUpdateEditGroupToState(

@@ -46,5 +46,15 @@ class ReminderRepositoryImpl extends ReminderRepository {
    return reminderLDs.getReminderSchedule();
   }
 
+  @override
+  Future<List<ReminderEntity>> getReminderToDayLocal() {
+    return reminderLDs.getReminderToDay();
+  }
+
+  @override
+  Future<List<ReminderEntity>> getReminderToGroupLocal({String group}) {
+    return reminderLDs.getReminderToGroup(group: group);
+  }
+
 
 }

@@ -12,9 +12,7 @@ class ReminderUseCase {
   Future<int> addReminder(ReminderEntity reminderEntity) async {
     return await reminderRepository.setReminder(reminderEntity);
   }
-
   Future<Map<String, List<ReminderEntity>>> getReminderScheduled() async {
-    log('${reminderRepository.getReminderScheduledLoCal()}');
     return reminderRepository.getReminderScheduledLoCal();
   }
   Future<Map<String, List<ReminderEntity>>> getReminderAll(
@@ -31,7 +29,12 @@ class ReminderUseCase {
     return listReminder;
   }
 
-  Future<List<ReminderEntity>> getReminderToDay() async {}
+  Future<List<ReminderEntity>> getReminderToDay() async {
+    return reminderRepository.getReminderToDayLocal();
+  }
+  Future<List<ReminderEntity>> getReminderToGroup({String group}) async {
+    return reminderRepository.getReminderToGroupLocal(group: group);
+  }
   Future<void> deleteReminderToGroup(String group) async {
     await reminderRepository.deleteReminderToGroupLocal(group);
   }

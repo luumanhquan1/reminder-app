@@ -1,3 +1,6 @@
+
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/screen_util.dart';
@@ -98,11 +101,12 @@ class GroupWidget extends StatelessWidget {
             Expanded(
               flex: 10,
               child: GestureDetector(
-                onTap: () {
+                onTap:state.isOpen==false? () {
                   Slidable.of(context).open();
                   Slidable.of(context)?.close();
-                },
+                }:null,
                 child: Container(
+                  constraints: BoxConstraints(minHeight: ScreenUtil().setHeight(18)),
                   // width: HomePageConstants.widthGroupText270,
                   child: Text(
                     title,

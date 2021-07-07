@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:ghichu/common/constants/route_constants.dart';
@@ -35,7 +37,8 @@ class _DetailsPageState extends State<DetailsPage> {
       }
       if(state is InitDetailsState){
         if(state.viewState==ViewState.success){
-          Navigator.popAndPushNamed(context, RouteList.homePage);
+          Navigator.pop(context);
+          Navigator.pop(context,'done');
         }
       }
     }, builder: (context, state) {

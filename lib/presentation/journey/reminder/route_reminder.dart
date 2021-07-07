@@ -38,7 +38,7 @@ class RouteReminder {
         return MultiBlocProvider(providers: [
           BlocProvider(
               create: (context) =>
-                  locator<ManageReminderBloc>()..add(GetDataScheduled()))
+                  locator<ManageReminderBloc>()..add(GetDataScheduledEvent()))
         ], child: SchedulePage());
       },
       RouteList.allPage: (context) {
@@ -50,10 +50,23 @@ class RouteReminder {
         ], child: AllPage());
       },
       RouteList.todayPage: (context) {
-        // var keyGroup = args[StringConstants.keyGroup];
-        return TodayPage(
-            // keyGroup: keyGroup,
-            );
+        SettingToDay settingToday = args;
+        if (settingToday == null) {
+          return MultiBlocProvider(providers: [
+            BlocProvider(
+                create: (context) =>
+                    locator<ManageReminderBloc>()..add(GetDateToDayEvent()))
+          ], child: TodayPage());
+        }
+        return MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                  create: (context) =>
+                      locator<ManageReminderBloc>()..add(GetDateGroupEvent(groupEntity: settingToday.groupEntity)))
+            ],
+            child: TodayPage(
+              groupEntity: settingToday.groupEntity,
+            ));
       },
       RouteList.prioritiesScreen: (context) {
         SettingPriority setting = args;

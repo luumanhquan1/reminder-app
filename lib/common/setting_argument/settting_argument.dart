@@ -43,3 +43,9 @@ class SettingAllReminder {
 
   SettingAllReminder({this.listGroup});
 }
+
+class SettingToDay {
+  final GroupEntity groupEntity;
+
+  SettingToDay({this.groupEntity});
+}

@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,8 +14,11 @@ class ManageReminderBloc
 
   @override
   // TODO: implement initialState
-  ManageReminderState get initialState => ManageReminderState(
-      listReminder: {}, listGroup: [], isChangeState: false);
+  ManageReminderState get initialState => InitManagerReminderState(
+      listReminder: {},
+      listGroup: [],
+      isChangeState: false,
+      reminderGroupOrToday: []);
 
   @override
   Stream<ManageReminderState> mapEventToState(
@@ -24,25 +26,56 @@ class ManageReminderBloc
     if (event is GetDataReminderAllEvent) {
       yield* _mapGetDateReminderAll(event);
     }
-    if (event is GetDataScheduled) {
+    if (event is GetDataScheduledEvent) {
       yield* _mapGetDateReminderSchedule(event);
+    }
+    if (event is GetDateToDayEvent) {
+      yield* _mapGetReminderToDayState(event);
+    }
+    if (event is GetDateGroupEvent) {
+      yield* _mapGetReminderGroup(event);
+    }
+  }
+
+  Stream<ManageReminderState> _mapGetReminderToDayState(
+      GetDateToDayEvent event) async* {
+    final creentState = state;
+    if (creentState is InitManagerReminderState) {
+      List<ReminderEntity> listReminder = await reminderUC.getReminderToDay();
+      yield creentState.update(reminderGroupOrToday: listReminder);
+    }
+  }
+
+  Stream<ManageReminderState> _mapGetReminderGroup(
+      GetDateGroupEvent event) async* {
+    final creentState = state;
+    if (creentState is InitManagerReminderState) {
+      List<ReminderEntity> listReminder =
+          await reminderUC.getReminderToGroup(group: event.groupEntity.name);
+      yield creentState.update(reminderGroupOrToday: listReminder);
     }
   }
 
   Stream<ManageReminderState> _mapGetDateReminderSchedule(
-      GetDataScheduled event) async* {
+      GetDataScheduledEvent event) async* {
+    final creentState = state;
+    if (creentState is InitManagerReminderState) {
+      Map<String, List<ReminderEntity>> listReminder =
+          await reminderUC.getReminderScheduled();
 
-    Map<String, List<ReminderEntity>> listReminder =
-        await reminderUC.getReminderScheduled();
-    log('$listReminder');
-    yield state.update(listReminder: listReminder);
+      yield creentState.update(listReminder: listReminder);
+    }
   }
 
   Stream<ManageReminderState> _mapGetDateReminderAll(
       GetDataReminderAllEvent event) async* {
-    Map<String, List<ReminderEntity>> listReminder =
-        await reminderUC.getReminderAll(event.listGroup);
+    final creentState = state;
+    if (creentState is InitManagerReminderState) {
+      Map<String, List<ReminderEntity>> listReminder =
+          await reminderUC.getReminderAll(event.listGroup);
 
-    yield state.update(listReminder: listReminder, listGroup: event.listGroup);
+      yield creentState.update(
+          listReminder: listReminder, listGroup: event.listGroup);
+    }
   }
 }

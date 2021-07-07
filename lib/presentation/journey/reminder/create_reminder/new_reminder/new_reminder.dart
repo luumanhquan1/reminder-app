@@ -78,7 +78,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
         });
       }
       if (state is InitialNewReminderState) {
-        if (state.viewState == ViewState.success) Navigator.pop(context);
+        if (state.viewState == ViewState.success) Navigator.pop(context,'done');
       }
     }, builder: (context, state) {
       if (state is InitialNewReminderState) {

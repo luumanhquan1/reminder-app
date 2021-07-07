@@ -28,24 +28,13 @@ class BottomNavigationBarWidget extends StatelessWidget {
               margin: EdgeInsets.only(top: HomePageConstants.paddingHeight10),
               child: BottomNewReminder(
                 onTap: () {
-                  Navigator.pushNamed(context, RouteList.newReminder,
-                          arguments: SettingNewReminder(
-                              listGroup: state.keyMyList,
-                              isEditReminder: false))
-                      .whenComplete(() {
-                    BlocProvider.of<HomePageBloc>(context)
-                        .add(UpDateReminderEvent());
-                  });
+                  BlocProvider.of<HomePageBloc>(context)
+                      .add(PushNewReminderEvent(listGroup: state.keyMyList));
                 },
               )),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, RouteList.addGroup).then((value) {
-                if (value != null) {
-                  BlocProvider.of<HomePageBloc>(context)
-                      .add(UpDateGroupEvent());
-                }
-              });
+              BlocProvider.of<HomePageBloc>(context).add(PushAddGroupEvent());
             },
             child: Text(
               HomePageConstants.addListTxt,
