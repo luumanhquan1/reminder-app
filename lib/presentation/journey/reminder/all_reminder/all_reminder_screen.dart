@@ -1,10 +1,12 @@
-
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:ghichu/common/constants/route_constants.dart';
+import 'package:ghichu/common/setting_argument/settting_argument.dart';
 
 import 'package:ghichu/data/models/model_map.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
@@ -29,7 +31,7 @@ class _State extends State<AllPage> {
   @override
   void initState() {
     // TODO: implement initState
-    slidableController=SlidableController();
+    slidableController = SlidableController();
     super.initState();
     for (int i = 0; i < ModelListReminder.myList.length; i++) {
       listController.addAll({
@@ -43,59 +45,71 @@ class _State extends State<AllPage> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ManageReminderBloc, ManageReminderState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is EditReminderState) {
+
+          Navigator.pushNamed(context, RouteList.newReminder,
+              arguments: SettingNewReminder(
+                reminderEntity: state.reminderEntity,
+                  isEditReminder: true,
+                  listGroup: state.listGroup,
+                  groupEntityl: state.groupEntity));
+        }
+      },
       builder: (context, state) {
-      if(state is InitManagerReminderState){
-        return Scaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBarReminderWidget(
-            isIconEdit: false,
-            actions: true
-                ? () {
-              // reminderUntil(
-              //     type: ReminderEnum.All,
-              //     allReminderBloc: allReminderBloc,
-              //     controller: listController,
-              //     keyGroup: snapshot.data.group);
-              // allReminderBloc.allReminderState.indexGroup = null;
-              // allReminderBloc.allReminderState.indexGroupReminder =
-              // null;
-              // allReminderBloc.update();
-            }
-                : null,
-            leading: () {
-              Navigator.pop(context, state.isChangeState);
-            },
-          ),
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: ScreenUtil().setWidth(10)),
-                  child: Text(
-                    AllReminderConstains.allTxt,
-                    style: AllReminderConstains.allStyle,
-                  ),
-                ),
-                Column(
-                  children: List.generate(state.listReminder.length, (index) {
-                    GroupEntity listGroup = state.listGroup[index];
-                    return StickyReminderAll(
-                      slidableController: slidableController,
-                      indexGroup: index,
-                      listReminder: state.listReminder[listGroup.name],
-                      header: listGroup.name,
-                      color: listGroup.color,
-                    );
-                  }),
-                ),
-              ],
+        if (state is InitManagerReminderState) {
+          return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBarReminderWidget(
+              isIconEdit: false,
+              actions: true
+                  ? () {
+                      // reminderUntil(
+                      //     type: ReminderEnum.All,
+                      //     allReminderBloc: allReminderBloc,
+                      //     controller: listController,
+                      //     keyGroup: snapshot.data.group);
+                      // allReminderBloc.allReminderState.indexGroup = null;
+                      // allReminderBloc.allReminderState.indexGroupReminder =
+                      // null;
+                      // allReminderBloc.update();
+                    }
+                  : null,
+              leading: () {
+                Navigator.pop(context, state.isChangeState);
+              },
             ),
-          ),
-        );
-      }
-      return SizedBox();
+            body: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: ScreenUtil().setWidth(10)),
+                    child: Text(
+                      AllReminderConstains.allTxt,
+                      style: AllReminderConstains.allStyle,
+                    ),
+                  ),
+                  Column(
+                    children: List.generate(state.listReminder.length, (index) {
+                      GroupEntity groupEntity = state.listGroup[index];
+                      return StickyReminderAll(
+                        groupEntity: groupEntity,
+                        listGroup: state.listGroup,
+                        slidableController: slidableController,
+                        indexGroup: index,
+                        listReminder: state.listReminder[groupEntity.name],
+                        header: groupEntity.name,
+                        color: groupEntity.color,
+                      );
+                    }),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+        return SizedBox();
       },
     );
   }

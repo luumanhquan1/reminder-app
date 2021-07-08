@@ -1,7 +1,13 @@
+
+import 'dart:developer';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ghichu/domain/entities/group_entity.dart';
 import 'package:ghichu/domain/entities/reminder_entity.dart';
+import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
+import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_event.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/add_widget.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/list_reminder.dart';
 import 'package:sticky_headers/sticky_headers.dart';
@@ -12,6 +18,8 @@ class StickyReminderAll extends StatelessWidget {
   final String color;
   final int indexGroup;
   final List<ReminderEntity> listReminder;
+  final List<GroupEntity> listGroup;
+  final GroupEntity groupEntity;
   SlidableController slidableController;
   StickyReminderAll(
       {Key key,
@@ -19,7 +27,10 @@ class StickyReminderAll extends StatelessWidget {
       @required this.indexGroup,
       @required this.header,
       @required this.color,
-      @required this.listReminder})
+      @required this.listReminder,
+      @required this.listGroup,
+      @required this.groupEntity,
+      })
       : super(key: key);
 
   @override
@@ -47,14 +58,21 @@ class StickyReminderAll extends StatelessWidget {
             children: [
               Column(
                 children: List.generate(listReminder.length, (index) {
-                  return   ListReminder(
+                  return ListReminder(
+                    editReminderBtn: () {
+                      BlocProvider.of<ManageReminderBloc>(context).add(
+                          EditReminderEvent(
+                            groupEntity: groupEntity,
+                              listGroup: listGroup,
+                              reminderEntity: listReminder[index]));
+                    },
                     slidableController: slidableController,
-                  indexGroup: indexGroup,
-                  indexReminder: index,
-                  title: listReminder[index].title,
-                  note: listReminder[index].note,
-                  date: listReminder[index].details.date ?? '',
-                  time: listReminder[index].details.time ?? '',
+                    indexGroup: indexGroup,
+                    indexReminder: index,
+                    title: listReminder[index].title,
+                    note: listReminder[index].note,
+                    date: listReminder[index].details.date ?? '',
+                    time: listReminder[index].details.time ?? '',
                   );
                 }),
               ),

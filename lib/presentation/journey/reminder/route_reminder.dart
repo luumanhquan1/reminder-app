@@ -61,8 +61,9 @@ class RouteReminder {
         return MultiBlocProvider(
             providers: [
               BlocProvider(
-                  create: (context) =>
-                      locator<ManageReminderBloc>()..add(GetDateGroupEvent(groupEntity: settingToday.groupEntity)))
+                  create: (context) => locator<ManageReminderBloc>()
+                    ..add(GetDateGroupEvent(
+                        groupEntity: settingToday.groupEntity)))
             ],
             child: TodayPage(
               groupEntity: settingToday.groupEntity,
@@ -91,6 +92,25 @@ class RouteReminder {
       },
       RouteList.newReminder: (context) {
         SettingNewReminder settingNewReminder = args;
+
+        if (settingNewReminder.isEditReminder == true) {
+          return MultiBlocProvider(
+              providers: [
+                BlocProvider<NewReminderBloc>(
+                    create: (context) => locator<NewReminderBloc>()
+                      ..add(UpDateNewReminderListGroupEvent(
+                          groups: settingNewReminder.groupEntityl))),
+                BlocProvider<DetailsBloc>(
+                    create: (context) =>
+                        locator<DetailsBloc>()..add(UpdateEditDetailsEvent(
+                          date: settingNewReminder.reminderEntity.details.date,
+                          time: settingNewReminder.reminderEntity.details.time,
+                        )))
+              ],
+              child: NewReminderPage(
+                settingNewReminder: settingNewReminder,
+              ));
+        }
         return MultiBlocProvider(
             providers: [
               BlocProvider<NewReminderBloc>(

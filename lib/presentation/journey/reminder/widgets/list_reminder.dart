@@ -7,7 +7,7 @@ import 'package:ghichu/data/models/reminder.dart';
 import 'package:ghichu/presentation/journey/reminder/__mock__/textfiled_controller.dart';
 import 'package:ghichu/presentation/journey/reminder/reminder_constants.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/check_box.dart';
-import 'package:intl/intl.dart';
+
 
 class ListReminder extends StatelessWidget {
   String title, group, note, date, time;
@@ -16,9 +16,13 @@ class ListReminder extends StatelessWidget {
   Reminder reminder;
   SlidableController slidableController;
   int indexReminder, indexGroup, index;
+  final Function editReminderBtn;
+  final Function deleleReminderBtn;
   ListReminder(
       {Key key,
       @required this.slidableController,
+      @required this.deleleReminderBtn,
+      @required this.editReminderBtn,
       this.title,
       this.time,
       this.indexReminder,
@@ -37,23 +41,29 @@ class ListReminder extends StatelessWidget {
       controller: slidableController,
       actionPane: SlidableBehindActionPane(),
       secondaryActions: [
-        Container(
-          color: Colors.grey,
-          child: Center(
-              child: Text(
-            'Chi tiết',
-            style: TextStyle(
-                color: Colors.white, fontSize: ScreenUtil().setSp(17)),
-          )),
+        GestureDetector(
+          onTap: editReminderBtn,
+          child: Container(
+            color: Colors.grey,
+            child: Center(
+                child: Text(
+              'Chi tiết',
+              style: TextStyle(
+                  color: Colors.white, fontSize: ScreenUtil().setSp(17)),
+            )),
+          ),
         ),
-        Container(
-          color: Colors.red,
-          child: Center(
-              child: Text(
-            'Xóa',
-            style: TextStyle(
-                color: Colors.white, fontSize: ScreenUtil().setSp(17)),
-          )),
+        GestureDetector(
+          onTap: deleleReminderBtn,
+          child: Container(
+            color: Colors.red,
+            child: Center(
+                child: Text(
+              'Xóa',
+              style: TextStyle(
+                  color: Colors.white, fontSize: ScreenUtil().setSp(17)),
+            )),
+          ),
         )
       ],
       child: Container(

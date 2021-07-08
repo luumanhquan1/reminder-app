@@ -21,6 +21,7 @@ class GetDateGroupEvent extends ManageReminderEvent {
 
 class EditReminderEvent extends ManageReminderEvent {
   final ReminderEntity reminderEntity;
-
-  EditReminderEvent({@required this.reminderEntity});
+ final List<GroupEntity> listGroup;
+ final GroupEntity groupEntity;
+  EditReminderEvent({@required this.reminderEntity,@required this.listGroup,@required this.groupEntity});
 }

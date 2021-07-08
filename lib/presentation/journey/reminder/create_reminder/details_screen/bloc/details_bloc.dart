@@ -64,6 +64,39 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
     if (event is PushPrioritiesEvent) {
       yield* _mapPushPrioritiesToState(event);
     }
+    if (event is UpdateEditDetailsEvent) {
+      yield* _mapUpDateEditDetailsToState(event);
+    }
+  }
+
+  Stream<DetailsState> _mapUpDateEditDetailsToState(
+      UpdateEditDetailsEvent event) async* {
+    final creentState = state;
+    if (creentState is InitDetailsState) {
+      bool isTime, isDate;
+      DateTime selectDate;
+      TimeOfDay timeOfDay;
+      if (event.date == null) {
+        isTime = false;
+        isDate = false;
+      } else {
+        isDate = true;
+        selectDate = DateTime.parse(event.date);
+        if (event.time == null) {
+          isTime = false;
+        } else {
+          isTime = true;
+          int hour = int.parse(event.time.split('-')[0]);
+          int minute = int.parse(event.time.split('-')[1]);
+          timeOfDay = TimeOfDay(hour: hour, minute: minute);
+        }
+      }
+      yield creentState.update(
+          isDateSwitch: isDate,
+          isTimeSwitch: isTime,
+          selectDate: selectDate,
+          timeOfDay: timeOfDay);
+    }
   }
 
   Stream<DetailsState> _mapAddReminderToState(

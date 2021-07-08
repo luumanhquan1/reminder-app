@@ -35,6 +35,17 @@ class ManageReminderBloc
     if (event is GetDateGroupEvent) {
       yield* _mapGetReminderGroup(event);
     }
+    if (event is EditReminderEvent) {
+      InitManagerReminderState creentState;
+      if (state is InitManagerReminderState) {
+        creentState = state;
+      }
+      yield EditReminderState(
+          reminderEntity: event.reminderEntity,
+          listGroup: event.listGroup,
+          groupEntity: event.groupEntity);
+      yield creentState;
+    }
   }
 
   Stream<ManageReminderState> _mapGetReminderToDayState(

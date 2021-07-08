@@ -58,3 +58,10 @@ class AddReminderDetailsEvent extends DetailsEvent {
 
   AddReminderDetailsEvent({this.title, this.note, this.group});
 }
+
+class UpdateEditDetailsEvent extends DetailsEvent {
+  final String date, time;
+  final bool isDate, isTime;
+
+  UpdateEditDetailsEvent({this.date, this.time, this.isDate, this.isTime});
+}

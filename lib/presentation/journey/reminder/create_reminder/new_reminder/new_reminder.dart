@@ -6,6 +6,8 @@ import 'package:ghichu/common/constants/route_constants.dart';
 
 import 'package:ghichu/common/setting_argument/settting_argument.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
+import 'package:ghichu/presentation/journey/reminder/create_reminder/details_screen/bloc/details_bloc.dart';
+import 'package:ghichu/presentation/journey/reminder/create_reminder/details_screen/bloc/details_state.dart';
 
 import 'package:ghichu/presentation/journey/reminder/create_reminder/details_screen/widgets/time_widget.dart';
 import 'package:ghichu/presentation/journey/reminder/create_reminder/new_reminder/bloc/new_reminder_bloc.dart';
@@ -134,7 +136,11 @@ class _NewReminderPageState extends State<NewReminderPage> {
                       ? Padding(
                           padding:
                               EdgeInsets.only(top: ReminderContants.marginTop),
-                          child: TimeWidget(),
+                          child: BlocBuilder<DetailsBloc,DetailsState>(
+                            builder: (context,state){
+                              return TimeWidget(state: state,);
+                            },
+                          )
                         )
                       : SelectContainer(
                           title: ReminderContants.detailsTxt,

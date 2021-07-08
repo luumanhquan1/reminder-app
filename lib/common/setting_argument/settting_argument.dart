@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
+import 'package:ghichu/domain/entities/reminder_entity.dart';
 import 'package:ghichu/presentation/journey/reminder/create_reminder/details_screen/bloc/details_state.dart';
 
 class SettingNewReminder {
   final List<GroupEntity> listGroup;
   final bool isEditReminder;
-  SettingNewReminder({this.listGroup, this.isEditReminder});
+  final ReminderEntity reminderEntity;
+  final GroupEntity groupEntityl;
+  SettingNewReminder({this.listGroup, this.isEditReminder,this.reminderEntity,this.groupEntityl});
 }
 
 class SettingListGroup {
