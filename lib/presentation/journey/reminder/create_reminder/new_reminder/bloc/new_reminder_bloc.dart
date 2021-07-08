@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghichu/common/extension/extension_datetime.dart';
 import 'package:ghichu/domain/entities/details_entity.dart';
@@ -33,7 +35,6 @@ class NewReminderBloc extends Bloc<NewReminderEvent, NewReminderState> {
     if (event is ActiveBtn) {
       yield* _mapActiveBtn(event);
     }
-
     if (event is PushDetailEvent) {
       InitialNewReminderState current;
       if (state is InitialNewReminderState) {
@@ -54,6 +55,52 @@ class NewReminderBloc extends Bloc<NewReminderEvent, NewReminderState> {
     }
     if (event is AddReminderEvent) {
       yield* _mapAddReminderToState(event);
+    }
+    if (event is EditReminderEvent) {
+      yield* _mapEditReminderToState(event);
+    }
+  }
+
+  Stream<NewReminderState> _mapEditReminderToState(
+      EditReminderEvent event) async* {
+
+    final creentState = state;
+    if (creentState is InitialNewReminderState) {
+      String date, time;
+      if (event.isDate) {
+        date=event.date.dateTimeFormat();
+        if(event.isTime){
+          String hour,minute;
+          if(event.time.hour<10){
+            hour="0${event.time.hour}";
+          }else{
+            hour="${event.time.hour}";
+          }
+          if(event.time.minute<10){
+            minute="0${event.time.minute}";
+          }else{
+            minute="${event.time.minute}";
+          }
+          time="$hour-$minute";
+        }else{
+          time=null;
+        }
+      } else {
+        date = null;
+        time = null;
+      }
+      yield creentState.update(viewState: ViewState.loading);
+      DetailsEntity detailsEntity =
+      DetailsEntity(date: date, time: time, priority: event.oldReminder.details.priority);
+      ReminderEntity reminderEntity = ReminderEntity(
+          title: event.title,
+          note: event.note,
+          details: detailsEntity,
+          list: event.group,
+          createAt: event.oldReminder.createAt,
+          lastUpdate: DateTime.now().toString());
+      await reminderUseCase.editReminder(event.oldReminder, reminderEntity);
+      yield creentState.update(viewState: ViewState.success);
     }
   }
 
@@ -128,7 +175,7 @@ class NewReminderBloc extends Bloc<NewReminderEvent, NewReminderState> {
 
   Stream<NewReminderState> _mapActiveBtn(ActiveBtn event) async* {
     final currentState = state;
-    if (currentState is InitialNewReminderState){
+    if (currentState is InitialNewReminderState) {
       yield currentState.update(activeBtn: event.activeBtn);
     }
   }

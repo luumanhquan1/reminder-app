@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghichu/common/constants/layout_constants.dart';
 import 'package:ghichu/common/constants/route_constants.dart';
-
 import 'package:ghichu/common/setting_argument/settting_argument.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
+import 'package:ghichu/domain/entities/reminder_entity.dart';
 import 'package:ghichu/presentation/journey/reminder/create_reminder/details_screen/bloc/details_bloc.dart';
 import 'package:ghichu/presentation/journey/reminder/create_reminder/details_screen/bloc/details_state.dart';
 
@@ -86,36 +86,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
       if (state is InitialNewReminderState) {
         return Scaffold(
           backgroundColor: Colors.white.withOpacity(0.95),
-          appBar: AppBarWidget(
-            actions: state.activeBtn
-                ? () {
-                    if (widget.settingNewReminder.isEditReminder == false) {
-                      BlocProvider.of<NewReminderBloc>(context).add(
-                          AddReminderEvent(
-                              title: titleController.text,
-                              note: noteController.text,
-                              date: state.date,
-                              group: state.groups.name,
-                              priority: state.groups.name));
-                    }
-                  }
-                : null,
-            leading: showBttomSheet(state)
-                ? () {
-                    showButtonModalSheet(context);
-                  }
-                : () {
-                    Navigator.pop(context);
-                  },
-            color: state.activeBtn ? Colors.blue : Colors.black38,
-            textLeft: NewReminderContants.textLeading,
-            textRight: widget.settingNewReminder.isEditReminder
-                ? NewReminderContants.textRightEdit
-                : NewReminderContants.textRight,
-            title: widget.settingNewReminder.isEditReminder
-                ? NewReminderContants.textTitleEdit
-                : NewReminderContants.textTitle,
-          ),
+          appBar: appBar(state),
           body: Padding(
             padding: EdgeInsets.symmetric(
               horizontal: LayoutConstants.paddingHorizontalApp,
@@ -136,12 +107,13 @@ class _NewReminderPageState extends State<NewReminderPage> {
                       ? Padding(
                           padding:
                               EdgeInsets.only(top: ReminderContants.marginTop),
-                          child: BlocBuilder<DetailsBloc,DetailsState>(
-                            builder: (context,state){
-                              return TimeWidget(state: state,);
+                          child: BlocBuilder<DetailsBloc, DetailsState>(
+                            builder: (context, state) {
+                              return TimeWidget(
+                                state: state,
+                              );
                             },
-                          )
-                        )
+                          ))
                       : SelectContainer(
                           title: ReminderContants.detailsTxt,
                           buttonDetails: state.isDateDetails,
@@ -173,13 +145,49 @@ class _NewReminderPageState extends State<NewReminderPage> {
     });
   }
 
-  int date(
-      {DateTime selectDate,
-      bool isDateSwitch,
-      bool isTimeSwitch,
-      int hour,
-      int minute}) {
-    return 0;
+  Widget appBar(InitialNewReminderState state) {
+    return AppBarWidget(
+      actions: state.activeBtn
+          ? () {
+              if (widget.settingNewReminder.isEditReminder == false) {
+                BlocProvider.of<NewReminderBloc>(context).add(AddReminderEvent(
+                    title: titleController.text,
+                    note: noteController.text,
+                    date: state.date,
+                    group: state.groups.name,
+                    priority: state.groups.name));
+              } else {
+                InitDetailsState detailsState =
+                    BlocProvider.of<DetailsBloc>(context).state;
+                BlocProvider.of<NewReminderBloc>(context).add(EditReminderEvent(
+                  oldReminder: widget.settingNewReminder.reminderEntity,
+                  title: titleController.text,
+                  note: noteController.text,
+                  date: detailsState.selectDate,
+                  time: detailsState.timeOfDay,
+                  group: state.groups.name,
+                  isDate: detailsState.isDateSwitch,
+                  isTime: detailsState.isTimeSwitch,
+                ));
+              }
+            }
+          : null,
+      leading: showBttomSheet(state)
+          ? () {
+              showButtonModalSheet(context);
+            }
+          : () {
+              Navigator.pop(context);
+            },
+      color: state.activeBtn ? Colors.blue : Colors.black38,
+      textLeft: NewReminderContants.textLeading,
+      textRight: widget.settingNewReminder.isEditReminder
+          ? NewReminderContants.textRightEdit
+          : NewReminderContants.textRight,
+      title: widget.settingNewReminder.isEditReminder
+          ? NewReminderContants.textTitleEdit
+          : NewReminderContants.textTitle,
+    );
   }
 
   bool showBttomSheet(InitialNewReminderState state) {
@@ -192,8 +200,17 @@ class _NewReminderPageState extends State<NewReminderPage> {
     }
   }
 
+  bool isChangeEdit() {
+    ReminderEntity reminderEntity = widget.settingNewReminder.reminderEntity;
+    if (reminderEntity.title != titleController.text ||
+        reminderEntity.note != noteController.text) {
+      return true;
+    }
+    return false;
+  }
+
   void setData() {
-    titleController.text=widget.settingNewReminder.reminderEntity.title;
-    noteController.text=widget.settingNewReminder.reminderEntity.note;
+    titleController.text = widget.settingNewReminder.reminderEntity.title;
+    noteController.text = widget.settingNewReminder.reminderEntity.note;
   }
 }

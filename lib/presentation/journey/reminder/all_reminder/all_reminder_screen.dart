@@ -16,6 +16,7 @@ import 'package:ghichu/presentation/journey/reminder/all_reminder/all_reminder_c
 
 import 'package:ghichu/presentation/journey/reminder/all_reminder/widgets/sticky_header_widget.dart';
 import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
+import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_event.dart';
 import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_state.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/app_bar_reminder.dart';
 
@@ -47,13 +48,16 @@ class _State extends State<AllPage> {
     return BlocConsumer<ManageReminderBloc, ManageReminderState>(
       listener: (context, state) {
         if (state is EditReminderState) {
-
           Navigator.pushNamed(context, RouteList.newReminder,
               arguments: SettingNewReminder(
                 reminderEntity: state.reminderEntity,
                   isEditReminder: true,
                   listGroup: state.listGroup,
-                  groupEntityl: state.groupEntity));
+                  groupEntityl: state.groupEntity)).then((value) {
+                    if(value!=null){
+                      BlocProvider.of<ManageReminderBloc>(context).add(GetDataReminderAllEvent(listGroup: state.listGroup));
+                    }
+          });
         }
       },
       builder: (context, state) {

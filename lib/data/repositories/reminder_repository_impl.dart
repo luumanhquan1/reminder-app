@@ -56,5 +56,10 @@ class ReminderRepositoryImpl extends ReminderRepository {
     return reminderLDs.getReminderToGroup(group: group);
   }
 
+  @override
+  Future<void> editReminderLocal(oldReminder, newReminder) async {
+     await reminderLDs.editReminder(oldReminder, newReminder);
+  }
+
 
 }

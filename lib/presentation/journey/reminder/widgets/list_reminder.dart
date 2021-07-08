@@ -38,11 +38,12 @@ class ListReminder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Slidable(
+      key: Key(title),
       controller: slidableController,
       actionPane: SlidableBehindActionPane(),
       secondaryActions: [
         GestureDetector(
-          onTap: editReminderBtn,
+          onTap:editReminderBtn,
           child: Container(
             color: Colors.grey,
             child: Center(

@@ -92,7 +92,6 @@ class RouteReminder {
       },
       RouteList.newReminder: (context) {
         SettingNewReminder settingNewReminder = args;
-
         if (settingNewReminder.isEditReminder == true) {
           return MultiBlocProvider(
               providers: [
