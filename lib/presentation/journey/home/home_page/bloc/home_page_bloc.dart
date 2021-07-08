@@ -78,7 +78,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield PushAddGroupState();
       yield creentState;
     }
-    if(event is PushNewReminderEvent){
+    if (event is PushNewReminderEvent) {
       InitHomePageState creentState = state;
       yield PushNewReminderState(listGroup: event.listGroup);
       yield creentState;
@@ -106,10 +106,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
             0) {
           //kiểm tra trong group có reminder không? nếu có hiện dialog
           yield creentState.update(
-              viewState: ViewState.showDiglog,
-              index: event.index,
-              isOpen: true);
-          yield creentState.update(viewState: ViewState.initial);
+              viewState: ViewState.showDiglog, index: event.index,);
+          yield creentState.update(viewState: ViewState.initial, isOpen: true);
         } else {
           //trong group không có reminder
           await groupUs.deleteGroupLocal(event.index);
@@ -227,11 +225,13 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield state.update(
         keyMyList: listGroup,
         updateOrder: !state.updateOrder,
+        isOpen: true,
       );
     } else {
       yield state.update(
         keyMyList: state.keyMyList,
         updateOrder: !state.updateOrder,
+        isOpen: true,
       );
     }
   }

@@ -37,6 +37,7 @@ class _State extends State<TodayPage> {
       builder: (context, state) {
         if(state is InitManagerReminderState){
           return Scaffold(
+            backgroundColor: Colors.white,
             appBar: AppBarReminderWidget(
               isIconEdit: false,
               actions: true

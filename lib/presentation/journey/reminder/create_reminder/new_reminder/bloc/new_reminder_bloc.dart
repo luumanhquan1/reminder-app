@@ -128,7 +128,8 @@ class NewReminderBloc extends Bloc<NewReminderEvent, NewReminderState> {
 
   Stream<NewReminderState> _mapActiveBtn(ActiveBtn event) async* {
     final currentState = state;
-    if (currentState is InitialNewReminderState)
+    if (currentState is InitialNewReminderState){
       yield currentState.update(activeBtn: event.activeBtn);
+    }
   }
 }

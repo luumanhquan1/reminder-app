@@ -89,9 +89,6 @@ class ListReminder extends StatelessWidget {
                               style: ReminderContants.textStyleTitle,
                             ),
                           ),
-                          SizedBox(
-                            height: ScreenUtil().setHeight(5),
-                          ),
                           group != null
                               ? Row(
                                   children: [

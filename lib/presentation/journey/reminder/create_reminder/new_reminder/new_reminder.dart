@@ -1,4 +1,4 @@
-import 'package:ghichu/common/extension/extension_datetime.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghichu/common/constants/layout_constants.dart';
@@ -6,7 +6,6 @@ import 'package:ghichu/common/constants/route_constants.dart';
 
 import 'package:ghichu/common/setting_argument/settting_argument.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
-
 
 import 'package:ghichu/presentation/journey/reminder/create_reminder/details_screen/widgets/time_widget.dart';
 import 'package:ghichu/presentation/journey/reminder/create_reminder/new_reminder/bloc/new_reminder_bloc.dart';
@@ -78,7 +77,8 @@ class _NewReminderPageState extends State<NewReminderPage> {
         });
       }
       if (state is InitialNewReminderState) {
-        if (state.viewState == ViewState.success) Navigator.pop(context,'done');
+        if (state.viewState == ViewState.success)
+          Navigator.pop(context, 'done');
       }
     }, builder: (context, state) {
       if (state is InitialNewReminderState) {
@@ -123,8 +123,9 @@ class _NewReminderPageState extends State<NewReminderPage> {
                 children: [
                   TitleNoteWidget(
                     onChange: (value) {
+                      String result = value;
                       BlocProvider.of<NewReminderBloc>(context)
-                          .add(ActiveBtn(title: value));
+                          .add(ActiveBtn(activeBtn: result.trim().isNotEmpty));
                     },
                     titleController: titleController,
                     noteController: noteController,

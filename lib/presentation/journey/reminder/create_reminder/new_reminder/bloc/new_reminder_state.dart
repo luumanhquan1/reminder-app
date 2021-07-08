@@ -16,7 +16,7 @@ class InitialNewReminderState extends NewReminderState {
   final String timeDateDetails;
   InitialNewReminderState(
       {this.date,
-        this.viewState,
+      this.viewState,
       this.initDetailsState,
       this.timeDateDetails,
       this.isTime,
@@ -34,18 +34,18 @@ class InitialNewReminderState extends NewReminderState {
     int date,
   }) =>
       InitialNewReminderState(
-        viewState: viewState??this.viewState,
+          viewState: viewState ?? this.viewState,
           timeDateDetails: timeDateDetails ?? this.timeDateDetails,
           initDetailsState: initDetailsState ?? this.initDetailsState,
           isTime: isTime ?? this.isTime,
-          date: date ,
+          date: date ?? this.date,
           groups: groups ?? this.groups,
           isDateDetails: isDateDetails ?? this.isDateDetails,
           activeBtn: activeBtn ?? this.activeBtn);
 
   @override
   List<Object> get props => [
-    this.viewState,
+        this.viewState,
         this.timeDateDetails,
         this.initDetailsState,
         this.date,
@@ -59,9 +59,9 @@ class InitialNewReminderState extends NewReminderState {
 class PushToDetailState extends NewReminderState {
   final InitDetailsState initDetailsState;
   final String group;
-  PushToDetailState({this.initDetailsState,this.group});
+  PushToDetailState({this.initDetailsState, this.group});
   @override
-  List<Object> get props => [this.initDetailsState,this.group];
+  List<Object> get props => [this.initDetailsState, this.group];
 }
 
 class PushToListGroupState extends NewReminderState {
@@ -72,4 +72,3 @@ class PushToListGroupState extends NewReminderState {
   // TODO: implement props
   List<Object> get props => [];
 }
-

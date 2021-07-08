@@ -40,7 +40,7 @@ class InitHomePageState extends HomePageState {
           reminderScheduled,
           reminderAll,
           bool isEdit,
-          isOpen,
+         bool isOpen,
           Map<String, int> remindertoGroup}) =>
       InitHomePageState(
           index: index ?? this.index,
