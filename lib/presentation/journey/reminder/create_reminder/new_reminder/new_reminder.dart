@@ -193,26 +193,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
   }
 
   void setData() {
-    // checkButtonBloc.setButtom(widget.title);
-    // newReminderBloc.setGroup(
-    //     ModelListReminder.myList['${widget.listGroup[widget.index]}'].title,
-    //     widget.index);
-    // titleController.text = widget.title;
-    // noteController.text = widget.note;
-    // detailsBloc.setTimeSwitch(widget.isTime);
-    // if (widget.isTime == true) {
-    //   detailsBloc.detailsState.timeHour(
-    //       DateTime.fromMillisecondsSinceEpoch(widget.date).hour,
-    //       DateTime.fromMillisecondsSinceEpoch(widget.date).minute);
-    // }
-    // if (widget.date != null) {
-    //   detailsBloc.detailsState.dateTime =
-    //       DateTime.fromMillisecondsSinceEpoch(widget.date);
-    //   detailsBloc.detailsState
-    //       .dateScheldul(DateTime.fromMillisecondsSinceEpoch(widget.date));
-    //   detailsBloc.setDateSwitch(true);
-    // } else {
-    //   detailsBloc.setDateSwitch(false);
-    // }
+    titleController.text=widget.settingNewReminder.reminderEntity.title;
+    noteController.text=widget.settingNewReminder.reminderEntity.note;
   }
 }

@@ -92,6 +92,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
         }
       }
       yield creentState.update(
+
           isDateSwitch: isDate,
           isTimeSwitch: isTime,
           selectDate: selectDate,

@@ -99,7 +99,9 @@ class RouteReminder {
                 BlocProvider<NewReminderBloc>(
                     create: (context) => locator<NewReminderBloc>()
                       ..add(UpDateNewReminderListGroupEvent(
-                          groups: settingNewReminder.groupEntityl))),
+                          groups: settingNewReminder.groupEntityl)
+                      )..add(ActiveBtn(activeBtn: true))
+                ),
                 BlocProvider<DetailsBloc>(
                     create: (context) =>
                         locator<DetailsBloc>()..add(UpdateEditDetailsEvent(
