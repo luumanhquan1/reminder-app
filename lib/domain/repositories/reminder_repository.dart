@@ -14,5 +14,7 @@ abstract class ReminderRepository {
   Future<Map<String, List<ReminderEntity>>> getReminderScheduledLoCal();
   Future<List<ReminderEntity>> getReminderToDayLocal();
   Future<List<ReminderEntity>> getReminderToGroupLocal({String group});
-  Future<void> editReminderLocal(oldReminder,newReminder);
+  Future<void> editReminderLocal(
+      ReminderEntity oldReminder, ReminderEntity newReminder);
+  Future<void> deleteReminderLocal(ReminderEntity oldReminder);
 }

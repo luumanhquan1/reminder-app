@@ -28,8 +28,11 @@ class ReminderUseCase {
 
     return listReminder;
   }
-  Future<void> editReminder(oldReminder,newReminder) async {
+  Future<void> editReminder(ReminderEntity oldReminder,ReminderEntity newReminder) async {
     await reminderRepository.editReminderLocal(oldReminder, newReminder);
+  }
+  Future<void> deleteReminder(ReminderEntity oldReminder) async {
+    await reminderRepository.deleteReminderLocal(oldReminder);
   }
   Future<List<ReminderEntity>> getReminderToDay() async {
     return reminderRepository.getReminderToDayLocal();

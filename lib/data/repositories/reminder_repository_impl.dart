@@ -61,5 +61,10 @@ class ReminderRepositoryImpl extends ReminderRepository {
      await reminderLDs.editReminder(oldReminder, newReminder);
   }
 
+  @override
+  Future<void> deleteReminderLocal(oldReminder) async {
+    await reminderLDs.deleteReminder(oldReminder);
+  }
+
 
 }

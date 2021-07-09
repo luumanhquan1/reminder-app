@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -9,7 +8,6 @@ import 'package:ghichu/presentation/journey/reminder/__mock__/textfiled_controll
 import 'package:ghichu/presentation/journey/reminder/reminder_constants.dart';
 
 import 'package:ghichu/presentation/journey/reminder/widgets/check_box.dart';
-
 
 class ListReminder extends StatelessWidget {
   String title, group, note, date, time;
@@ -44,19 +42,18 @@ class ListReminder extends StatelessWidget {
       controller: slidableController,
       actionPane: SlidableBehindActionPane(),
       secondaryActions: [
-        GestureDetector(
-          onTap:editReminderBtn,
-          child: Container(
-            color: Colors.grey,
-            child: Center(
-                child: Text(
-              'Chi tiết',
-              style: TextStyle(
-                  color: Colors.white, fontSize: ScreenUtil().setSp(17)),
-            )),
-          ),
-        ),
-        GestureDetector(
+        SlideAction(
+          onTap: editReminderBtn,
+            child: Container(
+          color: Colors.grey,
+          child: Center(
+              child: Text(
+            'Chi tiết',
+            style: TextStyle(
+                color: Colors.white, fontSize: ScreenUtil().setSp(17)),
+          )),
+        )),
+        SlideAction(
           onTap: deleleReminderBtn,
           child: Container(
             color: Colors.red,

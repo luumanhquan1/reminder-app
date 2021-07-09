@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -21,17 +20,16 @@ class StickyReminderAll extends StatelessWidget {
   final List<GroupEntity> listGroup;
   final GroupEntity groupEntity;
   SlidableController slidableController;
-  StickyReminderAll(
-      {Key key,
-      @required this.slidableController,
-      @required this.indexGroup,
-      @required this.header,
-      @required this.color,
-      @required this.listReminder,
-      @required this.listGroup,
-      @required this.groupEntity,
-      })
-      : super(key: key);
+  StickyReminderAll({
+    Key key,
+    @required this.slidableController,
+    @required this.indexGroup,
+    @required this.header,
+    @required this.color,
+    @required this.listReminder,
+    @required this.listGroup,
+    @required this.groupEntity,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +60,15 @@ class StickyReminderAll extends StatelessWidget {
                     editReminderBtn: () {
                       BlocProvider.of<ManageReminderBloc>(context).add(
                           EditReminderEvent(
-                            groupEntity: groupEntity,
+                              groupEntity: groupEntity,
                               listGroup: listGroup,
                               reminderEntity: listReminder[index]));
+                    },
+                    deleleReminderBtn: () {
+                      BlocProvider.of<ManageReminderBloc>(context).add(
+                          DeleteReminderEvent(
+                              reminderEntity: listReminder[index],
+                              index: index));
                     },
                     slidableController: slidableController,
                     indexGroup: indexGroup,

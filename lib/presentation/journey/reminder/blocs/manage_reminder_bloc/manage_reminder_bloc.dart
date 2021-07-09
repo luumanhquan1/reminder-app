@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghichu/domain/entities/reminder_entity.dart';
 import 'package:ghichu/domain/usecase/reminder_usecase.dart';
@@ -18,6 +16,7 @@ class ManageReminderBloc
       listReminder: {},
       listGroup: [],
       isChangeState: false,
+      isUpDate: false,
       reminderGroupOrToday: []);
 
   @override
@@ -45,6 +44,22 @@ class ManageReminderBloc
           listGroup: event.listGroup,
           groupEntity: event.groupEntity);
       yield creentState;
+    }
+    if (event is DeleteReminderEvent) {
+      yield* _mapDeleteReminderState(event);
+    }
+  }
+
+  Stream<ManageReminderState> _mapDeleteReminderState(
+      DeleteReminderEvent event) async* {
+    final creentState = state;
+    await reminderUC.deleteReminder(event.reminderEntity);
+    if (creentState is InitManagerReminderState) {
+      creentState.listReminder[event.reminderEntity.list].removeAt(event.index);
+      yield creentState.update(
+          listReminder: creentState.listReminder,
+          isUpDate: !creentState.isUpDate,
+          isChangeState: true);
     }
   }
 

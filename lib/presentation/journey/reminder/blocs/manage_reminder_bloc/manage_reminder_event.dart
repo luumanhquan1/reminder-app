@@ -25,3 +25,9 @@ class EditReminderEvent extends ManageReminderEvent {
  final GroupEntity groupEntity;
   EditReminderEvent({@required this.reminderEntity,@required this.listGroup,@required this.groupEntity});
 }
+class DeleteReminderEvent extends ManageReminderEvent{
+  final ReminderEntity reminderEntity;
+  final int index;
+  DeleteReminderEvent({@required this.reminderEntity,this.index});
+
+}

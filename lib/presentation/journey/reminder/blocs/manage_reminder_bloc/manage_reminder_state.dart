@@ -12,18 +12,20 @@ class InitManagerReminderState extends ManageReminderState {
   Map<String, List<ReminderEntity>> listReminder;
   List<GroupEntity> listGroup;
   List<ReminderEntity> reminderGroupOrToday;
-  bool isChangeState;
+  bool isChangeState,isUpDate;
   InitManagerReminderState(
       {this.reminderGroupOrToday,
       this.isChangeState,
       this.listReminder,
-      this.listGroup});
+      this.listGroup,this.isUpDate});
   InitManagerReminderState update(
           {Map<String, List<ReminderEntity>> listReminder,
           List<ReminderEntity> reminderGroupOrToday,
           bool isChangeState,
+            bool isUpDate,
           List<GroupEntity> listGroup}) =>
       InitManagerReminderState(
+        isUpDate: isUpDate??this.isUpDate,
           reminderGroupOrToday:
               reminderGroupOrToday ?? this.reminderGroupOrToday,
           isChangeState: isChangeState ?? this.isChangeState,
@@ -31,6 +33,7 @@ class InitManagerReminderState extends ManageReminderState {
           listGroup: listGroup ?? this.listGroup);
   @override
   List<Object> get props => [
+    this.isUpDate,
         this.listReminder,
         this.isChangeState,
         this.listGroup,
