@@ -65,18 +65,10 @@ class _State extends State<AllPage> {
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBarReminderWidget(
-              isIconEdit: false,
-              actions: true
+              isIconEdit: isEditIcon(state),
+              actions: isEditIcon(state)
                   ? () {
-                      // reminderUntil(
-                      //     type: ReminderEnum.All,
-                      //     allReminderBloc: allReminderBloc,
-                      //     controller: listController,
-                      //     keyGroup: snapshot.data.group);
-                      // allReminderBloc.allReminderState.indexGroup = null;
-                      // allReminderBloc.allReminderState.indexGroupReminder =
-                      // null;
-                      // allReminderBloc.update();
+
                     }
                   : null,
               leading: () {
@@ -117,5 +109,11 @@ class _State extends State<AllPage> {
         return SizedBox();
       },
     );
+  }
+  bool isEditIcon(InitManagerReminderState state){
+    if(state.indexReminder!=-1||state.indexGroup!=-1){
+      return true;
+    }
+ return false;
   }
 }

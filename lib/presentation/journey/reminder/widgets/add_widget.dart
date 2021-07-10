@@ -9,6 +9,7 @@ import 'package:ghichu/common/enums/reminder_enum.dart';
 import 'package:ghichu/common/untils/reminder_until.dart';
 import 'package:ghichu/presentation/journey/reminder/__mock__/textfiled_controller.dart';
 import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
+import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_event.dart';
 import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_state.dart';
 
 import '../reminder_constants.dart';
@@ -35,7 +36,9 @@ class AddWidget extends StatelessWidget {
     return TextField(
       controller: controller,
       focusNode: focusNode,
-      onTap:onTap,
+      onTap:(){
+        BlocProvider.of<ManageReminderBloc>(context).add(SelectReminderEvent(indexGroup: index,indexReminder: -1));
+      },
       style: TextStyle(fontSize: ScreenUtil().setSp(16)),
       decoration: InputDecoration(
         enabledBorder: UnderlineInputBorder(

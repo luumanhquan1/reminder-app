@@ -17,6 +17,8 @@ class ManageReminderBloc
   // TODO: implement initialState
   ManageReminderState get initialState => InitManagerReminderState(
       listReminder: {},
+      indexGroup: -1,
+      indexReminder: -1,
       listGroup: [],
       isChangeState: false,
       isUpDate: false,

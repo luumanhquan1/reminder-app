@@ -40,7 +40,6 @@ class _State extends State<TodayPage> {
     return BlocConsumer<ManageReminderBloc, ManageReminderState>(
       listener: (context, state) {
         if (state is EditReminderState) {
-
           Navigator.pushNamed(context, RouteList.newReminder,
                   arguments: SettingNewReminder(
                       reminderEntity: state.reminderEntity,
@@ -49,12 +48,14 @@ class _State extends State<TodayPage> {
                       groupEntityl: state.groupEntity))
               .then((value) {
             if (value != null) {
-              if(widget.groupEntity==null) {
+              if (widget.groupEntity == null) {
                 BlocProvider.of<ManageReminderBloc>(context)
                     .add(GetDateToDayEvent(listGroup: state.listGroup));
-              }else{
-                BlocProvider.of<ManageReminderBloc>(context)
-                    .add(GetDateGroupEvent(listGroup: state.listGroup,groupEntity: widget.groupEntity));
+              } else {
+                BlocProvider.of<ManageReminderBloc>(context).add(
+                    GetDateGroupEvent(
+                        listGroup: state.listGroup,
+                        groupEntity: widget.groupEntity));
               }
             }
           });
@@ -65,15 +66,15 @@ class _State extends State<TodayPage> {
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBarReminderWidget(
-              isIconEdit: false,
-              actions: true
+              isIconEdit: isEditIcon(state),
+              actions: isEditIcon(state)
                   ? () {
                       // todayReminderBloc.todayReminderState.indexReminder = null;
                       // todayReminderBloc.update();
                     }
                   : null,
-              leading: (){
-                Navigator.pop(context,state.isChangeState);
+              leading: () {
+                Navigator.pop(context, state.isChangeState);
               },
             ),
             body: SingleChildScrollView(
@@ -110,6 +111,14 @@ class _State extends State<TodayPage> {
                                 state.reminderGroupOrToday[index];
                             if (widget.groupEntity == null) {
                               return ListReminder(
+                                selectReminder: () {
+                                  BlocProvider.of<ManageReminderBloc>(context)
+                                      .add(SelectReminderEvent(
+                                          indexReminder: index, indexGroup: 0));
+                                },
+                                state: state,
+                                indexReminder: index,
+                                indexGroup: 0,
                                 editReminderBtn: () {
                                   BlocProvider.of<ManageReminderBloc>(context)
                                       .add(EditReminderEvent(
@@ -142,6 +151,14 @@ class _State extends State<TodayPage> {
                                         reminderEntity: reminder,
                                         index: index));
                               },
+                              selectReminder: () {
+                                BlocProvider.of<ManageReminderBloc>(context)
+                                    .add(SelectReminderEvent(
+                                        indexReminder: index, indexGroup: 0));
+                              },
+                              state: state,
+                              indexReminder: index,
+                              indexGroup: 0,
                               slidableController: slidableController,
                               title: reminder.title,
                               note: reminder.note,
@@ -158,5 +175,11 @@ class _State extends State<TodayPage> {
         return SizedBox();
       },
     );
+  }
+  bool isEditIcon(InitManagerReminderState state){
+    if(state.indexReminder!=-1||state.indexGroup!=-1){
+      return true;
+    }
+    return false;
   }
 }

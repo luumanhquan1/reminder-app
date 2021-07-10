@@ -47,8 +47,8 @@ class _State extends State<SchedulePage> {
      if(state is InitManagerReminderState){
        return Scaffold(
          appBar: AppBarReminderWidget(
-           isIconEdit: true,
-           actions: true
+           isIconEdit: isEditIcon(state),
+           actions: isEditIcon(state)
                ? () {
              // reminderUntil(
              //     scheduleReminderBloc: scheduleReminderBloc,
@@ -82,7 +82,8 @@ class _State extends State<SchedulePage> {
                  children: List.generate(state.listReminder.length, (index) {
                    String date=state.listReminder.keys.elementAt(index);
                    return StickyReminderSchedule(
-
+                     state: state,
+                    indexGroup: index,
                      slidableController: slidableController,
                      header: date,
                      color: Colors.black.value.toString(),
@@ -97,5 +98,11 @@ class _State extends State<SchedulePage> {
      }
      return SizedBox();
     });
+  }
+  bool isEditIcon(InitManagerReminderState state){
+    if(state.indexReminder!=-1||state.indexGroup!=-1){
+      return true;
+    }
+    return false;
   }
 }

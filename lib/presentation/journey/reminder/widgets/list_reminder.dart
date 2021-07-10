@@ -98,7 +98,7 @@ class ListReminder extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            width: ScreenUtil().setWidth(320),
+                            width:indexReminder==state.indexReminder?ScreenUtil().setWidth(320):ScreenUtil().setWidth(355),
                             child: Text(
                               '$title',
                               style: ReminderContants.textStyleTitle,
@@ -140,7 +140,7 @@ class ListReminder extends StatelessWidget {
                                     height: ScreenUtil().setHeight(7),
                                   ),
                                   Container(
-                                    width: ScreenUtil().setWidth(320),
+                                    width:indexReminder==state.indexReminder?ScreenUtil().setWidth(320):ScreenUtil().setWidth(355),
 
                                     child: Text(
                                       '$note',

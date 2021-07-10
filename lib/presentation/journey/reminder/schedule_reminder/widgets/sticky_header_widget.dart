@@ -7,6 +7,7 @@ import 'package:ghichu/domain/entities/group_entity.dart';
 import 'package:ghichu/domain/entities/reminder_entity.dart';
 import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
 import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_event.dart';
+import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_state.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/add_widget.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/list_reminder.dart';
 import 'package:sticky_headers/sticky_headers.dart';
@@ -17,15 +18,20 @@ class StickyReminderSchedule extends StatelessWidget {
   final List<ReminderEntity> listReminder;
   final GroupEntity groupEntity;
   final List<GroupEntity> listGroup;
+  final int indexGroup;
+  InitManagerReminderState state;
   SlidableController slidableController;
+
   StickyReminderSchedule(
       {Key key,
-        @required this.listGroup,
-        @required this.groupEntity,
+      @required this.state,
+      @required this.listGroup,
+      @required this.groupEntity,
       @required this.slidableController,
       @required this.header,
       @required this.color,
-      @required this.listReminder})
+      @required this.listReminder,
+      this.indexGroup})
       : super(key: key);
 
   @override
@@ -53,6 +59,11 @@ class StickyReminderSchedule extends StatelessWidget {
               Column(
                 children: List.generate(listReminder.length, (index) {
                   return ListReminder(
+                    selectReminder: () {
+                      BlocProvider.of<ManageReminderBloc>(context).add(
+                          SelectReminderEvent(
+                              indexReminder: index, indexGroup: indexGroup));
+                    },
                     editReminderBtn: () {
                       BlocProvider.of<ManageReminderBloc>(context).add(
                           EditReminderEvent(
@@ -65,6 +76,9 @@ class StickyReminderSchedule extends StatelessWidget {
                               reminderEntity: listReminder[index],
                               index: index));
                     },
+                    state: state,
+                    indexReminder: index,
+                    indexGroup: indexGroup,
                     slidableController: slidableController,
                     title: listReminder[index].title,
                     note: listReminder[index].note,
@@ -74,6 +88,8 @@ class StickyReminderSchedule extends StatelessWidget {
                 }),
               ),
               AddWidget(
+                state: state,
+                index: indexGroup,
                 keyGroup: header,
               ),
             ],
