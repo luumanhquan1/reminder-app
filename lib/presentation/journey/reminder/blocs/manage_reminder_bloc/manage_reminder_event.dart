@@ -43,3 +43,9 @@ class DeleteReminderEvent extends ManageReminderEvent {
   final int index;
   DeleteReminderEvent({@required this.reminderEntity, this.index});
 }
+class SelectReminderEvent extends ManageReminderEvent{
+  final int indexReminder;
+  final int indexGroup;
+
+  SelectReminderEvent({this.indexReminder, this.indexGroup});
+}

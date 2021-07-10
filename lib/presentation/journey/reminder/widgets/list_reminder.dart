@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/screen_util.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:ghichu/data/models/reminder.dart';
 import 'package:ghichu/presentation/journey/reminder/__mock__/textfiled_controller.dart';
+import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_state.dart';
 import 'package:ghichu/presentation/journey/reminder/reminder_constants.dart';
 
 import 'package:ghichu/presentation/journey/reminder/widgets/check_box.dart';
@@ -16,13 +17,17 @@ class ListReminder extends StatelessWidget {
   Reminder reminder;
   SlidableController slidableController;
   int indexReminder, indexGroup, index;
+  InitManagerReminderState state;
   final Function editReminderBtn;
   final Function deleleReminderBtn;
+  final Function selectReminder;
   ListReminder(
       {Key key,
       @required this.slidableController,
       @required this.deleleReminderBtn,
       @required this.editReminderBtn,
+      @required this.selectReminder,
+        @required this.state,
       this.title,
       this.time,
       this.indexReminder,
@@ -43,16 +48,16 @@ class ListReminder extends StatelessWidget {
       actionPane: SlidableBehindActionPane(),
       secondaryActions: [
         SlideAction(
-          onTap: editReminderBtn,
+            onTap: editReminderBtn,
             child: Container(
-          color: Colors.grey,
-          child: Center(
-              child: Text(
-            'Chi tiết',
-            style: TextStyle(
-                color: Colors.white, fontSize: ScreenUtil().setSp(17)),
-          )),
-        )),
+              color: Colors.grey,
+              child: Center(
+                  child: Text(
+                'Chi tiết',
+                style: TextStyle(
+                    color: Colors.white, fontSize: ScreenUtil().setSp(17)),
+              )),
+            )),
         SlideAction(
           onTap: deleleReminderBtn,
           child: Container(
@@ -79,7 +84,7 @@ class ListReminder extends StatelessWidget {
               ),
               Expanded(
                   child: GestureDetector(
-                onTap: () {},
+                onTap:selectReminder,
                 child: Container(
                   padding: EdgeInsets.symmetric(
                       vertical: ScreenUtil().setHeight(10)),
@@ -93,7 +98,7 @@ class ListReminder extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            width: ScreenUtil().setWidth(355),
+                            width: ScreenUtil().setWidth(320),
                             child: Text(
                               '$title',
                               style: ReminderContants.textStyleTitle,
@@ -135,7 +140,8 @@ class ListReminder extends StatelessWidget {
                                     height: ScreenUtil().setHeight(7),
                                   ),
                                   Container(
-                                    width: ScreenUtil().setWidth(355),
+                                    width: ScreenUtil().setWidth(320),
+
                                     child: Text(
                                       '$note',
                                       style: ReminderContants.textStyleNote,
@@ -148,17 +154,17 @@ class ListReminder extends StatelessWidget {
                           )
                         ],
                       ),
+
                       Padding(
-                        padding:
-                            EdgeInsets.only(right: ScreenUtil().setWidth(15)),
+                        padding:  EdgeInsets.only(right: ScreenUtil().setWidth(12)),
                         child: Visibility(
-                            visible: indexGroup == null
-                                ? indexReminder == 0
-                                    ? true
-                                    : false
+                            visible: indexGroup == state.indexGroup
+                                ? indexReminder == state.indexReminder
+                                ? true
+                                : false
                                 : false,
                             child: GestureDetector(
-                              onTap: () {},
+                              onTap: editReminderBtn,
                               child: Icon(
                                 Icons.error_outline,
                                 size: ScreenUtil().setSp(25),

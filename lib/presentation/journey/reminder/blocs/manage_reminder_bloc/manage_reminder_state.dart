@@ -12,20 +12,28 @@ class InitManagerReminderState extends ManageReminderState {
   Map<String, List<ReminderEntity>> listReminder;
   List<GroupEntity> listGroup;
   List<ReminderEntity> reminderGroupOrToday;
-  bool isChangeState,isUpDate;
+  bool isChangeState, isUpDate;
+  int indexGroup, indexReminder;
   InitManagerReminderState(
       {this.reminderGroupOrToday,
       this.isChangeState,
       this.listReminder,
-      this.listGroup,this.isUpDate});
+      this.listGroup,
+      this.isUpDate,
+      this.indexGroup,
+      this.indexReminder});
   InitManagerReminderState update(
           {Map<String, List<ReminderEntity>> listReminder,
           List<ReminderEntity> reminderGroupOrToday,
           bool isChangeState,
-            bool isUpDate,
-          List<GroupEntity> listGroup}) =>
+          bool isUpDate,
+          List<GroupEntity> listGroup,
+          int indexGroup,
+          indexReminder}) =>
       InitManagerReminderState(
-        isUpDate: isUpDate??this.isUpDate,
+          indexGroup: indexGroup ?? this.indexGroup,
+          indexReminder: indexReminder ?? this.indexReminder,
+          isUpDate: isUpDate ?? this.isUpDate,
           reminderGroupOrToday:
               reminderGroupOrToday ?? this.reminderGroupOrToday,
           isChangeState: isChangeState ?? this.isChangeState,
@@ -33,11 +41,13 @@ class InitManagerReminderState extends ManageReminderState {
           listGroup: listGroup ?? this.listGroup);
   @override
   List<Object> get props => [
-    this.isUpDate,
+        this.isUpDate,
         this.listReminder,
         this.isChangeState,
         this.listGroup,
-        this.reminderGroupOrToday
+        this.reminderGroupOrToday,
+        this.indexReminder,
+        this.indexGroup
       ];
 }
 
@@ -45,7 +55,11 @@ class EditReminderState extends ManageReminderState {
   final ReminderEntity reminderEntity;
   final List<GroupEntity> listGroup;
   final GroupEntity groupEntity;
-  EditReminderState({@required this.reminderEntity,@required this.listGroup,@required this.groupEntity});
+  EditReminderState(
+      {@required this.reminderEntity,
+      @required this.listGroup,
+      @required this.groupEntity});
   @override
-  List<Object> get props => [this.reminderEntity,this.listGroup,this.groupEntity];
+  List<Object> get props =>
+      [this.reminderEntity, this.listGroup, this.groupEntity];
 }

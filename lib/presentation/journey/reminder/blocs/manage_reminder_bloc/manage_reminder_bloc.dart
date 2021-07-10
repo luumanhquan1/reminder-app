@@ -38,26 +38,43 @@ class ManageReminderBloc
       yield* _mapGetReminderGroup(event);
     }
     if (event is EditReminderEvent) {
-      InitManagerReminderState creentState;
-      if (state is InitManagerReminderState) {
-        creentState = state;
-      }
-      GroupEntity groupEntity;
-      for (int i = 0; i < creentState.listGroup.length; i++) {
-        if (creentState.listGroup[i].name == event.group) {
-          groupEntity = creentState.listGroup[i];
-          break;
-        }
-      }
-      yield EditReminderState(
-          reminderEntity: event.reminderEntity,
-          listGroup: creentState.listGroup,
-          groupEntity: groupEntity);
-      yield creentState;
+      yield* _mapEditReminderToState(event);
     }
     if (event is DeleteReminderEvent) {
       yield* _mapDeleteReminderState(event);
     }
+    if (event is SelectReminderEvent) {
+      yield* _mapSelectReminderToState(event);
+    }
+  }
+
+  Stream<ManageReminderState> _mapSelectReminderToState(
+      SelectReminderEvent event) async* {
+    final creentState = state;
+    if (creentState is InitManagerReminderState) {
+     yield creentState.update(
+          indexGroup: event.indexGroup, indexReminder: event.indexReminder);
+    }
+  }
+
+  Stream<ManageReminderState> _mapEditReminderToState(
+      EditReminderEvent event) async* {
+    InitManagerReminderState creentState;
+    if (state is InitManagerReminderState) {
+      creentState = state;
+    }
+    GroupEntity groupEntity;
+    for (int i = 0; i < creentState.listGroup.length; i++) {
+      if (creentState.listGroup[i].name == event.group) {
+        groupEntity = creentState.listGroup[i];
+        break;
+      }
+    }
+    yield EditReminderState(
+        reminderEntity: event.reminderEntity,
+        listGroup: creentState.listGroup,
+        groupEntity: groupEntity);
+    yield creentState;
   }
 
   Stream<ManageReminderState> _mapDeleteReminderState(
@@ -65,7 +82,6 @@ class ManageReminderBloc
     final creentState = state;
     await reminderUC.deleteReminder(event.reminderEntity);
     if (creentState is InitManagerReminderState) {
-
       if (creentState.listReminder.length == 0) {
         creentState.reminderGroupOrToday.removeAt(event.index);
         yield creentState.update(

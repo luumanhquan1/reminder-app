@@ -7,6 +7,7 @@ import 'package:ghichu/domain/entities/group_entity.dart';
 import 'package:ghichu/domain/entities/reminder_entity.dart';
 import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
 import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_event.dart';
+import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_state.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/add_widget.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/list_reminder.dart';
 import 'package:sticky_headers/sticky_headers.dart';
@@ -19,17 +20,19 @@ class StickyReminderAll extends StatelessWidget {
   final List<ReminderEntity> listReminder;
   final List<GroupEntity> listGroup;
   final GroupEntity groupEntity;
+  InitManagerReminderState state;
   SlidableController slidableController;
-  StickyReminderAll({
-    Key key,
-    @required this.slidableController,
-    @required this.indexGroup,
-    @required this.header,
-    @required this.color,
-    @required this.listReminder,
-    @required this.listGroup,
-    @required this.groupEntity,
-  }) : super(key: key);
+  StickyReminderAll(
+      {Key key,
+      @required this.slidableController,
+      @required this.indexGroup,
+      @required this.header,
+      @required this.color,
+      @required this.listReminder,
+      @required this.listGroup,
+      @required this.groupEntity,
+      @required this.state})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +60,11 @@ class StickyReminderAll extends StatelessWidget {
               Column(
                 children: List.generate(listReminder.length, (index) {
                   return ListReminder(
+                    selectReminder: () {
+                      BlocProvider.of<ManageReminderBloc>(context).add(
+                          SelectReminderEvent(
+                              indexReminder: index, indexGroup: indexGroup));
+                    },
                     editReminderBtn: () {
                       BlocProvider.of<ManageReminderBloc>(context).add(
                           EditReminderEvent(
@@ -76,10 +84,14 @@ class StickyReminderAll extends StatelessWidget {
                     note: listReminder[index].note,
                     date: listReminder[index].details.date ?? '',
                     time: listReminder[index].details.time ?? '',
+                    state: state,
                   );
                 }),
               ),
               AddWidget(
+                onTap: () {},
+                index: indexGroup,
+                state: state,
                 keyGroup: header,
               ),
             ],
