@@ -41,14 +41,10 @@ class SettingPriority {
   SettingPriority({this.priority, this.indexSelect});
 }
 
-class SettingAllReminder {
+class SettingReminder {
   final List<GroupEntity> listGroup;
-
-  SettingAllReminder({this.listGroup});
-}
-
-class SettingToDay {
   final GroupEntity groupEntity;
-
-  SettingToDay({this.groupEntity});
+  SettingReminder({this.listGroup,this.groupEntity});
 }
+
+

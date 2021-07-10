@@ -25,6 +25,7 @@ class WrapWidget extends StatelessWidget {
                 // return SightWidget(index: index);
                 if (state.reminderSystem[index] == 'Today') {
                   return SightWidget(
+                      listGroup: state.keyMyList,
                     routeName: RouteList.todayPage,
                       index: index,
                       reminderColor: HomePageConstants.reminderTodayColor,
@@ -34,6 +35,7 @@ class WrapWidget extends StatelessWidget {
                 }
                 if (state.reminderSystem[index] == 'Scheduled') {
                   return SightWidget(
+                      listGroup: state.keyMyList,
                       routeName: RouteList.scheduled,
                       index: index,
                       reminderColor: HomePageConstants.reminderScheduledColor,

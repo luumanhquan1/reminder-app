@@ -32,21 +32,15 @@ class SightWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (listGroup != null) {
           Navigator.pushNamed(context, routeName,
-                  arguments: SettingAllReminder(listGroup: listGroup))
+                  arguments: SettingReminder(listGroup: listGroup))
               .then((value) {
             if (value == true) {
               BlocProvider.of<HomePageBloc>(context).add(UpDateReminderEvent());
             }
           });
-        } else {
-          Navigator.pushNamed(context, routeName).then((value) {
-            if (value == true) {
-              BlocProvider.of<HomePageBloc>(context).add(UpDateReminderEvent());
-            }
-          });
-        }
+
+
         // if (HomePageConstants.list[index]['title'] == 'Today') {
         //   Navigator.pushNamed(context, HomePageConstants.list[index]['push'],arguments: {StringConstants.keyGroup:null})
         //       .whenComplete(() {

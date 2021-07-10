@@ -35,14 +35,15 @@ class RouteReminder {
     final args = settings.arguments;
     return {
       RouteList.scheduled: (context) {
+        SettingReminder settingAll = args;
         return MultiBlocProvider(providers: [
           BlocProvider(
-              create: (context) =>
-                  locator<ManageReminderBloc>()..add(GetDataScheduledEvent()))
+              create: (context) => locator<ManageReminderBloc>()
+                ..add(GetDataScheduledEvent(listGroup: settingAll.listGroup)))
         ], child: SchedulePage());
       },
       RouteList.allPage: (context) {
-        SettingAllReminder settingAll = args;
+        SettingReminder settingAll = args;
         return MultiBlocProvider(providers: [
           BlocProvider(
               create: (context) => locator<ManageReminderBloc>()
@@ -50,12 +51,12 @@ class RouteReminder {
         ], child: AllPage());
       },
       RouteList.todayPage: (context) {
-        SettingToDay settingToday = args;
-        if (settingToday == null) {
+        SettingReminder settingToday = args;
+        if (settingToday.groupEntity == null) {
           return MultiBlocProvider(providers: [
             BlocProvider(
-                create: (context) =>
-                    locator<ManageReminderBloc>()..add(GetDateToDayEvent()))
+                create: (context) => locator<ManageReminderBloc>()
+                  ..add(GetDateToDayEvent(listGroup: settingToday.listGroup)))
           ], child: TodayPage());
         }
         return MultiBlocProvider(
@@ -63,6 +64,7 @@ class RouteReminder {
               BlocProvider(
                   create: (context) => locator<ManageReminderBloc>()
                     ..add(GetDateGroupEvent(
+                        listGroup: settingToday.listGroup,
                         groupEntity: settingToday.groupEntity)))
             ],
             child: TodayPage(
@@ -98,15 +100,14 @@ class RouteReminder {
                 BlocProvider<NewReminderBloc>(
                     create: (context) => locator<NewReminderBloc>()
                       ..add(UpDateNewReminderListGroupEvent(
-                          groups: settingNewReminder.groupEntityl)
-                      )..add(ActiveBtn(activeBtn: true))
-                ),
+                          groups: settingNewReminder.groupEntityl))
+                      ..add(ActiveBtn(activeBtn: true))),
                 BlocProvider<DetailsBloc>(
-                    create: (context) =>
-                        locator<DetailsBloc>()..add(UpdateEditDetailsEvent(
-                          date: settingNewReminder.reminderEntity.details.date,
-                          time: settingNewReminder.reminderEntity.details.time,
-                        )))
+                    create: (context) => locator<DetailsBloc>()
+                      ..add(UpdateEditDetailsEvent(
+                        date: settingNewReminder.reminderEntity.details.date,
+                        time: settingNewReminder.reminderEntity.details.time,
+                      )))
               ],
               child: NewReminderPage(
                 settingNewReminder: settingNewReminder,

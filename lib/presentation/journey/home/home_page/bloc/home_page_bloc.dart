@@ -69,7 +69,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     if (event is PushMyListEvent) {
       InitHomePageState creentState = state;
       if (creentState.isEdit == true) {
-        yield PushMyListState(groupEntity: event.groupEntity);
+        yield PushMyListState(groupEntity: event.groupEntity,listGroup: creentState.keyMyList);
         yield creentState;
       }
     }

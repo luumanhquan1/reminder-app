@@ -1,8 +1,12 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:ghichu/domain/entities/group_entity.dart';
 import 'package:ghichu/domain/entities/reminder_entity.dart';
+import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
+import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_event.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/add_widget.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/list_reminder.dart';
 import 'package:sticky_headers/sticky_headers.dart';
@@ -11,9 +15,13 @@ class StickyReminderSchedule extends StatelessWidget {
   final String header;
   final String color;
   final List<ReminderEntity> listReminder;
+  final GroupEntity groupEntity;
+  final List<GroupEntity> listGroup;
   SlidableController slidableController;
   StickyReminderSchedule(
       {Key key,
+        @required this.listGroup,
+        @required this.groupEntity,
       @required this.slidableController,
       @required this.header,
       @required this.color,
@@ -45,6 +53,18 @@ class StickyReminderSchedule extends StatelessWidget {
               Column(
                 children: List.generate(listReminder.length, (index) {
                   return ListReminder(
+                    editReminderBtn: () {
+                      BlocProvider.of<ManageReminderBloc>(context).add(
+                          EditReminderEvent(
+                              group: listReminder[index].list,
+                              reminderEntity: listReminder[index]));
+                    },
+                    deleleReminderBtn: () {
+                      BlocProvider.of<ManageReminderBloc>(context).add(
+                          DeleteReminderEvent(
+                              reminderEntity: listReminder[index],
+                              index: index));
+                    },
                     slidableController: slidableController,
                     title: listReminder[index].title,
                     note: listReminder[index].note,

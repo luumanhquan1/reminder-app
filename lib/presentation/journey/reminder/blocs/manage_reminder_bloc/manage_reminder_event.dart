@@ -10,24 +10,36 @@ class GetDataReminderAllEvent extends ManageReminderEvent {
   GetDataReminderAllEvent({@required this.listGroup});
 }
 
-class GetDataScheduledEvent extends ManageReminderEvent {}
+class GetDataScheduledEvent extends ManageReminderEvent {
+  final List<GroupEntity> listGroup;
 
-class GetDateToDayEvent extends ManageReminderEvent {}
+  GetDataScheduledEvent({@required this.listGroup});
+}
+
+class GetDateToDayEvent extends ManageReminderEvent {
+  final List<GroupEntity> listGroup;
+
+  GetDateToDayEvent({@required this.listGroup});
+}
 
 class GetDateGroupEvent extends ManageReminderEvent {
+  final List<GroupEntity> listGroup;
   final GroupEntity groupEntity;
-  GetDateGroupEvent({@required this.groupEntity});
+  GetDateGroupEvent({@required this.groupEntity, @required this.listGroup});
 }
 
 class EditReminderEvent extends ManageReminderEvent {
   final ReminderEntity reminderEntity;
- final List<GroupEntity> listGroup;
- final GroupEntity groupEntity;
-  EditReminderEvent({@required this.reminderEntity,@required this.listGroup,@required this.groupEntity});
+
+  final String group;
+  EditReminderEvent(
+      {@required this.reminderEntity,
+
+      @required this.group});
 }
-class DeleteReminderEvent extends ManageReminderEvent{
+
+class DeleteReminderEvent extends ManageReminderEvent {
   final ReminderEntity reminderEntity;
   final int index;
-  DeleteReminderEvent({@required this.reminderEntity,this.index});
-
+  DeleteReminderEvent({@required this.reminderEntity, this.index});
 }

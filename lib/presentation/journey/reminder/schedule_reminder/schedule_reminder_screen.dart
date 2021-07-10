@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:ghichu/common/constants/route_constants.dart';
 import 'package:ghichu/common/enums/reminder_enum.dart';
+import 'package:ghichu/common/setting_argument/settting_argument.dart';
 import 'package:ghichu/common/untils/reminder_until.dart';
 import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
+import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_event.dart';
 import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_state.dart';
 
 import 'package:ghichu/presentation/journey/reminder/schedule_reminder/widgets/sticky_header_widget.dart';
@@ -25,7 +28,21 @@ class _State extends State<SchedulePage> {
   }
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ManageReminderBloc, ManageReminderState>(
+    return BlocConsumer<ManageReminderBloc, ManageReminderState>(
+      listener: (context,state){
+        if (state is EditReminderState) {
+          Navigator.pushNamed(context, RouteList.newReminder,
+              arguments: SettingNewReminder(
+                  reminderEntity: state.reminderEntity,
+                  isEditReminder: true,
+                  listGroup: state.listGroup,
+                  groupEntityl: state.groupEntity)).then((value) {
+            if(value!=null){
+              BlocProvider.of<ManageReminderBloc>(context).add(GetDataScheduledEvent(listGroup: state.listGroup));
+            }
+          });
+        }
+      },
         builder: (context, state) {
      if(state is InitManagerReminderState){
        return Scaffold(
@@ -53,21 +70,19 @@ class _State extends State<SchedulePage> {
              children: [
                Padding(
                  padding: EdgeInsets.only(left: ScreenUtil().setWidth(10)),
-                 child: GestureDetector(
-                   onTap: () {},
-                   child: Text(
-                     'Schedule',
-                     style: TextStyle(
-                         color: Colors.red,
-                         fontWeight: FontWeight.w900,
-                         fontSize: ScreenUtil().setSp(30)),
-                   ),
+                 child: Text(
+                   'Schedule',
+                   style: TextStyle(
+                       color: Colors.red,
+                       fontWeight: FontWeight.w900,
+                       fontSize: ScreenUtil().setSp(30)),
                  ),
                ),
                Column(
                  children: List.generate(state.listReminder.length, (index) {
                    String date=state.listReminder.keys.elementAt(index);
                    return StickyReminderSchedule(
+
                      slidableController: slidableController,
                      header: date,
                      color: Colors.black.value.toString(),

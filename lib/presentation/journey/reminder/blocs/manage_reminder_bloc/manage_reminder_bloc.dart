@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ghichu/domain/entities/group_entity.dart';
 import 'package:ghichu/domain/entities/reminder_entity.dart';
 import 'package:ghichu/domain/usecase/reminder_usecase.dart';
 import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_event.dart';
@@ -39,10 +42,17 @@ class ManageReminderBloc
       if (state is InitManagerReminderState) {
         creentState = state;
       }
+      GroupEntity groupEntity;
+      for (int i = 0; i < creentState.listGroup.length; i++) {
+        if (creentState.listGroup[i].name == event.group) {
+          groupEntity = creentState.listGroup[i];
+          break;
+        }
+      }
       yield EditReminderState(
           reminderEntity: event.reminderEntity,
-          listGroup: event.listGroup,
-          groupEntity: event.groupEntity);
+          listGroup: creentState.listGroup,
+          groupEntity: groupEntity);
       yield creentState;
     }
     if (event is DeleteReminderEvent) {
@@ -55,11 +65,21 @@ class ManageReminderBloc
     final creentState = state;
     await reminderUC.deleteReminder(event.reminderEntity);
     if (creentState is InitManagerReminderState) {
-      creentState.listReminder[event.reminderEntity.list].removeAt(event.index);
-      yield creentState.update(
-          listReminder: creentState.listReminder,
-          isUpDate: !creentState.isUpDate,
-          isChangeState: true);
+
+      if (creentState.listReminder.length == 0) {
+        creentState.reminderGroupOrToday.removeAt(event.index);
+        yield creentState.update(
+            reminderGroupOrToday: creentState.reminderGroupOrToday,
+            isUpDate: !creentState.isUpDate,
+            isChangeState: true);
+      } else {
+        creentState.listReminder[event.reminderEntity.list]
+            .removeAt(event.index);
+        yield creentState.update(
+            listReminder: creentState.listReminder,
+            isUpDate: !creentState.isUpDate,
+            isChangeState: true);
+      }
     }
   }
 
@@ -68,7 +88,9 @@ class ManageReminderBloc
     final creentState = state;
     if (creentState is InitManagerReminderState) {
       List<ReminderEntity> listReminder = await reminderUC.getReminderToDay();
-      yield creentState.update(reminderGroupOrToday: listReminder);
+
+      yield creentState.update(
+          reminderGroupOrToday: listReminder, listGroup: event.listGroup);
     }
   }
 
@@ -78,7 +100,9 @@ class ManageReminderBloc
     if (creentState is InitManagerReminderState) {
       List<ReminderEntity> listReminder =
           await reminderUC.getReminderToGroup(group: event.groupEntity.name);
-      yield creentState.update(reminderGroupOrToday: listReminder);
+
+      yield creentState.update(
+          reminderGroupOrToday: listReminder, listGroup: event.listGroup);
     }
   }
 
@@ -89,7 +113,8 @@ class ManageReminderBloc
       Map<String, List<ReminderEntity>> listReminder =
           await reminderUC.getReminderScheduled();
 
-      yield creentState.update(listReminder: listReminder);
+      yield creentState.update(
+          listReminder: listReminder, listGroup: event.listGroup);
     }
   }
 

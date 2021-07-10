@@ -81,10 +81,11 @@ class EditGroupState extends HomePageState {
 
 class PushMyListState extends HomePageState {
   final GroupEntity groupEntity;
-  PushMyListState({@required this.groupEntity});
+  final List<GroupEntity> listGroup;
+  PushMyListState({@required this.groupEntity,@required this.listGroup});
   @override
   // TODO: implement props
-  List<Object> get props => [this.groupEntity];
+  List<Object> get props => [this.groupEntity,this.listGroup];
 }
 
 class PushAddGroupState extends HomePageState {

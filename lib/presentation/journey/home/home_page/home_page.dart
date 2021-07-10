@@ -81,7 +81,12 @@ class _State extends State<HomePage> {
         }
         if (state is PushMyListState) {
           Navigator.pushNamed(context, RouteList.todayPage,
-              arguments: SettingToDay(groupEntity: state.groupEntity));
+              arguments: SettingReminder(groupEntity: state.groupEntity,listGroup: state.listGroup)
+          ).then((value) {
+            if (value == true) {
+              BlocProvider.of<HomePageBloc>(context).add(UpDateReminderEvent());
+            }
+          });
         }
         if (state is PushAddGroupState) {
           Navigator.pushNamed(context, RouteList.addGroup).then((value) {
