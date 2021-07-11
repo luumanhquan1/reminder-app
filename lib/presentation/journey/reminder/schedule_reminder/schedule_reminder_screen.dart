@@ -55,6 +55,7 @@ class _State extends State<SchedulePage> {
         builder: (context, state) {
      if(state is InitManagerReminderState){
        return Scaffold(
+         backgroundColor: Colors.white,
          appBar: AppBarReminderWidget(
            isIconEdit: isEditIcon(state),
            actions: isEditIcon(state)
