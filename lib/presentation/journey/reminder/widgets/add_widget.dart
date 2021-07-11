@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 import 'dart:ui';
 
@@ -26,18 +25,20 @@ class AddWidget extends StatelessWidget {
       this.keyGroup,
       this.keyDate,
       this.index,
-        this.onTap,
-      @required this.state}): super(key: key){
-    controller=TextEditingController();
-    focusNode=FocusNode();
+      this.onTap,
+      @required this.state})
+      : super(key: key) {
+    controller = TextEditingController();
+
   }
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
-      focusNode: focusNode,
-      onTap:(){
-        BlocProvider.of<ManageReminderBloc>(context).add(SelectReminderEvent(indexGroup: index,indexReminder: -1));
+      onTap: () {
+        BlocProvider.of<ManageReminderBloc>(context)
+            .add(SelectReminderEvent(indexGroup: index, indexReminder: -1));
+
       },
       style: TextStyle(fontSize: ScreenUtil().setSp(16)),
       decoration: InputDecoration(
@@ -48,7 +49,9 @@ class AddWidget extends StatelessWidget {
           borderSide: BorderSide(color: Colors.black45, width: 1.5),
         ),
         suffixIcon: Visibility(
-            visible: index == state.indexGroup &&state.indexReminder==-1? true : false,
+            visible: index == state.indexGroup && state.indexReminder == -1
+                ? true
+                : false,
             child: GestureDetector(
               onTap: () {},
               child: Icon(

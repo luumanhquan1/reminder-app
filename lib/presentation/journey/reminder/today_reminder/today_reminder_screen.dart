@@ -31,10 +31,18 @@ class _State extends State<TodayPage> {
   SlidableController slidableController;
   @override
   void initState() {
-    slidableController = SlidableController();
+    slidableController = SlidableController(
+      onSlideAnimationChanged: handleSlideAnimationChanged,
+      onSlideIsOpenChanged: handleSlideIsOpenChanged,
+    );
     super.initState();
   }
-
+  void handleSlideAnimationChanged(Animation<double> slideAnimation) {}
+  void handleSlideIsOpenChanged(bool isOpen) {
+    if(isOpen){
+      BlocProvider.of<ManageReminderBloc>(context).add(SelectReminderEvent(indexReminder: -1,indexGroup: -1));
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ManageReminderBloc, ManageReminderState>(
