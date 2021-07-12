@@ -37,13 +37,7 @@ class _State extends State<AllPage> {
       onSlideIsOpenChanged: handleSlideIsOpenChanged,
     );
     super.initState();
-    for (int i = 0; i < ModelListReminder.myList.length; i++) {
-      listController.addAll({
-        '$i': TextFiledController(
-            textEditingController: TextEditingController(),
-            focusNode: FocusNode())
-      });
-    }
+   BlocProvider.of<ManageReminderBloc>(context).add(AddControllerTextFieldEvent());
   }
   void handleSlideAnimationChanged(Animation<double> slideAnimation) {}
   void handleSlideIsOpenChanged(bool isOpen) {
@@ -76,7 +70,7 @@ class _State extends State<AllPage> {
               isIconEdit: isEditIcon(state),
               actions: isEditIcon(state)
                   ? () {
-
+                 BlocProvider.of<ManageReminderBloc>(context).add(SelectReminderEvent(indexGroup: -1,indexReminder: -1));
                     }
                   : null,
               leading: () {

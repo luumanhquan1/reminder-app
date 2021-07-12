@@ -1,22 +1,26 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ghichu/domain/entities/details_entity.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
 import 'package:ghichu/domain/entities/reminder_entity.dart';
 import 'package:ghichu/domain/usecase/reminder_usecase.dart';
+import 'package:ghichu/presentation/journey/reminder/__mock__/textfiled_controller.dart';
 import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_event.dart';
 import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_state.dart';
 
 class ManageReminderBloc
     extends Bloc<ManageReminderEvent, ManageReminderState> {
   final ReminderUseCase reminderUC;
-
+  bool isAllPage;
   ManageReminderBloc({this.reminderUC});
 
   @override
   // TODO: implement initialState
   ManageReminderState get initialState => InitManagerReminderState(
       listReminder: {},
+      listController: {},
       indexGroup: -1,
       indexReminder: -1,
       listGroup: [],
@@ -48,14 +52,84 @@ class ManageReminderBloc
     if (event is SelectReminderEvent) {
       yield* _mapSelectReminderToState(event);
     }
+    if (event is AddControllerTextFieldEvent) {
+      final creentState = state;
+      if (creentState is InitManagerReminderState) {
+        Map<String, TextFiledController> listController = {};
+        for (int i = 0; i < creentState.listReminder.keys.length; i++) {
+          listController.addAll({
+            "$i": TextFiledController(
+                textEditingController: TextEditingController(),
+                focusNode: FocusNode())
+          });
+        }
+
+        yield creentState.update(listController: listController);
+      }
+    }
   }
 
   Stream<ManageReminderState> _mapSelectReminderToState(
       SelectReminderEvent event) async* {
     final creentState = state;
     if (creentState is InitManagerReminderState) {
-     yield creentState.update(
+      int indexGroup = creentState.indexGroup;
+      int indexReminder = creentState.indexReminder;
+      yield creentState.update(
           indexGroup: event.indexGroup, indexReminder: event.indexReminder);
+      if (indexGroup != event.indexGroup ||
+          indexReminder != event.indexReminder) {
+        bool check = false;
+        String title = '';
+        int i = 0;
+        creentState.listController.forEach((key, value) {
+          if (value.textEditingController.text.trim().isNotEmpty) {
+            check = true;
+            title = value.textEditingController.text;
+            value.textEditingController.text = '';
+          }
+          i++;
+        });
+        if (check) {
+          if (isAllPage) {
+            yield* _mapAddReminderState(
+                title: title,
+                group: creentState.listReminder.keys.elementAt(indexGroup),
+                state: creentState);
+          } else {
+            yield* _mapAddReminderState(
+                group: creentState.listGroup[0].name,
+                title: title,
+                date: creentState.listReminder.keys.elementAt(indexGroup),
+                state: creentState);
+          }
+        }
+      }
+    }
+  }
+
+  Stream<ManageReminderState> _mapAddReminderState(
+      {String title,
+      String group,
+      String date,
+      InitManagerReminderState state}) async* {
+    DetailsEntity detailsEntity =
+        DetailsEntity(date: date, time: null, priority: 'none');
+    ReminderEntity reminderEntity = ReminderEntity(
+        title: title,
+        note: '',
+        details: detailsEntity,
+        list: group,
+        createAt: DateTime.now().toString(),
+        lastUpdate: DateTime.now().toString());
+    int result = await reminderUC.addReminder(reminderEntity);
+    if (result != null) {
+      if(isAllPage){
+        state.listReminder[group].add(reminderEntity);
+      }else{
+        state.listReminder[date].add(reminderEntity);
+      }
+      yield state.update(listReminder: state.listReminder, isChangeState: true);
     }
   }
 
@@ -67,6 +141,7 @@ class ManageReminderBloc
     }
     GroupEntity groupEntity;
     for (int i = 0; i < creentState.listGroup.length; i++) {
+      //tim group cho reminder
       if (creentState.listGroup[i].name == event.group) {
         groupEntity = creentState.listGroup[i];
         break;
@@ -91,8 +166,12 @@ class ManageReminderBloc
             isUpDate: !creentState.isUpDate,
             isChangeState: true);
       } else {
+         if(isAllPage){
         creentState.listReminder[event.reminderEntity.list]
-            .removeAt(event.index);
+            .removeAt(event.index);}
+         else{
+           creentState.listReminder[event.reminderEntity.details.date].removeAt(event.index);
+         }
         yield creentState.update(
             listReminder: creentState.listReminder,
             isUpDate: !creentState.isUpDate,
@@ -126,6 +205,7 @@ class ManageReminderBloc
 
   Stream<ManageReminderState> _mapGetDateReminderSchedule(
       GetDataScheduledEvent event) async* {
+    isAllPage = false;
     final creentState = state;
     if (creentState is InitManagerReminderState) {
       Map<String, List<ReminderEntity>> listReminder =
@@ -138,6 +218,7 @@ class ManageReminderBloc
 
   Stream<ManageReminderState> _mapGetDateReminderAll(
       GetDataReminderAllEvent event) async* {
+    isAllPage = true;
     final creentState = state;
     if (creentState is InitManagerReminderState) {
       Map<String, List<ReminderEntity>> listReminder =

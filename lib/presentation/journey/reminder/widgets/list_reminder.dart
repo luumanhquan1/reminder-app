@@ -11,7 +11,7 @@ import 'package:ghichu/presentation/journey/reminder/reminder_constants.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/check_box.dart';
 
 class ListReminder extends StatelessWidget {
-  String title, group, note, date, time;
+  String title, group, note, date, time,priorty;
   int createAt;
   Map<String, TextFiledController> controller;
   Reminder reminder;
@@ -29,6 +29,7 @@ class ListReminder extends StatelessWidget {
       @required this.selectReminder,
         @required this.state,
       this.title,
+        this.priorty,
       this.time,
       this.indexReminder,
       this.group,
@@ -78,7 +79,7 @@ class ListReminder extends StatelessWidget {
           child: Row(
             children: [
               // Icon(Icons.check_circle_outlined),
-              CheckBoxWidget(),
+              // CheckBoxWidget(priorty:priorty,),
               SizedBox(
                 width: ScreenUtil().setWidth(7),
               ),

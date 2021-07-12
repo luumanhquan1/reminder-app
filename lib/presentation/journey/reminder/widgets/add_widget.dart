@@ -14,9 +14,7 @@ import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/
 import '../reminder_constants.dart';
 
 class AddWidget extends StatelessWidget {
-  String keyGroup, keyDate;
-  TextEditingController controller;
-  FocusNode focusNode;
+  String keyGroup, keyDate,helperText;
   int index;
   InitManagerReminderState state;
   Function onTap;
@@ -26,19 +24,18 @@ class AddWidget extends StatelessWidget {
       this.keyDate,
       this.index,
       this.onTap,
+        this.helperText,
       @required this.state})
-      : super(key: key) {
-    controller = TextEditingController();
-
-  }
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
+
     return TextField(
-      controller: controller,
+      controller: state.listController["$index"].textEditingController,
+      focusNode: state.listController["$index"].focusNode,
       onTap: () {
         BlocProvider.of<ManageReminderBloc>(context)
             .add(SelectReminderEvent(indexGroup: index, indexReminder: -1));
-
       },
       style: TextStyle(fontSize: ScreenUtil().setSp(16)),
       decoration: InputDecoration(
@@ -65,7 +62,7 @@ class AddWidget extends StatelessWidget {
           size: ScreenUtil().setSp(25),
           color: Colors.black45,
         ),
-        // helperText: scheduleReminderBloc != null ? "Reminder" : '',
+        helperText: helperText != null ? "          $helperText" : '',
         helperStyle:
             TextStyle(color: Colors.black45, fontSize: ScreenUtil().setSp(13)),
       ),

@@ -144,6 +144,7 @@ class _State extends State<TodayPage> {
                                 note: reminder.note,
                                 group: reminder.list,
                                 time: reminder.details.time ?? '',
+                                priorty: reminder.details.priority,
                               );
                             }
                             return ListReminder(
@@ -172,6 +173,7 @@ class _State extends State<TodayPage> {
                               note: reminder.note,
                               date: reminder.details.date ?? '',
                               time: reminder.details.time ?? '',
+                              priorty: reminder.details.priority,
                             );
                           }),
                         )

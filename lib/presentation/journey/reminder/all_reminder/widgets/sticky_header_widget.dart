@@ -82,6 +82,7 @@ class StickyReminderAll extends StatelessWidget {
                     indexReminder: index,
                     title: listReminder[index].title,
                     note: listReminder[index].note,
+                    priorty: listReminder[index].details.priority,
                     date: listReminder[index].details.date ?? '',
                     time: listReminder[index].details.time ?? '',
                     state: state,

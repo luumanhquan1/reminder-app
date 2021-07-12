@@ -1,3 +1,4 @@
+
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,6 +28,7 @@ class _State extends State<SchedulePage> {
       onSlideAnimationChanged: handleSlideAnimationChanged,
       onSlideIsOpenChanged: handleSlideIsOpenChanged,
     );
+    BlocProvider.of<ManageReminderBloc>(context).add(AddControllerTextFieldEvent());
     super.initState();
   }
   void handleSlideAnimationChanged(Animation<double> slideAnimation) {}
@@ -60,19 +62,12 @@ class _State extends State<SchedulePage> {
            isIconEdit: isEditIcon(state),
            actions: isEditIcon(state)
                ? () {
-             // reminderUntil(
-             //     scheduleReminderBloc: scheduleReminderBloc,
-             //     type: ReminderEnum.Schedule,
-             //     controller: snapshot.data.textEditing,
-             //     keyGroup: 'Reminder',
-             //     keyDate: snapshot.data.keyDate);
-             // scheduleReminderBloc
-             //     .scheduleReminderState.indexGroupReminder = null;
-             // scheduleReminderBloc.scheduleReminderState.indexGroup =
-             // null;
-             // scheduleReminderBloc.update();
+             BlocProvider.of<ManageReminderBloc>(context).add(SelectReminderEvent(indexGroup: -1,indexReminder: -1));
            }
                : null,
+           leading: (){
+             Navigator.pop(context,state.isChangeState);
+           },
          ),
          body: SingleChildScrollView(
            child: Column(

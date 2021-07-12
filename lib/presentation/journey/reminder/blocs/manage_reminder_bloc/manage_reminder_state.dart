@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:ghichu/domain/entities/group_entity.dart';
 import 'package:ghichu/domain/entities/reminder_entity.dart';
+import 'package:ghichu/presentation/journey/reminder/__mock__/textfiled_controller.dart';
 
 // ignore: must_be_immutable
 abstract class ManageReminderState extends Equatable {}
@@ -10,12 +11,14 @@ abstract class ManageReminderState extends Equatable {}
 // ignore: must_be_immutable
 class InitManagerReminderState extends ManageReminderState {
   Map<String, List<ReminderEntity>> listReminder;
+  Map<String, TextFiledController> listController;
   List<GroupEntity> listGroup;
   List<ReminderEntity> reminderGroupOrToday;
   bool isChangeState, isUpDate;
   int indexGroup, indexReminder;
   InitManagerReminderState(
       {this.reminderGroupOrToday,
+      this.listController,
       this.isChangeState,
       this.listReminder,
       this.listGroup,
@@ -25,12 +28,14 @@ class InitManagerReminderState extends ManageReminderState {
   InitManagerReminderState update(
           {Map<String, List<ReminderEntity>> listReminder,
           List<ReminderEntity> reminderGroupOrToday,
+          Map<String, TextFiledController> listController,
           bool isChangeState,
           bool isUpDate,
           List<GroupEntity> listGroup,
           int indexGroup,
           indexReminder}) =>
       InitManagerReminderState(
+          listController: listController ?? this.listController,
           indexGroup: indexGroup ?? this.indexGroup,
           indexReminder: indexReminder ?? this.indexReminder,
           isUpDate: isUpDate ?? this.isUpDate,
@@ -47,7 +52,8 @@ class InitManagerReminderState extends ManageReminderState {
         this.listGroup,
         this.reminderGroupOrToday,
         this.indexReminder,
-        this.indexGroup
+        this.indexGroup,
+        this.listController
       ];
 }
 

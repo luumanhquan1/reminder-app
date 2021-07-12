@@ -9,19 +9,14 @@ class GetDataReminderAllEvent extends ManageReminderEvent {
 
   GetDataReminderAllEvent({@required this.listGroup});
 }
-
 class GetDataScheduledEvent extends ManageReminderEvent {
   final List<GroupEntity> listGroup;
-
   GetDataScheduledEvent({@required this.listGroup});
 }
-
 class GetDateToDayEvent extends ManageReminderEvent {
   final List<GroupEntity> listGroup;
-
   GetDateToDayEvent({@required this.listGroup});
 }
-
 class GetDateGroupEvent extends ManageReminderEvent {
   final List<GroupEntity> listGroup;
   final GroupEntity groupEntity;
@@ -37,7 +32,7 @@ class EditReminderEvent extends ManageReminderEvent {
 
       @required this.group});
 }
-
+class AddControllerTextFieldEvent extends ManageReminderEvent{}
 class DeleteReminderEvent extends ManageReminderEvent {
   final ReminderEntity reminderEntity;
   final int index;
