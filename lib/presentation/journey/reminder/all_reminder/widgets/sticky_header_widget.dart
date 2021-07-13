@@ -64,6 +64,7 @@ class StickyReminderAll extends StatelessWidget {
                       BlocProvider.of<ManageReminderBloc>(context).add(
                           SelectReminderEvent(
                               indexReminder: index, indexGroup: indexGroup));
+                      BlocProvider.of<ManageReminderBloc>(context).add(AddReminderEvent());
                     },
                     editReminderBtn: () {
                       BlocProvider.of<ManageReminderBloc>(context).add(

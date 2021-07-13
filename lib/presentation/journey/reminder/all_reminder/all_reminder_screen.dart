@@ -37,28 +37,34 @@ class _State extends State<AllPage> {
       onSlideIsOpenChanged: handleSlideIsOpenChanged,
     );
     super.initState();
-   BlocProvider.of<ManageReminderBloc>(context).add(AddControllerTextFieldEvent());
+    BlocProvider.of<ManageReminderBloc>(context)
+        .add(AddControllerTextFieldEvent());
   }
+
   void handleSlideAnimationChanged(Animation<double> slideAnimation) {}
   void handleSlideIsOpenChanged(bool isOpen) {
-           if(isOpen){
-             BlocProvider.of<ManageReminderBloc>(context).add(SelectReminderEvent(indexReminder: -1,indexGroup: -1));
-           }
+    if (isOpen) {
+      BlocProvider.of<ManageReminderBloc>(context)
+          .add(SelectReminderEvent(indexReminder: -1, indexGroup: -1));
+    }
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ManageReminderBloc, ManageReminderState>(
       listener: (context, state) {
         if (state is EditReminderState) {
           Navigator.pushNamed(context, RouteList.newReminder,
-              arguments: SettingNewReminder(
-                reminderEntity: state.reminderEntity,
-                  isEditReminder: true,
-                  listGroup: state.listGroup,
-                  groupEntityl: state.groupEntity)).then((value) {
-                    if(value!=null){
-                      BlocProvider.of<ManageReminderBloc>(context).add(GetDataReminderAllEvent(listGroup: state.listGroup));
-                    }
+                  arguments: SettingNewReminder(
+                      reminderEntity: state.reminderEntity,
+                      isEditReminder: true,
+                      listGroup: state.listGroup,
+                      groupEntityl: state.groupEntity))
+              .then((value) {
+            if (value != null) {
+              BlocProvider.of<ManageReminderBloc>(context)
+                  .add(GetDataReminderAllEvent(listGroup: state.listGroup));
+            }
           });
         }
       },
@@ -70,7 +76,10 @@ class _State extends State<AllPage> {
               isIconEdit: isEditIcon(state),
               actions: isEditIcon(state)
                   ? () {
-                 BlocProvider.of<ManageReminderBloc>(context).add(SelectReminderEvent(indexGroup: -1,indexReminder: -1));
+                      BlocProvider.of<ManageReminderBloc>(context).add(
+                          SelectReminderEvent(
+                              indexGroup: -1, indexReminder: -1));
+                      BlocProvider.of<ManageReminderBloc>(context).add(AddReminderEvent());
                     }
                   : null,
               leading: () {
@@ -112,10 +121,11 @@ class _State extends State<AllPage> {
       },
     );
   }
-  bool isEditIcon(InitManagerReminderState state){
-    if(state.indexReminder!=-1||state.indexGroup!=-1){
+
+  bool isEditIcon(InitManagerReminderState state) {
+    if (state.indexReminder != -1 || state.indexGroup != -1) {
       return true;
     }
- return false;
+    return false;
   }
 }

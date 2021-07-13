@@ -111,6 +111,7 @@ class _State extends State<HomePage> {
           return Scaffold(
             backgroundColor: Colors.white.withOpacity(0.95),
             appBar: AppBarWidget(
+              heightAppbar: state.isSearch?2:64,
               textLeft: '',
               title: '',
               textRight: state.isEdit && state.isOpen
@@ -130,7 +131,12 @@ class _State extends State<HomePage> {
                   sliver: SliverList(
                     delegate: SliverChildListDelegate(
                       [
-                        SearchWidget(),
+                        SearchWidget(
+                          onTap: (){
+                            BlocProvider.of<HomePageBloc>(context).add(SearchReminderEvent(isSearch: true));
+                          },
+                          state: state,
+                        ),
                         Stack(
                           children: [
                             WrapWidget(
@@ -173,8 +179,64 @@ class _State extends State<HomePage> {
             bottomNavigationBar: BottomNavigationBarWidget(state: state),
           );
         }
+
         return SizedBox();
       },
+    );
+  }
+  Widget homePage(InitHomePageState state){
+    return CustomScrollView(
+      slivers: [
+        SliverPadding(
+          padding: EdgeInsets.fromLTRB(HomePageConstants.paddingWidth20,
+              0, HomePageConstants.paddingWidth20, 0),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                SearchWidget(
+                  onTap: (){
+                    BlocProvider.of<HomePageBloc>(context).add(SearchReminderEvent(isSearch: true));
+                  },
+                  state: state,
+                ),
+                Stack(
+                  children: [
+                    WrapWidget(
+                      state: state,
+                    ),
+                    EditWidget(
+                      state: state,
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: HomePageConstants.paddingHeight10,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: HomePageConstants.paddingHeight10,
+                      left: HomePageConstants.paddingWidth10),
+                  child: Text(
+                    HomePageConstants.myListTxt,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: HomePageConstants.screenUtileSp20),
+                  ),
+                ),
+                SizedBox(
+                  height: HomePageConstants.paddingHeight10,
+                ),
+              ],
+            ),
+          ),
+        ),
+        ReorderableSliverWidget(
+          scrollController: reorderController,
+          slidableController: slidableController,
+          state: state,
+        )
+      ],
     );
   }
 }

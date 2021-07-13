@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
 import 'package:ghichu/domain/usecase/group_usecase.dart';
@@ -24,6 +24,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       keyMyList: [],
       updateOrder: true,
       isEdit: true,
+      isSearch: false,
       reminderSystem: ['Today', 'Scheduled', 'All']);
   @override
   Stream<HomePageState> mapEventToState(HomePageEvent event) async* {
@@ -83,8 +84,17 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield PushNewReminderState(listGroup: event.listGroup);
       yield creentState;
     }
+    if(event is SearchReminderEvent){
+      yield* _mapSearchReminderToState(event);
+    }
   }
-
+Stream<HomePageState> _mapSearchReminderToState(SearchReminderEvent event)async*{
+   final creentState=state;
+   InitHomePageState initHomePageState=state;
+   if(creentState is InitHomePageState){
+     yield creentState.update(isSearch: event.isSearch);
+   }
+}
   Stream<HomePageState> _mapUpdateEditGroupToState(
       UpdateEditGroupEvent event) async* {
     final currentState = state;

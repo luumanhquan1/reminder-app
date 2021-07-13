@@ -10,6 +10,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final String textRight;
   final Color color;
+  final double heightAppbar;
   const AppBarWidget(
       {Key key,
       this.leading,
@@ -17,7 +18,9 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       this.textLeft,
       this.title,
       this.textRight,
-      this.color})
+      this.color,
+      this.heightAppbar,
+      })
       : super(key: key);
 
   @override
@@ -57,7 +60,6 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       ],
     );
   }
-
   @override
-  Size get preferredSize => Size(double.infinity, 64);
+  Size get preferredSize => Size(double.infinity, heightAppbar==null?64:heightAppbar);
 }

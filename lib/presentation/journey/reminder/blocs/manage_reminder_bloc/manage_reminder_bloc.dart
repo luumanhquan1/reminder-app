@@ -67,48 +67,54 @@ class ManageReminderBloc
         yield creentState.update(listController: listController);
       }
     }
+    if (event is AddReminderEvent) {
+     yield* _mapAddReminderToState(event);
+    }
   }
+Stream<ManageReminderState> _mapAddReminderToState(AddReminderEvent event)async*{
+  final creentState = state;
+  if (creentState is InitManagerReminderState) {
+    int i = 0;
+    int index;
+    bool check = false;
+    String title = '';
+    creentState.listController.forEach((key, value) {
+      if (value.textEditingController.text.trim().isNotEmpty) {
+        check = true;
+        title = value.textEditingController.text;
+        value.textEditingController.text = '';
+        index = i;
+        value.focusNode.unfocus();
+      }
+      i++;
+    });
 
+    if (check) {
+      if (isAllPage) {
+        yield* addReminderState(
+            title: title,
+            group: creentState.listGroup[index].name,
+            state: creentState);
+      } else {
+        yield* addReminderState(
+            group: creentState.listGroup[0].name,
+            title: title,
+            date: creentState.listReminder.keys.elementAt(index),
+            state: creentState);
+      }
+    }
+  }
+}
   Stream<ManageReminderState> _mapSelectReminderToState(
       SelectReminderEvent event) async* {
     final creentState = state;
     if (creentState is InitManagerReminderState) {
-      int indexGroup = creentState.indexGroup;
-      int indexReminder = creentState.indexReminder;
       yield creentState.update(
           indexGroup: event.indexGroup, indexReminder: event.indexReminder);
-      if (indexGroup != event.indexGroup ||
-          indexReminder != event.indexReminder) {
-        bool check = false;
-        String title = '';
-        int i = 0;
-        creentState.listController.forEach((key, value) {
-          if (value.textEditingController.text.trim().isNotEmpty) {
-            check = true;
-            title = value.textEditingController.text;
-            value.textEditingController.text = '';
-          }
-          i++;
-        });
-        if (check) {
-          if (isAllPage) {
-            yield* _mapAddReminderState(
-                title: title,
-                group: creentState.listReminder.keys.elementAt(indexGroup),
-                state: creentState);
-          } else {
-            yield* _mapAddReminderState(
-                group: creentState.listGroup[0].name,
-                title: title,
-                date: creentState.listReminder.keys.elementAt(indexGroup),
-                state: creentState);
-          }
-        }
-      }
     }
   }
 
-  Stream<ManageReminderState> _mapAddReminderState(
+  Stream<ManageReminderState> addReminderState(
       {String title,
       String group,
       String date,
@@ -124,9 +130,9 @@ class ManageReminderBloc
         lastUpdate: DateTime.now().toString());
     int result = await reminderUC.addReminder(reminderEntity);
     if (result != null) {
-      if(isAllPage){
+      if (isAllPage) {
         state.listReminder[group].add(reminderEntity);
-      }else{
+      } else {
         state.listReminder[date].add(reminderEntity);
       }
       yield state.update(listReminder: state.listReminder, isChangeState: true);
@@ -166,12 +172,13 @@ class ManageReminderBloc
             isUpDate: !creentState.isUpDate,
             isChangeState: true);
       } else {
-         if(isAllPage){
-        creentState.listReminder[event.reminderEntity.list]
-            .removeAt(event.index);}
-         else{
-           creentState.listReminder[event.reminderEntity.details.date].removeAt(event.index);
-         }
+        if (isAllPage) {
+          creentState.listReminder[event.reminderEntity.list]
+              .removeAt(event.index);
+        } else {
+          creentState.listReminder[event.reminderEntity.details.date]
+              .removeAt(event.index);
+        }
         yield creentState.update(
             listReminder: creentState.listReminder,
             isUpDate: !creentState.isUpDate,

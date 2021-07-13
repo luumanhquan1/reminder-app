@@ -14,7 +14,7 @@ class InitHomePageState extends HomePageState {
   List<GroupEntity> keyMyList = [];
   bool updateOrder;
   int reminderToday, reminderScheduled, reminderAll;
-  bool isEdit, isOpen;
+  bool isEdit, isOpen, isSearch;
   int index;
   List<String> reminderSystem = [];
   Map<String, int> remindertoGroup;
@@ -26,6 +26,7 @@ class InitHomePageState extends HomePageState {
       this.reminderScheduled,
       this.reminderToday,
       this.reminderAll,
+      this.isSearch,
       this.updateOrder,
       this.remindertoGroup,
       this.isEdit,
@@ -35,14 +36,16 @@ class InitHomePageState extends HomePageState {
           int index,
           List<String> reminderSystem,
           bool updateOrder,
+          bool isSearch,
           int reminderToday,
           ViewState viewState,
           reminderScheduled,
           reminderAll,
           bool isEdit,
-         bool isOpen,
+          bool isOpen,
           Map<String, int> remindertoGroup}) =>
       InitHomePageState(
+          isSearch: isSearch ?? this.isSearch,
           index: index ?? this.index,
           viewState: viewState ?? this.viewState,
           isOpen: isOpen ?? this.isOpen,
@@ -57,6 +60,7 @@ class InitHomePageState extends HomePageState {
   @override
   // TODO: implement props
   List<Object> get props => [
+        this.isSearch,
         this.index,
         this.viewState,
         this.isOpen,
@@ -82,21 +86,27 @@ class EditGroupState extends HomePageState {
 class PushMyListState extends HomePageState {
   final GroupEntity groupEntity;
   final List<GroupEntity> listGroup;
-  PushMyListState({@required this.groupEntity,@required this.listGroup});
+  PushMyListState({@required this.groupEntity, @required this.listGroup});
   @override
   // TODO: implement props
-  List<Object> get props => [this.groupEntity,this.listGroup];
+  List<Object> get props => [this.groupEntity, this.listGroup];
 }
 
 class PushAddGroupState extends HomePageState {
   @override
   List<Object> get props => [];
 }
-class PushNewReminderState extends HomePageState{
+
+class PushNewReminderState extends HomePageState {
   final List<GroupEntity> listGroup;
 
   PushNewReminderState({this.listGroup});
   @override
   List<Object> get props => [this.listGroup];
+}
+class SearchReminderState extends HomePageState{
+  @override
+
+  List<Object> get props => throw UnimplementedError();
 
 }

@@ -36,6 +36,7 @@ class AddWidget extends StatelessWidget {
       onTap: () {
         BlocProvider.of<ManageReminderBloc>(context)
             .add(SelectReminderEvent(indexGroup: index, indexReminder: -1));
+        BlocProvider.of<ManageReminderBloc>(context).add(AddReminderEvent());
       },
       style: TextStyle(fontSize: ScreenUtil().setSp(16)),
       decoration: InputDecoration(

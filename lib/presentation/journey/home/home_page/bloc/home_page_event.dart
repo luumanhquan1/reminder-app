@@ -12,7 +12,11 @@ class EditGroupEvent extends HomePageEvent {
   final int index;
   EditGroupEvent(this.index);
 }
-
+class SearchReminderEvent extends HomePageEvent{
+  final bool isSearch;
+ final String search;
+  SearchReminderEvent({this.isSearch,this.search});
+}
 class UpdateEditGroupEvent extends HomePageEvent {}
 
 class OrderGroupEvent extends HomePageEvent {
