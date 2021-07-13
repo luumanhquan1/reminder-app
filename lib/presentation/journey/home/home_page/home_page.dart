@@ -144,38 +144,33 @@ class _State extends State<HomePage> {
   }
 
   Widget homePage(InitHomePageState state) {
-    return GestureDetector(
-      onTap:state.isSearch?(){
-        BlocProvider.of<HomePageBloc>(context).add(ActiveSearchReminderEvent(isSearch: false));
-      }:null,
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(HomePageConstants.paddingWidth20, 0,
-                  HomePageConstants.paddingWidth20, 0),
-              child: SearchWidget(
-                controller: searchController,
-                onTap: () {
-                  BlocProvider.of<HomePageBloc>(context)
-                      .add(ActiveSearchReminderEvent(isSearch: true));
-                },
-                state: state,
-              ),
-            ),
-          ),
-         SliverReminderSearchWidget(state: state,),
-        SliverReminderWidget(state: state,),
-          SliverVisibility(
-            visible: !state.isSearchTxtEmty,
-            sliver: ReorderableSliverWidget(
-              scrollController: reorderController,
-              slidableController: slidableController,
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(HomePageConstants.paddingWidth20, 0,
+                HomePageConstants.paddingWidth20, 0),
+            child: SearchWidget(
+              controller: searchController,
+              onTap: () {
+                BlocProvider.of<HomePageBloc>(context)
+                    .add(ActiveSearchReminderEvent(isSearch: true));
+              },
               state: state,
             ),
-          )
-        ],
-      ),
+          ),
+        ),
+       SliverReminderSearchWidget(state: state,),
+      SliverReminderWidget(state: state,),
+        SliverVisibility(
+          visible: !state.isSearchTxtEmty,
+          sliver: ReorderableSliverWidget(
+            scrollController: reorderController,
+            slidableController: slidableController,
+            state: state,
+          ),
+        )
+      ],
     );
   }
 
