@@ -68,43 +68,64 @@ class ManageReminderBloc
       }
     }
     if (event is AddReminderEvent) {
-     yield* _mapAddReminderToState(event);
+      yield* _mapAddReminderToState(event);
+    }
+    if (event is SearchReminderEvent) {
+      yield* _mapSearchReminderToState(event);
     }
   }
-Stream<ManageReminderState> _mapAddReminderToState(AddReminderEvent event)async*{
-  final creentState = state;
-  if (creentState is InitManagerReminderState) {
-    int i = 0;
-    int index;
-    bool check = false;
-    String title = '';
-    creentState.listController.forEach((key, value) {
-      if (value.textEditingController.text.trim().isNotEmpty) {
-        check = true;
-        title = value.textEditingController.text;
-        value.textEditingController.text = '';
-        index = i;
-        value.focusNode.unfocus();
-      }
-      i++;
-    });
 
-    if (check) {
-      if (isAllPage) {
-        yield* addReminderState(
-            title: title,
-            group: creentState.listGroup[index].name,
-            state: creentState);
+  Stream<ManageReminderState> _mapSearchReminderToState(
+      SearchReminderEvent event) async* {
+    final creentState = state;
+    if (creentState is InitManagerReminderState) {
+      if (event.search.isNotEmpty) {
+        Map<String, List<ReminderEntity>> listReminder =
+            await reminderUC.getReminderSearch(event.search);
+        yield creentState.update(
+            listReminder: listReminder, isUpDate: !creentState.isUpDate);
       } else {
-        yield* addReminderState(
-            group: creentState.listGroup[0].name,
-            title: title,
-            date: creentState.listReminder.keys.elementAt(index),
-            state: creentState);
+        yield creentState.update(listReminder: {});
       }
     }
   }
-}
+
+  Stream<ManageReminderState> _mapAddReminderToState(
+      AddReminderEvent event) async* {
+    final creentState = state;
+    if (creentState is InitManagerReminderState) {
+      int i = 0;
+      int index;
+      bool check = false;
+      String title = '';
+      creentState.listController.forEach((key, value) {
+        if (value.textEditingController.text.trim().isNotEmpty) {
+          check = true;
+          title = value.textEditingController.text;
+          value.textEditingController.text = '';
+          index = i;
+          value.focusNode.unfocus();
+        }
+        i++;
+      });
+
+      if (check) {
+        if (isAllPage) {
+          yield* addReminderState(
+              title: title,
+              group: creentState.listGroup[index].name,
+              state: creentState);
+        } else {
+          yield* addReminderState(
+              group: creentState.listGroup[0].name,
+              title: title,
+              date: creentState.listReminder.keys.elementAt(index),
+              state: creentState);
+        }
+      }
+    }
+  }
+
   Stream<ManageReminderState> _mapSelectReminderToState(
       SelectReminderEvent event) async* {
     final creentState = state;

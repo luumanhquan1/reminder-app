@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
+import 'package:ghichu/domain/entities/reminder_entity.dart';
 
 import 'package:ghichu/presentation/view_state.dart';
 
@@ -10,17 +11,19 @@ abstract class HomePageState extends Equatable {}
 // ignore: must_be_immutable
 class InitHomePageState extends HomePageState {
   ViewState viewState;
-
+  Map<String, List<ReminderEntity>> listReminder;
   List<GroupEntity> keyMyList = [];
   bool updateOrder;
   int reminderToday, reminderScheduled, reminderAll;
-  bool isEdit, isOpen, isSearch;
+  bool isEdit, isOpen, isSearch,isSearchTxtEmty;
   int index;
   List<String> reminderSystem = [];
   Map<String, int> remindertoGroup;
   InitHomePageState(
       {this.keyMyList,
+        this.isSearchTxtEmty,
       this.index,
+        this.listReminder,
       this.viewState,
       this.isOpen,
       this.reminderScheduled,
@@ -36,7 +39,8 @@ class InitHomePageState extends HomePageState {
           int index,
           List<String> reminderSystem,
           bool updateOrder,
-          bool isSearch,
+            Map<String, List<ReminderEntity>> listReminder,
+          bool isSearch,isSearchTxtEmty,
           int reminderToday,
           ViewState viewState,
           reminderScheduled,
@@ -45,6 +49,8 @@ class InitHomePageState extends HomePageState {
           bool isOpen,
           Map<String, int> remindertoGroup}) =>
       InitHomePageState(
+        listReminder: listReminder??this.listReminder,
+        isSearchTxtEmty: isSearchTxtEmty??this.isSearchTxtEmty,
           isSearch: isSearch ?? this.isSearch,
           index: index ?? this.index,
           viewState: viewState ?? this.viewState,
@@ -60,7 +66,9 @@ class InitHomePageState extends HomePageState {
   @override
   // TODO: implement props
   List<Object> get props => [
+    this.listReminder,
         this.isSearch,
+    this.isSearchTxtEmty,
         this.index,
         this.viewState,
         this.isOpen,

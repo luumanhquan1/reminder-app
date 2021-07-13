@@ -14,7 +14,8 @@ import 'package:ghichu/presentation/journey/reminder/widgets/list_reminder.dart'
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class StickyReminderAll extends StatelessWidget {
+// ignore: must_be_immutable
+class StickyReminderSearch extends StatelessWidget {
   final String header;
   final String color;
   final int indexGroup;
@@ -23,16 +24,16 @@ class StickyReminderAll extends StatelessWidget {
   final GroupEntity groupEntity;
   InitManagerReminderState state;
   SlidableController slidableController;
-  StickyReminderAll(
+  StickyReminderSearch(
       {Key key,
-      @required this.slidableController,
-      @required this.indexGroup,
-      @required this.header,
-      @required this.color,
-      @required this.listReminder,
-      @required this.listGroup,
-      @required this.groupEntity,
-      @required this.state})
+        @required this.slidableController,
+        @required this.indexGroup,
+        @required this.header,
+        @required this.color,
+        @required this.listReminder,
+        @required this.listGroup,
+        @required this.groupEntity,
+        @required this.state})
       : super(key: key);
 
   @override
@@ -91,11 +92,7 @@ class StickyReminderAll extends StatelessWidget {
                   );
                 }),
               ),
-              AddWidget(
-                index: indexGroup,
-                state: state,
-                keyGroup: header,
-              ),
+
             ],
           )),
     );

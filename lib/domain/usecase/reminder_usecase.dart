@@ -28,6 +28,10 @@ class ReminderUseCase {
 
     return listReminder;
   }
+  Future<Map<String, List<ReminderEntity>>> getReminderSearch(String search){
+
+    return reminderRepository.getReminderSearch(search);
+  }
   Future<void> editReminder(ReminderEntity oldReminder,ReminderEntity newReminder) async {
     await reminderRepository.editReminderLocal(oldReminder, newReminder);
   }

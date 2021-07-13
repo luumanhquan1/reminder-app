@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
+import 'package:ghichu/domain/entities/reminder_entity.dart';
 import 'package:ghichu/domain/usecase/group_usecase.dart';
 import 'package:ghichu/domain/usecase/reminder_usecase.dart';
 
@@ -25,6 +27,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       updateOrder: true,
       isEdit: true,
       isSearch: false,
+      isSearchTxtEmty: false,
+      listReminder: {},
       reminderSystem: ['Today', 'Scheduled', 'All']);
   @override
   Stream<HomePageState> mapEventToState(HomePageEvent event) async* {
@@ -70,7 +74,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     if (event is PushMyListEvent) {
       InitHomePageState creentState = state;
       if (creentState.isEdit == true) {
-        yield PushMyListState(groupEntity: event.groupEntity,listGroup: creentState.keyMyList);
+        yield PushMyListState(
+            groupEntity: event.groupEntity, listGroup: creentState.keyMyList);
         yield creentState;
       }
     }
@@ -84,17 +89,40 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       yield PushNewReminderState(listGroup: event.listGroup);
       yield creentState;
     }
-    if(event is SearchReminderEvent){
+    if (event is ActiveSearchReminderEvent) {
+      yield* _mapActiveSearchReminderToState(event);
+    }
+    if (event is SearchReminderHomeEvent) {
       yield* _mapSearchReminderToState(event);
     }
   }
-Stream<HomePageState> _mapSearchReminderToState(SearchReminderEvent event)async*{
-   final creentState=state;
-   InitHomePageState initHomePageState=state;
-   if(creentState is InitHomePageState){
-     yield creentState.update(isSearch: event.isSearch);
-   }
-}
+
+  Stream<HomePageState> _mapSearchReminderToState(
+      SearchReminderHomeEvent event) async* {
+    final creentState = state;
+    if (creentState is InitHomePageState) {
+      if (event.search.isNotEmpty) {
+        yield creentState.update(isSearchTxtEmty: true);
+      } else {
+        yield creentState.update(isSearchTxtEmty: false, listReminder: {});
+      }
+    }
+  }
+
+  Stream<HomePageState> _mapActiveSearchReminderToState(
+      ActiveSearchReminderEvent event) async* {
+    final creentState = state;
+    InitHomePageState initHomePageState = state;
+    if (creentState is InitHomePageState) {
+      if (event.isSearch == false) {
+        yield creentState.update(
+            isSearch: event.isSearch, isSearchTxtEmty: false);
+      } else {
+        yield creentState.update(isSearch: event.isSearch);
+      }
+    }
+  }
+
   Stream<HomePageState> _mapUpdateEditGroupToState(
       UpdateEditGroupEvent event) async* {
     final currentState = state;
@@ -116,7 +144,9 @@ Stream<HomePageState> _mapSearchReminderToState(SearchReminderEvent event)async*
             0) {
           //kiểm tra trong group có reminder không? nếu có hiện dialog
           yield creentState.update(
-              viewState: ViewState.showDiglog, index: event.index,);
+            viewState: ViewState.showDiglog,
+            index: event.index,
+          );
           yield creentState.update(viewState: ViewState.initial, isOpen: true);
         } else {
           //trong group không có reminder

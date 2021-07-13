@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+
+
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +17,10 @@ import 'package:ghichu/presentation/journey/home/home_page/widgets/bottom_naviga
 import 'package:ghichu/presentation/journey/home/home_page/widgets/edit_home_page.dart';
 import 'package:ghichu/presentation/journey/home/home_page/widgets/reorderable_sliver_widget.dart';
 import 'package:ghichu/presentation/journey/home/home_page/widgets/search.dart';
+import 'package:ghichu/presentation/journey/home/home_page/widgets/sliver_list_reminder_system.dart';
+import 'package:ghichu/presentation/journey/home/home_page/widgets/sliver_search_reminder_widget.dart';
 import 'package:ghichu/presentation/journey/home/home_page/widgets/wrap_widget.dart';
+import 'package:ghichu/presentation/journey/reminder/__mock__/textfiled_controller.dart';
 import 'package:ghichu/presentation/journey/widgets/app_bar.dart';
 import 'package:ghichu/presentation/journey/widgets/dia_log_widget.dart';
 import 'package:ghichu/presentation/journey/widgets/show_toast_error.dart';
@@ -31,6 +36,7 @@ class HomePage extends StatefulWidget {
 class _State extends State<HomePage> {
   SlidableController slidableController;
   ScrollController reorderController;
+  TextEditingController searchController = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
@@ -81,8 +87,10 @@ class _State extends State<HomePage> {
         }
         if (state is PushMyListState) {
           Navigator.pushNamed(context, RouteList.todayPage,
-              arguments: SettingReminder(groupEntity: state.groupEntity,listGroup: state.listGroup)
-          ).then((value) {
+                  arguments: SettingReminder(
+                      groupEntity: state.groupEntity,
+                      listGroup: state.listGroup))
+              .then((value) {
             if (value == true) {
               BlocProvider.of<HomePageBloc>(context).add(UpDateReminderEvent());
             }
@@ -111,7 +119,7 @@ class _State extends State<HomePage> {
           return Scaffold(
             backgroundColor: Colors.white.withOpacity(0.95),
             appBar: AppBarWidget(
-              heightAppbar: state.isSearch?2:64,
+              heightAppbar: state.isSearch ? 2 : 64,
               textLeft: '',
               title: '',
               textRight: state.isEdit && state.isOpen
@@ -123,60 +131,10 @@ class _State extends State<HomePage> {
                     .add(EditEvent(isEdit: state.isEdit));
               },
             ),
-            body: CustomScrollView(
-              slivers: [
-                SliverPadding(
-                  padding: EdgeInsets.fromLTRB(HomePageConstants.paddingWidth20,
-                      0, HomePageConstants.paddingWidth20, 0),
-                  sliver: SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        SearchWidget(
-                          onTap: (){
-                            BlocProvider.of<HomePageBloc>(context).add(SearchReminderEvent(isSearch: true));
-                          },
-                          state: state,
-                        ),
-                        Stack(
-                          children: [
-                            WrapWidget(
-                              state: state,
-                            ),
-                            EditWidget(
-                              state: state,
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: HomePageConstants.paddingHeight10,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: HomePageConstants.paddingHeight10,
-                              left: HomePageConstants.paddingWidth10),
-                          child: Text(
-                            HomePageConstants.myListTxt,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: HomePageConstants.screenUtileSp20),
-                          ),
-                        ),
-                        SizedBox(
-                          height: HomePageConstants.paddingHeight10,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                ReorderableSliverWidget(
-                  scrollController: reorderController,
-                  slidableController: slidableController,
-                  state: state,
-                )
-              ],
-            ),
-            bottomNavigationBar: BottomNavigationBarWidget(state: state),
+            body: homePage(state),
+            bottomNavigationBar: state.isSearch
+                ? SizedBox()
+                : BottomNavigationBarWidget(state: state),
           );
         }
 
@@ -184,59 +142,46 @@ class _State extends State<HomePage> {
       },
     );
   }
-  Widget homePage(InitHomePageState state){
-    return CustomScrollView(
-      slivers: [
-        SliverPadding(
-          padding: EdgeInsets.fromLTRB(HomePageConstants.paddingWidth20,
-              0, HomePageConstants.paddingWidth20, 0),
-          sliver: SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                SearchWidget(
-                  onTap: (){
-                    BlocProvider.of<HomePageBloc>(context).add(SearchReminderEvent(isSearch: true));
-                  },
-                  state: state,
-                ),
-                Stack(
-                  children: [
-                    WrapWidget(
-                      state: state,
-                    ),
-                    EditWidget(
-                      state: state,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: HomePageConstants.paddingHeight10,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: HomePageConstants.paddingHeight10,
-                      left: HomePageConstants.paddingWidth10),
-                  child: Text(
-                    HomePageConstants.myListTxt,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: HomePageConstants.screenUtileSp20),
-                  ),
-                ),
-                SizedBox(
-                  height: HomePageConstants.paddingHeight10,
-                ),
-              ],
+
+  Widget homePage(InitHomePageState state) {
+    return GestureDetector(
+      onTap:state.isSearch?(){
+        BlocProvider.of<HomePageBloc>(context).add(ActiveSearchReminderEvent(isSearch: false));
+      }:null,
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(HomePageConstants.paddingWidth20, 0,
+                  HomePageConstants.paddingWidth20, 0),
+              child: SearchWidget(
+                controller: searchController,
+                onTap: () {
+                  BlocProvider.of<HomePageBloc>(context)
+                      .add(ActiveSearchReminderEvent(isSearch: true));
+                },
+                state: state,
+              ),
             ),
           ),
-        ),
-        ReorderableSliverWidget(
-          scrollController: reorderController,
-          slidableController: slidableController,
-          state: state,
-        )
-      ],
+         SliverReminderSearchWidget(state: state,),
+        SliverReminderWidget(state: state,),
+          SliverVisibility(
+            visible: !state.isSearchTxtEmty,
+            sliver: ReorderableSliverWidget(
+              scrollController: reorderController,
+              slidableController: slidableController,
+              state: state,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget searchWidget() {
+    return Material(
+      color: Colors.white,
     );
   }
 }

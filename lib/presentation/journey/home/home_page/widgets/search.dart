@@ -8,11 +8,18 @@ import 'package:ghichu/presentation/journey/group/add_list/add_list_constaner.da
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_bloc.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_event.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_state.dart';
+import 'package:ghichu/presentation/journey/reminder/__mock__/textfiled_controller.dart';
+import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
+import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_event.dart';
 
 class SearchWidget extends StatelessWidget {
  final Function onTap;
  final InitHomePageState state;
-  const SearchWidget({Key key, this.onTap,this.state}) : super(key: key);
+ final TextEditingController controller;
+ FocusNode focusNode;
+   SearchWidget({Key key, this.onTap,this.state,this.controller}) : super(key: key){
+    focusNode=FocusNode();
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +27,13 @@ class SearchWidget extends StatelessWidget {
       children: [
         Expanded(
           child: TextField(
+           controller: controller,
+            focusNode: focusNode,
             onChanged: (value){
-              BlocProvider.of<HomePageBloc>(context).add(SearchReminderEvent(search: value));
+              BlocProvider.of<HomePageBloc>(context).add(SearchReminderHomeEvent(value));
+              if(value.isNotEmpty){
+                BlocProvider.of<ManageReminderBloc>(context).add(SearchReminderEvent(value));
+              }
             },
             onTap: onTap,
             decoration: InputDecoration(
@@ -58,7 +70,9 @@ class SearchWidget extends StatelessWidget {
             padding: EdgeInsets.only(left: ScreenUtil().setWidth(10)),
             child: GestureDetector(
                 onTap: (){
-                  BlocProvider.of<HomePageBloc>(context).add(SearchReminderEvent(isSearch: false));
+                  BlocProvider.of<HomePageBloc>(context).add(ActiveSearchReminderEvent(isSearch: false));
+                  controller.text="";
+                  focusNode.unfocus();
                 },
                 child: Text('Hủy',style: TextStyle(color: Colors.blue,fontSize: ScreenUtil().setSp(18)),)),
           ),

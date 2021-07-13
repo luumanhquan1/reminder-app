@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ghichu/data/data_sources/local/reminder_hive.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
 import 'package:ghichu/domain/entities/reminder_entity.dart';
@@ -64,6 +66,11 @@ class ReminderRepositoryImpl extends ReminderRepository {
   @override
   Future<void> deleteReminderLocal(oldReminder) async {
     await reminderLDs.deleteReminder(oldReminder);
+  }
+
+  @override
+  Future<Map<String, List<ReminderEntity>>> getReminderSearch(String search) {
+    return reminderLDs.getReminderSearch(search);
   }
 
 

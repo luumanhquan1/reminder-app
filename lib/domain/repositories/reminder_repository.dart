@@ -17,4 +17,5 @@ abstract class ReminderRepository {
   Future<void> editReminderLocal(
       ReminderEntity oldReminder, ReminderEntity newReminder);
   Future<void> deleteReminderLocal(ReminderEntity oldReminder);
+  Future<Map<String, List<ReminderEntity>>> getReminderSearch(String search);
 }

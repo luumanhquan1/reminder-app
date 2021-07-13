@@ -48,7 +48,22 @@ class ReminderLocalDataSource {
     });
     return reminderToGroup;
   }
+  Future<Map<String, List<ReminderEntity>>> getReminderSearch(String search) async {
 
+    List<ReminderEntity> listReminder = localDbSetup.reminderBox.values.where((element) => element.title.startsWith(search)).toList();
+    Map<String, List<ReminderEntity>> reminderToGroup = {};
+    listReminder.forEach((element) {
+      if (reminderToGroup.containsKey(element.list)) {
+        reminderToGroup[element.list].add(element);
+      } else {
+        reminderToGroup.addAll({
+          element.list: [element].toList()
+        });
+      }
+    });
+
+    return reminderToGroup;
+  }
   Future<List<ReminderEntity>> getReminderToDay() async {
     String toDay = DateTime.now().dateTimeFormat();
     List<ReminderEntity> listReminder = localDbSetup.reminderBox.values

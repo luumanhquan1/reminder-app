@@ -35,8 +35,13 @@ class EditReminderEvent extends ManageReminderEvent {
 class AddControllerTextFieldEvent extends ManageReminderEvent{}
 class AddReminderEvent extends ManageReminderEvent{
  final String title,group,date;
-
   AddReminderEvent({this.title, this.group, this.date});
+}
+class SearchReminderEvent extends ManageReminderEvent{
+  final String search;
+
+  SearchReminderEvent(this.search);
+
 }
 class DeleteReminderEvent extends ManageReminderEvent {
   final ReminderEntity reminderEntity;

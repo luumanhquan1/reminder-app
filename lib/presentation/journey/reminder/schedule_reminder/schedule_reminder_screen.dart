@@ -50,6 +50,7 @@ class _State extends State<SchedulePage> {
                   groupEntityl: state.groupEntity)).then((value) {
             if(value!=null){
               BlocProvider.of<ManageReminderBloc>(context).add(GetDataScheduledEvent(listGroup: state.listGroup));
+              BlocProvider.of<ManageReminderBloc>(context).add(AddControllerTextFieldEvent());
             }
           });
         }

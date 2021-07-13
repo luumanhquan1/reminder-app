@@ -12,10 +12,16 @@ class EditGroupEvent extends HomePageEvent {
   final int index;
   EditGroupEvent(this.index);
 }
-class SearchReminderEvent extends HomePageEvent{
+class ActiveSearchReminderEvent extends HomePageEvent{
   final bool isSearch;
- final String search;
-  SearchReminderEvent({this.isSearch,this.search});
+
+  ActiveSearchReminderEvent({this.isSearch});
+}
+class SearchReminderHomeEvent extends HomePageEvent{
+  final String search;
+
+  SearchReminderHomeEvent(this.search);
+
 }
 class UpdateEditGroupEvent extends HomePageEvent {}
 

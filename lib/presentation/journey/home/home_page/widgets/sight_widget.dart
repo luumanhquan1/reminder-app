@@ -39,19 +39,6 @@ class SightWidget extends StatelessWidget {
               BlocProvider.of<HomePageBloc>(context).add(UpDateReminderEvent());
             }
           });
-
-
-        // if (HomePageConstants.list[index]['title'] == 'Today') {
-        //   Navigator.pushNamed(context, HomePageConstants.list[index]['push'],arguments: {StringConstants.keyGroup:null})
-        //       .whenComplete(() {
-        //     // homePageBloc.update();
-        //   });
-        // } else {
-        //   Navigator.pushNamed(context, HomePageConstants.list[index]['push'])
-        //       .whenComplete(() {
-        //     // homePageBloc.update();
-        //   });
-        // }
       },
       child: Container(
           margin: EdgeInsets.only(top: HomePageConstants.paddingHeight20),
