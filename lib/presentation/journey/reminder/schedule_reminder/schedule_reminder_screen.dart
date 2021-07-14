@@ -8,9 +8,10 @@ import 'package:ghichu/common/constants/route_constants.dart';
 import 'package:ghichu/common/enums/reminder_enum.dart';
 import 'package:ghichu/common/setting_argument/settting_argument.dart';
 import 'package:ghichu/common/untils/reminder_until.dart';
-import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
-import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_event.dart';
-import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_state.dart';
+import 'package:ghichu/presentation/journey/blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
+import 'package:ghichu/presentation/journey/blocs/manage_reminder_bloc/manage_reminder_event.dart';
+import 'package:ghichu/presentation/journey/blocs/manage_reminder_bloc/manage_reminder_state.dart';
+
 
 import 'package:ghichu/presentation/journey/reminder/schedule_reminder/widgets/sticky_header_widget.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/app_bar_reminder.dart';
@@ -64,6 +65,7 @@ class _State extends State<SchedulePage> {
            actions: isEditIcon(state)
                ? () {
              BlocProvider.of<ManageReminderBloc>(context).add(SelectReminderEvent(indexGroup: -1,indexReminder: -1));
+             BlocProvider.of<ManageReminderBloc>(context).add(AddReminderEvent());
            }
                : null,
            leading: (){

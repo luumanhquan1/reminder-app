@@ -4,8 +4,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:ghichu/data/models/reminder.dart';
+import 'package:ghichu/presentation/journey/blocs/manage_reminder_bloc/manage_reminder_state.dart';
 import 'package:ghichu/presentation/journey/reminder/__mock__/textfiled_controller.dart';
-import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_state.dart';
+
 import 'package:ghichu/presentation/journey/reminder/reminder_constants.dart';
 
 import 'package:ghichu/presentation/journey/reminder/widgets/check_box.dart';

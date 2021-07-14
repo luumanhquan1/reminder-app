@@ -32,13 +32,7 @@ class SightWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-          Navigator.pushNamed(context, routeName,
-                  arguments: SettingReminder(listGroup: listGroup))
-              .then((value) {
-            if (value == true) {
-              BlocProvider.of<HomePageBloc>(context).add(UpDateReminderEvent());
-            }
-          });
+        BlocProvider.of<HomePageBloc>(context).add(PushReminderSystemEvent(listGroup: listGroup,routeName: routeName));
       },
       child: Container(
           margin: EdgeInsets.only(top: HomePageConstants.paddingHeight20),

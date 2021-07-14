@@ -112,6 +112,16 @@ class PushNewReminderState extends HomePageState {
   @override
   List<Object> get props => [this.listGroup];
 }
+class PushReminderSystemState extends HomePageState{
+  final List<GroupEntity> listGroup;
+  final String routeName;
+
+  PushReminderSystemState({this.listGroup, this.routeName});
+
+  @override
+
+  List<Object> get props =>[this.listGroup,this.routeName];
+}
 class SearchReminderState extends HomePageState{
   @override
 

@@ -7,8 +7,9 @@ import 'package:ghichu/domain/entities/group_entity.dart';
 import 'package:ghichu/domain/entities/reminder_entity.dart';
 import 'package:ghichu/domain/usecase/reminder_usecase.dart';
 import 'package:ghichu/presentation/journey/reminder/__mock__/textfiled_controller.dart';
-import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_event.dart';
-import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_state.dart';
+
+import 'manage_reminder_event.dart';
+import 'manage_reminder_state.dart';
 
 class ManageReminderBloc
     extends Bloc<ManageReminderEvent, ManageReminderState> {
@@ -83,7 +84,7 @@ class ManageReminderBloc
         Map<String, List<ReminderEntity>> listReminder =
             await reminderUC.getReminderSearch(event.search);
         yield creentState.update(
-            listReminder: listReminder, isUpDate: !creentState.isUpDate);
+            listReminder: listReminder, isUpDate: !creentState.isUpDate,listGroup: event.listGroup);
       } else {
 
         yield creentState.update(listReminder: {}, isUpDate: !creentState.isUpDate,indexGroup: -1,indexReminder: -1);

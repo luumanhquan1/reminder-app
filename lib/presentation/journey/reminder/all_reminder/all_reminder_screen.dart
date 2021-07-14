@@ -10,14 +10,15 @@ import 'package:ghichu/common/setting_argument/settting_argument.dart';
 
 import 'package:ghichu/data/models/model_map.dart';
 import 'package:ghichu/domain/entities/group_entity.dart';
+import 'package:ghichu/presentation/journey/blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
+import 'package:ghichu/presentation/journey/blocs/manage_reminder_bloc/manage_reminder_event.dart';
+import 'package:ghichu/presentation/journey/blocs/manage_reminder_bloc/manage_reminder_state.dart';
 
 import 'package:ghichu/presentation/journey/reminder/__mock__/textfiled_controller.dart';
 import 'package:ghichu/presentation/journey/reminder/all_reminder/all_reminder_constants.dart';
 
 import 'package:ghichu/presentation/journey/reminder/all_reminder/widgets/sticky_header_widget.dart';
-import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
-import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_event.dart';
-import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_state.dart';
+
 import 'package:ghichu/presentation/journey/reminder/widgets/app_bar_reminder.dart';
 
 class AllPage extends StatefulWidget {

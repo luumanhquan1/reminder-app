@@ -39,8 +39,8 @@ class AddReminderEvent extends ManageReminderEvent{
 }
 class SearchReminderEvent extends ManageReminderEvent{
   final String search;
-
-  SearchReminderEvent(this.search);
+  final List<GroupEntity> listGroup;
+  SearchReminderEvent({this.search,this.listGroup});
 
 }
 class DeleteReminderEvent extends ManageReminderEvent {

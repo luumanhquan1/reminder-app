@@ -4,13 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/screen_util.dart';
+import 'package:ghichu/presentation/journey/blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
+import 'package:ghichu/presentation/journey/blocs/manage_reminder_bloc/manage_reminder_event.dart';
 import 'package:ghichu/presentation/journey/group/add_list/add_list_constaner.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_bloc.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_event.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_state.dart';
 import 'package:ghichu/presentation/journey/reminder/__mock__/textfiled_controller.dart';
-import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
-import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_event.dart';
 
 class SearchWidget extends StatelessWidget {
  final Function onTap;
@@ -31,7 +31,7 @@ class SearchWidget extends StatelessWidget {
            controller: controller,
             focusNode: focusNode,
             onChanged: (value){
-                BlocProvider.of<ManageReminderBloc>(context).add(SearchReminderEvent(value));
+                BlocProvider.of<ManageReminderBloc>(context).add(SearchReminderEvent(search: value,listGroup: state.keyMyList));
             },
             onTap: onTap,
             decoration: InputDecoration(
@@ -69,7 +69,7 @@ class SearchWidget extends StatelessWidget {
             child: GestureDetector(
                 onTap: (){
                   BlocProvider.of<HomePageBloc>(context).add(ActiveSearchReminderEvent(isSearch: false));
-                  BlocProvider.of<ManageReminderBloc>(context).add(SearchReminderEvent(''));
+                  BlocProvider.of<ManageReminderBloc>(context).add(SearchReminderEvent(search: ''));
                   controller.text="";
                   focusNode.unfocus();
                 },

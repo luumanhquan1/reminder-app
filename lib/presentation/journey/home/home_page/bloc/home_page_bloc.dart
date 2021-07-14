@@ -95,6 +95,14 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     if (event is SearchReminderHomeEvent) {
       yield* _mapSearchReminderToState(event);
     }
+    if(event is PushReminderSystemEvent){
+      InitHomePageState creentState;
+      if(state is InitHomePageState){
+        creentState=state;
+      }
+      yield PushReminderSystemState(listGroup: event.listGroup,routeName: event.routeName);
+      yield creentState;
+    }
   }
 
   Stream<HomePageState> _mapSearchReminderToState(

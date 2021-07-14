@@ -12,6 +12,12 @@ class EditGroupEvent extends HomePageEvent {
   final int index;
   EditGroupEvent(this.index);
 }
+class PushReminderSystemEvent extends HomePageEvent{
+  final List<GroupEntity> listGroup;
+  final String routeName;
+
+  PushReminderSystemEvent({this.listGroup, this.routeName});
+}
 class ActiveSearchReminderEvent extends HomePageEvent{
   final bool isSearch;
 

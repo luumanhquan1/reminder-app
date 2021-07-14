@@ -4,6 +4,8 @@ import 'package:ghichu/common/constants/route_constants.dart';
 
 import 'package:ghichu/common/locator/service_locator.dart';
 import 'package:ghichu/common/setting_argument/settting_argument.dart';
+import 'package:ghichu/presentation/journey/blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
+import 'package:ghichu/presentation/journey/blocs/manage_reminder_bloc/manage_reminder_event.dart';
 
 import 'package:ghichu/presentation/journey/reminder/all_reminder/all_reminder_screen.dart';
 
@@ -25,8 +27,7 @@ import 'package:ghichu/presentation/journey/reminder/create_reminder/priorities_
 import 'package:ghichu/presentation/journey/reminder/schedule_reminder/schedule_reminder_screen.dart';
 import 'package:ghichu/presentation/journey/reminder/today_reminder/today_reminder_screen.dart';
 
-import 'blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
-import 'blocs/manage_reminder_bloc/manage_reminder_event.dart';
+
 import 'create_reminder/new_reminder/bloc/new_reminder_event.dart';
 
 class RouteReminder {
