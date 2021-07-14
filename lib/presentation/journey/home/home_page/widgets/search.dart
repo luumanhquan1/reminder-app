@@ -32,6 +32,9 @@ class SearchWidget extends StatelessWidget {
             focusNode: focusNode,
             onChanged: (value){
                 BlocProvider.of<ManageReminderBloc>(context).add(SearchReminderEvent(search: value,listGroup: state.keyMyList));
+                if(value.isEmpty){
+                  BlocProvider.of<HomePageBloc>(context).add(UpDateReminderEvent());
+                }
             },
             onTap: onTap,
             decoration: InputDecoration(
@@ -70,6 +73,7 @@ class SearchWidget extends StatelessWidget {
                 onTap: (){
                   BlocProvider.of<HomePageBloc>(context).add(ActiveSearchReminderEvent(isSearch: false));
                   BlocProvider.of<ManageReminderBloc>(context).add(SearchReminderEvent(search: ''));
+                  BlocProvider.of<HomePageBloc>(context).add(UpDateReminderEvent());
                   controller.text="";
                   focusNode.unfocus();
                 },

@@ -84,9 +84,7 @@ class StickyReminderAll extends StatelessWidget {
                           DeleteReminderEvent(
                               reminderEntity: listReminder[index],
                               index: index));
-                      if(isSearch){
-                        BlocProvider.of<HomePageBloc>(context).add(UpDateReminderEvent());
-                      }
+
                     },
                     slidableController: slidableController,
                     indexGroup: indexGroup,
