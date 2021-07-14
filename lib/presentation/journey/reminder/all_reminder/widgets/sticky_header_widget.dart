@@ -9,6 +9,8 @@ import 'package:ghichu/domain/entities/reminder_entity.dart';
 import 'package:ghichu/presentation/journey/blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
 import 'package:ghichu/presentation/journey/blocs/manage_reminder_bloc/manage_reminder_event.dart';
 import 'package:ghichu/presentation/journey/blocs/manage_reminder_bloc/manage_reminder_state.dart';
+import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_bloc.dart';
+import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_event.dart';
 
 import 'package:ghichu/presentation/journey/reminder/widgets/add_widget.dart';
 import 'package:ghichu/presentation/journey/reminder/widgets/list_reminder.dart';
@@ -82,6 +84,9 @@ class StickyReminderAll extends StatelessWidget {
                           DeleteReminderEvent(
                               reminderEntity: listReminder[index],
                               index: index));
+                      if(isSearch){
+                        BlocProvider.of<HomePageBloc>(context).add(UpDateReminderEvent());
+                      }
                     },
                     slidableController: slidableController,
                     indexGroup: indexGroup,

@@ -78,6 +78,7 @@ class ManageReminderBloc
 
   Stream<ManageReminderState> _mapSearchReminderToState(
       SearchReminderEvent event) async* {
+    isAllPage=true;
     final creentState = state;
     if (creentState is InitManagerReminderState) {
       if (event.search.isNotEmpty) {
