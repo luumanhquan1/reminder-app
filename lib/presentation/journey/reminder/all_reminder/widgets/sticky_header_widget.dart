@@ -21,6 +21,7 @@ class StickyReminderAll extends StatelessWidget {
   final List<ReminderEntity> listReminder;
   final List<GroupEntity> listGroup;
   final GroupEntity groupEntity;
+  final bool isSearch;
   InitManagerReminderState state;
   SlidableController slidableController;
   StickyReminderAll(
@@ -32,7 +33,9 @@ class StickyReminderAll extends StatelessWidget {
       @required this.listReminder,
       @required this.listGroup,
       @required this.groupEntity,
-      @required this.state})
+      @required this.state,
+        @required this.isSearch
+      })
       : super(key: key);
 
   @override
@@ -91,7 +94,7 @@ class StickyReminderAll extends StatelessWidget {
                   );
                 }),
               ),
-              AddWidget(
+            isSearch? SizedBox() :AddWidget(
                 index: indexGroup,
                 state: state,
                 keyGroup: header,

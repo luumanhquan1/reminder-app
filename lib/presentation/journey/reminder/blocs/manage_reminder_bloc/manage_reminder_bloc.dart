@@ -85,7 +85,8 @@ class ManageReminderBloc
         yield creentState.update(
             listReminder: listReminder, isUpDate: !creentState.isUpDate);
       } else {
-        yield creentState.update(listReminder: {});
+
+        yield creentState.update(listReminder: {}, isUpDate: !creentState.isUpDate,indexGroup: -1,indexReminder: -1);
       }
     }
   }

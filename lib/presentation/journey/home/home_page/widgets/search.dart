@@ -27,13 +27,11 @@ class SearchWidget extends StatelessWidget {
       children: [
         Expanded(
           child: TextField(
+            autofocus: state.isSearch,
            controller: controller,
             focusNode: focusNode,
             onChanged: (value){
-              BlocProvider.of<HomePageBloc>(context).add(SearchReminderHomeEvent(value));
-              if(value.isNotEmpty){
                 BlocProvider.of<ManageReminderBloc>(context).add(SearchReminderEvent(value));
-              }
             },
             onTap: onTap,
             decoration: InputDecoration(
@@ -71,6 +69,7 @@ class SearchWidget extends StatelessWidget {
             child: GestureDetector(
                 onTap: (){
                   BlocProvider.of<HomePageBloc>(context).add(ActiveSearchReminderEvent(isSearch: false));
+                  BlocProvider.of<ManageReminderBloc>(context).add(SearchReminderEvent(''));
                   controller.text="";
                   focusNode.unfocus();
                 },

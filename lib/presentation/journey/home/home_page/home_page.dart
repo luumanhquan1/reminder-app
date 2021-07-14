@@ -1,14 +1,14 @@
 import 'dart:developer';
 
-
-
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/screen_util.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:ghichu/common/constants/route_constants.dart';
 import 'package:ghichu/common/setting_argument/settting_argument.dart';
+import 'package:ghichu/domain/entities/group_entity.dart';
 
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_event.dart';
 import 'package:ghichu/presentation/journey/home/home_page/bloc/home_page_state.dart';
@@ -21,6 +21,10 @@ import 'package:ghichu/presentation/journey/home/home_page/widgets/sliver_list_r
 import 'package:ghichu/presentation/journey/home/home_page/widgets/sliver_search_reminder_widget.dart';
 import 'package:ghichu/presentation/journey/home/home_page/widgets/wrap_widget.dart';
 import 'package:ghichu/presentation/journey/reminder/__mock__/textfiled_controller.dart';
+import 'package:ghichu/presentation/journey/reminder/all_reminder/widgets/sticky_header_widget.dart';
+import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_bloc.dart';
+import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_event.dart';
+import 'package:ghichu/presentation/journey/reminder/blocs/manage_reminder_bloc/manage_reminder_state.dart';
 import 'package:ghichu/presentation/journey/widgets/app_bar.dart';
 import 'package:ghichu/presentation/journey/widgets/dia_log_widget.dart';
 import 'package:ghichu/presentation/journey/widgets/show_toast_error.dart';
@@ -144,39 +148,118 @@ class _State extends State<HomePage> {
   }
 
   Widget homePage(InitHomePageState state) {
-    return CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(HomePageConstants.paddingWidth20, 0,
-                HomePageConstants.paddingWidth20, 0),
-            child: SearchWidget(
-              controller: searchController,
-              onTap: () {
-                BlocProvider.of<HomePageBloc>(context)
-                    .add(ActiveSearchReminderEvent(isSearch: true));
-              },
+    return Stack(
+      children: [
+        CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(HomePageConstants.paddingWidth20,
+                    0, HomePageConstants.paddingWidth20, 0),
+                child: state.isSearch
+                    ? SizedBox(
+                        height: ScreenUtil().setHeight(40),
+                      )
+                    : SearchWidget(
+                        controller: searchController,
+                        onTap: () {
+                          BlocProvider.of<HomePageBloc>(context)
+                              .add(ActiveSearchReminderEvent(isSearch: true));
+                        },
+                        state: state,
+                      ),
+              ),
+            ),
+            SliverReminderWidget(
               state: state,
             ),
-          ),
+            ReorderableSliverWidget(
+              scrollController: reorderController,
+              slidableController: slidableController,
+              state: state,
+            )
+          ],
         ),
-       SliverReminderSearchWidget(state: state,),
-      SliverReminderWidget(state: state,),
-        SliverVisibility(
-          visible: !state.isSearchTxtEmty,
-          sliver: ReorderableSliverWidget(
-            scrollController: reorderController,
-            slidableController: slidableController,
-            state: state,
-          ),
-        )
+        Visibility(visible: state.isSearch, child: searchWidget(state))
       ],
     );
   }
 
-  Widget searchWidget() {
-    return Material(
-      color: Colors.white,
+  Widget searchWidget(InitHomePageState state) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: SingleChildScrollView(
+
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(HomePageConstants.paddingWidth20, 0,
+                  HomePageConstants.paddingWidth20, 0),
+              child: SearchWidget(
+                controller: searchController,
+                onTap: () {
+                  BlocProvider.of<HomePageBloc>(context)
+                      .add(ActiveSearchReminderEvent(isSearch: true));
+                },
+                state: state,
+              ),
+            ),
+         
+            BlocConsumer<ManageReminderBloc, ManageReminderState>(
+                listener: (context, stateReminder) {},
+                builder: (context, stateReminder) {
+                  if (stateReminder is InitManagerReminderState) {
+                    return Column(
+                      children: List.generate(stateReminder.listReminder.length,
+                          (index) {
+                        String header =
+                            stateReminder.listReminder.keys.elementAt(index);
+                        GroupEntity groupEntity = state.keyMyList
+                            .where((element) => element.name == header)
+                            .elementAt(0);
+
+                        return StickyReminderAll(
+                          isSearch: true,
+                          state: stateReminder,
+                          groupEntity: groupEntity,
+                          listGroup: state.keyMyList,
+                          slidableController: slidableController,
+                          indexGroup: index,
+                          listReminder: stateReminder.listReminder[header],
+                          header: groupEntity.name,
+                          color: groupEntity.color,
+                        );
+                      }),
+                    );
+                  }
+                  return SizedBox();
+                }),
+            BlocBuilder<ManageReminderBloc, ManageReminderState>(
+                builder: (context, stateReminder) {
+              return GestureDetector(
+                onTap: searchController.text.trim().isEmpty
+                    ? () {
+                        BlocProvider.of<HomePageBloc>(context)
+                            .add(ActiveSearchReminderEvent(isSearch: false));
+                        BlocProvider.of<ManageReminderBloc>(context)
+                            .add(SearchReminderEvent(''));
+                        searchController.text = "";
+                        // focusNode.unfocus();
+                      }
+                    : null,
+                child: Container(
+                  constraints:
+                      BoxConstraints(minHeight: ScreenUtil().screenHeight-ScreenUtil().setHeight(160)),
+                  width: double.infinity,
+                  color: searchController.text.trim().isNotEmpty
+                      ? Colors.white
+                      : Colors.transparent,
+                ),
+              );
+            })
+          ],
+        ),
+      ),
     );
   }
 }

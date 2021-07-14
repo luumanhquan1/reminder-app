@@ -11,44 +11,41 @@ class SliverReminderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  SliverVisibility(
-      visible: !state.isSearchTxtEmty,
-      sliver: SliverPadding(
-        padding: EdgeInsets.fromLTRB(HomePageConstants.paddingWidth20, 0,
-            HomePageConstants.paddingWidth20, 0),
-        sliver: SliverList(
-          delegate: SliverChildListDelegate(
-            [
-              Stack(
-                children: [
-                  WrapWidget(
-                    state: state,
-                  ),
-                  EditWidget(
-                    state: state,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: HomePageConstants.paddingHeight10,
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    top: HomePageConstants.paddingHeight10,
-                    left: HomePageConstants.paddingWidth10),
-                child: Text(
-                  HomePageConstants.myListTxt,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: HomePageConstants.screenUtileSp20),
+    return SliverPadding(
+      padding: EdgeInsets.fromLTRB(HomePageConstants.paddingWidth20, 0,
+          HomePageConstants.paddingWidth20, 0),
+      sliver: SliverList(
+        delegate: SliverChildListDelegate(
+          [
+            Stack(
+              children: [
+                WrapWidget(
+                  state: state,
                 ),
+                EditWidget(
+                  state: state,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: HomePageConstants.paddingHeight10,
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  top: HomePageConstants.paddingHeight10,
+                  left: HomePageConstants.paddingWidth10),
+              child: Text(
+                HomePageConstants.myListTxt,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: HomePageConstants.screenUtileSp20),
               ),
-              SizedBox(
-                height: HomePageConstants.paddingHeight10,
-              ),
-            ],
-          ),
+            ),
+            SizedBox(
+              height: HomePageConstants.paddingHeight10,
+            ),
+          ],
         ),
       ),
     );

@@ -101,6 +101,7 @@ class _State extends State<AllPage> {
                     children: List.generate(state.listReminder.length, (index) {
                       GroupEntity groupEntity = state.listGroup[index];
                       return StickyReminderAll(
+                        isSearch: false,
                         state: state,
                         groupEntity: groupEntity,
                         listGroup: state.listGroup,
